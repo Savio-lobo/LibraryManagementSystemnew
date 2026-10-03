@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Reserve Books | Library Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="page-container">
+
+    <div class="book-card">
+
+        <div class="icon">
+
+            <i class="fa-solid fa-bookmark"></i>
+
+        </div>
+
+        <h2>Reserve Books</h2>
+
+        <p class="subtitle">
+
+            Enter the Book ID to reserve a book that is currently unavailable.
+
+        </p>
+{% with messages = get_flashed_messages(with_categories=true) %}
+
+    {% if messages %}
+
+        {% for category, message in messages %}
+
+            <div class="flash-message {{ category }}">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+{% endwith %}
+        <form action="" method="POST">
+
+            <div class="input-group">
+
+                <label>
+
+                    <i class="fa-solid fa-book"></i>
+
+                    Book ID
+
+                </label>
+
+                <input
+                    type="text"
+                    name="book_id"
+                    placeholder="Enter Book ID"
+                    required>
+
+            </div>
+
+            <button type="submit">
+
+                <i class="fa-solid fa-bookmark"></i>
+
+                Reserve Book
+
+            </button>
+
+        </form>
+
+        <hr>
+
+        <a class="back-home"
+           href="{{ url_for('dashboard') }}">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Dashboard
+
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

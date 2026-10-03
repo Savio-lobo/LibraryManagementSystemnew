@@ -1,0 +1,4 @@
+Flask
+Flask-Bcrypt
+requests
+gunicorn

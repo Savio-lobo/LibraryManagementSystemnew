@@ -1,0 +1,29 @@
+[
+    {
+        "book_id": "2",
+        "book_name": "annana nenapu",
+        "author": "purnachandra tejaswi",
+        "publisher": "nishan",
+        "isbn": "12",
+        "category": "Novel",
+        "copies": 9
+    },
+    {
+        "book_id": "3",
+        "book_name": "heavenly parasole",
+        "author": "william Shakesphere",
+        "publisher": "Savio Lobo",
+        "isbn": "13",
+        "category": "Novel",
+        "copies": 7
+    },
+    {
+        "book_id": "4",
+        "book_name": "Harry Potter and the Philosopher's Stone",
+        "author": "J.K. Rowling",
+        "publisher": "Bloomsbury",
+        "isbn": "14",
+        "category": "Novel",
+        "copies": 2
+    }
+]

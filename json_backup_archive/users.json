@@ -1,0 +1,32 @@
+[
+    {
+        "name": "Roshni Nayak",
+        "email": "roshni@gmail.com",
+        "password": "$2b$12$pD2jIXJ0xC42Qw1hgCApmuO.meKe0lFCU4qqEsuY.Mp3rPw70WFTW",
+        "role": "admin"
+    },
+    {
+        "name": "Princia",
+        "email": "princia@gmail.com",
+        "password": "$2b$12$yVa88u.c3UYUYx0KJY7szOqtGDB.uFSSc1rg3FaVb7kTEY0aT4HK6",
+        "role": "librarian"
+    },
+    {
+        "name": "Savio Lobo",
+        "email": "savio@gmail.com",
+        "password": "$2b$12$7TVEml0pvGqSscV2pbCnh.k0e33nF8/5ZD5WMOTvjxpgpb7wLM.sG",
+        "role": "user"
+    },
+    {
+        "name": "abc",
+        "email": "abc@gmail.com",
+        "password": "$2b$12$MBBAjHFr.vM.t6bSo.bGF.MaSn2VqwWN6Ac4RDI6nOmOirrYyjOZe",
+        "role": "user"
+    },
+    {
+        "name": "xyz",
+        "email": "xyz@gmail.com",
+        "password": "$2b$12$tOPFfCJm2SmnKOewNCba4eULsDmQunZOf7xtLNcC/pUUYxbTCwbgK",
+        "role": "user"
+    }
+]

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Renew Books | Library Management System</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        .renew-page {
+            min-height: 100vh;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #3569d8, #2858c7);
+            box-sizing: border-box;
+        }
+
+        .renew-card {
+            width: 95%;
+            max-width: 1300px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 40px;
+            box-sizing: border-box;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+        }
+
+        .renew-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .renew-icon {
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-size: 30px;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.35);
+        }
+
+        .renew-title {
+            margin: 0;
+            color: #222222;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .renew-description {
+            margin: 10px auto 0;
+            color: #666666;
+            font-size: 16px;
+        }
+
+        .renew-flash {
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            background: #f4f4f4;
+            color: #333333;
+        }
+
+        .renew-flash.success {
+            background: #e6f7ec;
+            color: #1f7a41;
+        }
+
+        .renew-flash.error {
+            background: #fdeaea;
+            color: #b42323;
+        }
+
+        .renew-search-wrap {
+            margin-top: 22px;
+            margin-bottom: 6px;
+        }
+
+        .renew-search-input {
+            width: 100%;
+            max-width: 420px;
+            padding: 13px 18px;
+            border: 2px solid #dbeafe;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            color: #222222;
+            background: #ffffff;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease;
+        }
+
+        .renew-search-input:focus {
+            border-color: #2563eb;
+        }
+
+        .renew-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 25px;
+        }
+
+        .renew-table {
+            width: 100%;
+            min-width: 1300px;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .renew-table th {
+            padding: 15px;
+            text-align: left;
+            background: #f1f3ff;
+            color: #333333;
+            font-size: 14px;
+            font-weight: 700;
+            border-bottom: 2px solid #e2e5f5;
+        }
+
+        .renew-table td {
+            padding: 15px;
+            text-align: left;
+            color: #444444;
+            border-bottom: 1px solid #eeeeee;
+            background: #ffffff;
+        }
+
+        .renew-table tbody tr:hover td {
+            background: #f8f9ff;
+        }
+
+        .renew-status {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .renew-status.available {
+            background: #e6f7ec;
+            color: #1f7a41;
+        }
+
+        .renew-status.renewed {
+            background: #eef0fb;
+            color: #4338ca;
+        }
+
+        .renew-status.overdue {
+            background: #fdeaea;
+            color: #b42323;
+        }
+
+        .renew-status.pending {
+            background: #fff6e0;
+            color: #8a6100;
+        }
+
+        .renew-action-form {
+            margin: 0;
+        }
+
+        .renew-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: white;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .renew-btn-reject {
+            background: linear-gradient(135deg, #e05252, #b42323);
+        }
+
+        .renew-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .renew-no-action {
+            color: #999999;
+            font-size: 13px;
+        }
+
+        .renew-no-books {
+            margin-top: 25px;
+            padding: 40px 20px;
+            text-align: center;
+            background: #f8f9ff;
+            border: 1px solid #e4e7f5;
+            border-radius: 15px;
+            color: #666666;
+        }
+
+        .renew-no-books i {
+            display: block;
+            margin-bottom: 15px;
+            color: #667eea;
+            font-size: 42px;
+        }
+
+        .renew-no-books p {
+            margin: 0;
+            color: #666666;
+            background: transparent;
+            font-size: 16px;
+        }
+
+        .renew-back-area {
+            text-align: center;
+            margin-top: 35px;
+        }
+
+        .renew-back-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            padding: 13px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: white;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            font-weight: 600;
+            transition: 0.2s ease;
+        }
+
+        .renew-back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(102, 126, 234, 0.35);
+        }
+
+        @media (max-width: 700px) {
+
+            .renew-page {
+                padding: 20px 10px;
+            }
+
+            .renew-card {
+                width: 100%;
+                padding: 25px 15px;
+                border-radius: 18px;
+            }
+
+            .renew-title {
+                font-size: 26px;
+            }
+
+            .renew-description {
+                font-size: 14px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="renew-page">
+
+    <div class="renew-card">
+
+        <div class="renew-header">
+
+            <div class="renew-icon">
+                <i class="fa-solid fa-arrows-rotate"></i>
+            </div>
+
+            <h1 class="renew-title">
+                Renewal Requests
+            </h1>
+
+            <p class="renew-description">
+                Review pending renewal requests submitted by users and
+                approve or reject each one. Approving extends the book's
+                due date; rejecting leaves it unchanged.
+            </p>
+
+        </div>
+
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="renew-flash {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        {% if renewal_requests %}
+
+            <div class="renew-search-wrap">
+                <input
+                    type="text"
+                    id="renewSearchInput"
+                    class="renew-search-input"
+                    placeholder="🔍 Search by User, Email, Book or Book ID">
+            </div>
+
+            <div class="renew-table-wrapper">
+
+                <table class="renew-table" id="renewTable">
+
+                    <thead>
+
+                        <tr>
+                            <th>User Name</th>
+                            <th>User Email</th>
+                            <th>Book ID</th>
+                            <th>Book Name</th>
+                            <th>Borrow Date</th>
+                            <th>Current Due Date</th>
+                            <th>Requested On</th>
+                            <th>New Due Date If Approved</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for req in renewal_requests %}
+
+                            <tr>
+
+                                <td>{{ req.user_name }}</td>
+
+                                <td>{{ req.user_email }}</td>
+
+                                <td>{{ req.book_id }}</td>
+
+                                <td>{{ req.book_name }}</td>
+
+                                <td>{{ req.borrowed_date }}</td>
+
+                                <td>{{ req.due_date }}</td>
+
+                                <td>{{ req.requested_at }}</td>
+
+                                <td>{{ req.requested_due_date }}</td>
+
+                                <td>
+                                    <span class="renew-status pending">Pending</span>
+                                </td>
+
+                                <td>
+
+                                    <form
+                                        method="POST"
+                                        action="{{ url_for(renew_action_endpoint) }}"
+                                        class="renew-action-form"
+                                    >
+
+                                        <input
+                                            type="hidden"
+                                            name="renewal_request_id"
+                                            value="{{ req.renewal_request_id }}"
+                                        >
+
+                                        <input type="hidden" name="decision" value="approve">
+
+                                        <button
+                                            type="submit"
+                                            class="renew-btn"
+                                        >
+                                            <i class="fa-solid fa-check"></i>
+                                            Approve
+                                        </button>
+
+                                    </form>
+
+                                    <form
+                                        method="POST"
+                                        action="{{ url_for(renew_action_endpoint) }}"
+                                        class="renew-action-form"
+                                        style="margin-top: 8px;"
+                                    >
+
+                                        <input
+                                            type="hidden"
+                                            name="renewal_request_id"
+                                            value="{{ req.renewal_request_id }}"
+                                        >
+
+                                        <input type="hidden" name="decision" value="reject">
+
+                                        <button
+                                            type="submit"
+                                            class="renew-btn renew-btn-reject"
+                                        >
+                                            <i class="fa-solid fa-xmark"></i>
+                                            Reject
+                                        </button>
+
+                                    </form>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        {% else %}
+
+            <div class="renew-no-books">
+                <i class="fa-solid fa-book-open"></i>
+                <p>There are no pending renewal requests right now.</p>
+            </div>
+
+        {% endif %}
+
+
+        <div class="renew-back-area">
+
+            <a href="{{ url_for('back_to_dashboard') }}"
+               class="renew-back-btn"
+            >
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    (function() {
+
+        const searchInput = document.getElementById("renewSearchInput");
+        const table = document.getElementById("renewTable");
+
+        if (!searchInput || !table) {
+            return;
+        }
+
+        searchInput.addEventListener("input", function() {
+
+            const query = searchInput.value.toLowerCase().trim();
+            const rows = table.querySelectorAll("tbody tr");
+
+            rows.forEach(function(row) {
+
+                const cells = row.querySelectorAll("td");
+
+                if (cells.length < 4) {
+                    return;
+                }
+
+                const userName = cells[0].innerText.toLowerCase();
+                const userEmail = cells[1].innerText.toLowerCase();
+                const bookId = cells[2].innerText.toLowerCase();
+                const bookName = cells[3].innerText.toLowerCase();
+
+                const matches =
+                    userName.includes(query) ||
+                    userEmail.includes(query) ||
+                    bookId.includes(query) ||
+                    bookName.includes(query);
+
+                row.style.display = matches ? "" : "none";
+
+            });
+
+        });
+
+    })();
+
+</script>
+
+</body>
+
+</html>

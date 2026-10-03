@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Reports | Library Management System</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        /* ===============================
+           PAGE (matches Renew Books)
+        =============================== */
+
+        .rp-page {
+            min-height: 100vh;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #3569d8, #2858c7);
+            box-sizing: border-box;
+        }
+
+        .rp-card {
+            width: 95%;
+            max-width: 1150px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 40px;
+            box-sizing: border-box;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+        }
+
+        .rp-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .rp-icon {
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 18px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: linear-gradient(135deg, #667eea, #764ba2);
+
+            color: white;
+            font-size: 30px;
+
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.35);
+        }
+
+        .rp-title {
+            margin: 0;
+            color: #222222;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .rp-description {
+            margin: 10px auto 0;
+            color: #666666;
+            font-size: 16px;
+        }
+
+        /* ===============================
+           STAT GRID
+        =============================== */
+
+        .rp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 22px;
+            margin-top: 10px;
+        }
+
+        .rp-stat-card {
+            background: #f8f9ff;
+            border: 1px solid #e4e7f5;
+            border-radius: 18px;
+            padding: 26px 24px;
+
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.08);
+
+            transition: 0.2s ease;
+        }
+
+        .rp-stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 26px rgba(102, 126, 234, 0.18);
+        }
+
+        .rp-stat-icon {
+            width: 52px;
+            height: 52px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 14px;
+
+            color: white;
+            font-size: 22px;
+        }
+
+        .rp-stat-icon.books {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .rp-stat-icon.users {
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+        }
+
+        .rp-stat-icon.issued {
+            background: linear-gradient(135deg, #16803c, #22a352);
+        }
+
+        .rp-stat-icon.fine {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+        }
+
+        .rp-stat-label {
+            margin: 0;
+            color: #666666;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+        }
+
+        .rp-stat-number {
+            margin: 0;
+            color: #1f2333;
+            font-size: 40px;
+            font-weight: 700;
+            line-height: 1.1;
+        }
+
+        .rp-stat-sub {
+            margin: 0;
+            color: #8a8fa8;
+            font-size: 13px;
+        }
+
+        /* ===============================
+           BACK BUTTON
+        =============================== */
+
+        .rp-back-area {
+            text-align: center;
+            margin-top: 35px;
+        }
+
+        .rp-back-btn {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 9px;
+
+            padding: 13px 24px;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+
+            color: white;
+
+            background: linear-gradient(135deg, #667eea, #764ba2);
+
+            font-weight: 600;
+
+            transition: 0.2s ease;
+        }
+
+        .rp-back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(102, 126, 234, 0.35);
+        }
+
+        /* ===============================
+           MOBILE
+        =============================== */
+
+        @media (max-width: 700px) {
+
+            .rp-page {
+                padding: 20px 10px;
+            }
+
+            .rp-card {
+                width: 100%;
+                padding: 25px 15px;
+                border-radius: 18px;
+            }
+
+            .rp-title {
+                font-size: 26px;
+            }
+
+            .rp-description {
+                font-size: 14px;
+            }
+
+            .rp-stat-number {
+                font-size: 32px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="rp-page">
+
+    <div class="rp-card">
+
+
+        <!-- ===============================
+             HEADER
+        =============================== -->
+
+        <div class="rp-header">
+
+            <div class="rp-icon">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+
+            <h1 class="rp-title">
+                Reports
+            </h1>
+
+            <p class="rp-description">
+                Live snapshot of your library's activity.
+            </p>
+
+        </div>
+
+
+        <!-- ===============================
+             REPORT CARDS
+        =============================== -->
+
+        <div class="rp-grid">
+
+            <!-- TOTAL BOOKS -->
+
+            <div class="rp-stat-card">
+
+                <div class="rp-stat-icon books">
+                    <i class="fa-solid fa-book"></i>
+                </div>
+
+                <p class="rp-stat-label">Total Books</p>
+
+                <p class="rp-stat-number">{{ total_books }}</p>
+
+                <p class="rp-stat-sub">Total books in the library.</p>
+
+            </div>
+
+
+            <!-- TOTAL USERS -->
+
+            <div class="rp-stat-card">
+
+                <div class="rp-stat-icon users">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+
+                <p class="rp-stat-label">Total Users</p>
+
+                <p class="rp-stat-number">{{ total_users }}</p>
+
+                <p class="rp-stat-sub">Registered library users.</p>
+
+            </div>
+
+
+            <!-- BOOKS ISSUED -->
+
+            <div class="rp-stat-card">
+
+                <div class="rp-stat-icon issued">
+                    <i class="fa-solid fa-book-open"></i>
+                </div>
+
+                <p class="rp-stat-label">Books Issued</p>
+
+                <p class="rp-stat-number">{{ total_issued }}</p>
+
+                <p class="rp-stat-sub">Books currently issued to users.</p>
+
+            </div>
+
+
+            <!-- TOTAL FINE -->
+
+            <div class="rp-stat-card">
+
+                <div class="rp-stat-icon fine">
+                    <i class="fa-solid fa-money-bill-wave"></i>
+                </div>
+
+                <p class="rp-stat-label">Total Fine</p>
+
+                <p class="rp-stat-number">₹{{ total_fine }}</p>
+
+                <p class="rp-stat-sub">Total outstanding fine to be received.</p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ===============================
+             BACK BUTTON
+        =============================== -->
+
+        <div class="rp-back-area">
+
+            <a href="{{ url_for('back_to_dashboard') }}"
+               class="rp-back-btn">
+
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Dashboard
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>

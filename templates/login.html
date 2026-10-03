@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Login | Library Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="form-container">
+
+    <div class="form-card">
+
+        <div class="icon">
+
+            <i class="fa-solid fa-book-open-reader"></i>
+
+        </div>
+
+        <h2>
+
+            Welcome Back
+
+        </h2>
+
+        <p class="subtitle">
+
+            Sign in to continue to the Library Management System.
+
+        </p>
+
+        <!-- Flash Messages -->
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div class="flash-message">
+
+                    {{ message }}
+
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+        {% endwith %}
+
+        <form action="/login" method="POST">
+
+            <div class="input-group">
+
+                <label>
+
+                    <i class="fa-solid fa-envelope"></i>
+
+                    Email Address
+
+                </label>
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required>
+
+            </div>
+
+            <div class="input-group">
+
+                <label>
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    Password
+
+                </label>
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    required>
+
+            </div>
+
+            <button type="submit">
+
+                <i class="fa-solid fa-right-to-bracket"></i>
+
+                Login
+
+            </button>
+
+        </form>
+
+        <div class="forgot-link">
+
+            <a href="/forgot-password">
+
+                <i class="fa-solid fa-key"></i>
+
+                Forgot Password?
+
+            </a>
+
+        </div>
+
+        <hr>
+
+        <div class="register-section">
+
+            <p>
+
+                Don't have an account?
+
+            </p>
+
+            <a href="/register">
+
+                <i class="fa-solid fa-user-plus"></i>
+
+                Register Here
+
+            </a>
+
+        </div>
+
+        <a class="back-home"
+           href="/">
+
+            <i class="fa-solid fa-house"></i>
+
+            Back to Home
+
+        </a>
+
+    </div>
+
+</div>
+
+{% include '_password_ui.html' %}
+</body>
+
+</html>
+

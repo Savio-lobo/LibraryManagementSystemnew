@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Waitlist Management | Library Management System</title>
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        /* =========================================
+           WAITLIST PAGE
+        ========================================= */
+
+        .waitlist-card {
+            width: 95% !important;
+            max-width: 1450px !important;
+            margin: 30px auto !important;
+            padding: 40px !important;
+            box-sizing: border-box;
+            background: #ffffff !important;
+            border: none !important;
+            backdrop-filter: none !important;
+            border-radius: 24px !important;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18) !important;
+        }
+
+        .waitlist-card .icon {
+            background: linear-gradient(135deg, #667eea, #764ba2) !important;
+            color: #ffffff !important;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.35);
+        }
+
+        .waitlist-card h2 {
+            color: #222222 !important;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .waitlist-card .subtitle {
+            color: #666666 !important;
+        }
+
+
+        /* =========================================
+           SEARCH
+        ========================================= */
+
+        .waitlist-search-wrap {
+            margin-top: 22px;
+        }
+
+        .waitlist-search-input {
+            width: 100%;
+            max-width: 420px;
+            padding: 13px 18px;
+            border: 2px solid #dbeafe;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            color: #222222;
+            background: #ffffff;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease;
+        }
+
+        .waitlist-search-input:focus {
+            border-color: #2563eb;
+        }
+
+
+        /* =========================================
+           TABLE CONTAINER
+        ========================================= */
+
+        .waitlist-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 25px;
+        }
+
+
+        /* =========================================
+           TABLE
+        ========================================= */
+
+        .waitlist-table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+        }
+
+
+        /* =========================================
+           TABLE HEADER
+        ========================================= */
+
+        .waitlist-table th {
+            padding: 12px 8px;
+            text-align: left;
+            font-size: 13px;
+            background: #f1f3ff;
+            color: #333333;
+            font-weight: 700;
+            border-bottom: 2px solid #e2e5f5;
+        }
+
+
+        /* =========================================
+           TABLE DATA
+        ========================================= */
+
+        .waitlist-table td {
+            padding: 12px 8px;
+            text-align: left;
+            vertical-align: middle;
+            font-size: 13px;
+            word-wrap: break-word;
+            background: #ffffff;
+            color: #444444;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .waitlist-table tbody tr:hover td {
+            background: #f8f9ff;
+        }
+
+
+        /* =========================================
+           COLUMN WIDTHS (percentage-based, no
+           forced horizontal scrolling)
+        ========================================= */
+
+        .waitlist-table th:nth-child(1),
+        .waitlist-table td:nth-child(1) {
+            width: 9%;
+        }
+
+
+        .waitlist-table th:nth-child(2),
+        .waitlist-table td:nth-child(2) {
+            width: 9%;
+        }
+
+
+        .waitlist-table th:nth-child(3),
+        .waitlist-table td:nth-child(3) {
+            width: 22%;
+        }
+
+
+        .waitlist-table th:nth-child(4),
+        .waitlist-table td:nth-child(4) {
+            width: 15%;
+        }
+
+
+        .waitlist-table th:nth-child(5),
+        .waitlist-table td:nth-child(5) {
+            width: 20%;
+        }
+
+
+        .waitlist-table th:nth-child(6),
+        .waitlist-table td:nth-child(6) {
+            width: 13%;
+        }
+
+
+        .waitlist-table th:nth-child(7),
+        .waitlist-table td:nth-child(7) {
+            width: 12%;
+        }
+
+
+        /* =========================================
+           REMOVE BUTTON
+        ========================================= */
+
+        .waitlist-table button {
+            padding: 9px 14px;
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+
+        /* =========================================
+           NO WAITLIST
+        ========================================= */
+
+        .no-waitlist {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+
+        .no-waitlist i {
+            font-size: 40px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="page-container">
+
+
+    <!-- =========================================
+         WAITLIST MANAGEMENT CARD
+    ========================================= -->
+
+    <div class="book-card waitlist-card">
+
+
+        <!-- ICON -->
+
+        <div class="icon">
+
+            <i class="fa-solid fa-clock"></i>
+
+        </div>
+
+
+        <!-- TITLE -->
+
+        <h2>
+            Waitlist Management
+        </h2>
+
+
+        <!-- SUBTITLE -->
+
+        <p class="subtitle">
+            Manage users waiting for unavailable books.
+        </p>
+
+
+        <!-- =========================================
+             FLASH MESSAGES
+        ========================================= -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="flash-message {{ category }}">
+
+                        {{ message }}
+
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+
+        <!-- =========================================
+             WAITLIST TABLE
+        ========================================= -->
+
+        {% if waitlist %}
+
+            <div class="waitlist-search-wrap">
+                <input
+                    type="text"
+                    id="waitlistSearchInput"
+                    class="waitlist-search-input"
+                    placeholder="🔍 Search by User, Email, Book Name or Book ID">
+            </div>
+
+            <div class="waitlist-table-wrapper">
+
+                <table class="waitlist-table" id="waitlistTable">
+
+
+                    <!-- TABLE HEADER -->
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Position
+                            </th>
+
+                            <th>
+                                User Name
+                            </th>
+
+                            <th>
+                                User Email
+                            </th>
+
+                            <th>
+                                Book Name
+                            </th>
+
+                            <th>
+                                Book ID
+                            </th>
+
+                            <th>
+                                Requested Date
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+
+                    <!-- TABLE BODY -->
+
+                    <tbody>
+
+                    {% for item in waitlist %}
+
+                        <tr>
+
+
+                            <!-- POSITION -->
+
+                            <td>
+                                {{ loop.index }}
+                            </td>
+
+
+                            <!-- USER NAME -->
+
+                            <td>
+                                {{ item.user_name }}
+                            </td>
+
+
+                            <!-- USER EMAIL -->
+
+                            <td>
+                                {{ item.user_email }}
+                            </td>
+
+
+                            <!-- BOOK NAME -->
+
+                            <td>
+                                {{ item.book_name }}
+                            </td>
+
+
+                            <!-- BOOK ID -->
+
+                            <td>
+                                {{ item.book_id }}
+                            </td>
+
+
+                            <!-- REQUESTED DATE -->
+
+                            <td>
+                                {{ item.requested_date }}
+                            </td>
+
+
+                            <!-- ACTION -->
+
+                            <td>
+
+                                <form
+                                    action="{{ url_for('waitlist_management') }}"
+                                    method="POST">
+
+                                    <input
+                                        type="hidden"
+                                        name="waitlist_index"
+                                        value="{{ item._index }}">
+
+
+                                    <button type="submit">
+
+                                        <i class="fa-solid fa-trash"></i>
+
+                                        Remove
+
+                                    </button>
+
+                                </form>
+
+                            </td>
+
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+        {% else %}
+
+
+            <!-- =========================================
+                 NO WAITLIST RECORDS
+            ========================================= -->
+
+            <div class="no-waitlist">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                <p>
+                    No users are currently on the waitlist.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+
+        <!-- =========================================
+             BACK TO DASHBOARD
+        ========================================= -->
+
+        <hr>
+
+
+        <a
+            class="back-home"
+            href="{{ url_for('back_to_dashboard') }}">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Dashboard
+
+        </a>
+
+
+    </div>
+
+
+</div>
+
+<script>
+
+    // =====================================================
+    // SEARCH — filters the waitlist table by User Name,
+    // Email, Book Name or Book ID. Client-side only, so it
+    // never touches the remove-from-waitlist form/route logic.
+    // =====================================================
+
+    (function() {
+
+        const searchInput = document.getElementById("waitlistSearchInput");
+        const table = document.getElementById("waitlistTable");
+
+        if (!searchInput || !table) {
+            return;
+        }
+
+        searchInput.addEventListener("input", function() {
+
+            const query = searchInput.value.toLowerCase().trim();
+            const rows = table.querySelectorAll("tbody tr");
+
+            rows.forEach(function(row) {
+
+                const cells = row.querySelectorAll("td");
+
+                if (cells.length < 5) {
+                    return;
+                }
+
+                const userName = cells[1].innerText.toLowerCase();
+                const userEmail = cells[2].innerText.toLowerCase();
+                const bookName = cells[3].innerText.toLowerCase();
+                const bookId = cells[4].innerText.toLowerCase();
+
+                const matches =
+                    userName.includes(query) ||
+                    userEmail.includes(query) ||
+                    bookName.includes(query) ||
+                    bookId.includes(query);
+
+                row.style.display = matches ? "" : "none";
+
+            });
+
+        });
+
+    })();
+
+</script>
+
+</body>
+
+</html>

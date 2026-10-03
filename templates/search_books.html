@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Search Books | Library Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="page-container">
+
+    <div class="book-card">
+
+        <div class="icon">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+        </div>
+
+        <h2>Search Books</h2>
+
+        <p class="subtitle">
+
+            Search books by title, author, or category.
+
+        </p>
+
+        <form action="" method="GET">
+
+            <div class="input-group">
+
+                <label>
+
+                    <i class="fa-solid fa-book"></i>
+
+                    Search Book
+
+                </label>
+
+                <input
+                    type="text"
+                    name="search"
+                    placeholder="Search by title, author or category"
+                    required>
+
+            </div>
+
+            <button type="submit">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                Search
+
+            </button>
+
+        </form>
+
+        <div class="search-results">
+
+            <h3>
+
+                <i class="fa-solid fa-list"></i>
+
+                Search Results
+
+            </h3>
+
+            <p>
+
+                Search results will appear here.
+
+            </p>
+
+        </div>
+
+        <hr>
+
+        <a class="back-home"
+           href="{{ url_for('dashboard') }}">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Dashboard
+
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

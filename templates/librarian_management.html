@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Staff Management | Library Management System</title>
+
+
+    <!-- MAIN CSS -->
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+
+    <!-- FONT AWESOME -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
+    <!-- GOOGLE FONT -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<header class="navbar">
+
+
+    
+
+
+
+    
+
+
+    <!-- RIGHT -->
+
+    <div class="navbar-right">
+
+
+        <!-- DASHBOARD -->
+
+        <a href="{{ url_for('admin_dashboard') }}"
+           class="profile-btn">
+
+            <i class="fa-solid fa-house"></i>
+
+            Dashboard
+
+        </a>
+
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     PAGE HEADER
+===================================================== -->
+
+<section class="welcome-box">
+
+
+    <div>
+
+        <h1>
+
+            <i class="fa-solid fa-user-tie"></i>
+
+            Staff Management
+
+        </h1>
+
+
+        <p>
+
+            Manage librarians and staff members of the library.
+
+        </p>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     STAFF MANAGEMENT OPTIONS
+===================================================== -->
+
+<section class="dashboard-container">
+
+
+    <div class="dashboard-grid">
+
+
+       
+
+
+
+
+
+                
+
+
+
+
+    </div>
+
+
+
+
+
+        </div>
+
+
+
+        <!-- TABLE -->
+
+        <div class="table-container">
+
+
+            <table class="management-table">
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            #
+                        </th>
+
+                        <th>
+                            Name
+                        </th>
+
+                        <th>
+                            Email
+                        </th>
+
+                        <th>
+                            Role
+                        </th>
+
+                        <th>
+                            Actions
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+
+                <tbody>
+
+
+                    {% if librarians %}
+
+
+                        {% for librarian in librarians %}
+
+
+                        <tr>
+
+
+                            <!-- NUMBER -->
+
+                            <td>
+
+                                {{ loop.index }}
+
+                            </td>
+
+
+
+                            <!-- NAME -->
+
+                            <td>
+
+                                {{ librarian.get('name', 'N/A') }}
+
+                            </td>
+
+
+
+                            <!-- EMAIL -->
+
+                            <td>
+
+                                {{ librarian.get('email', 'N/A') }}
+
+                            </td>
+
+
+
+                            <!-- ROLE -->
+
+                            <td>
+
+                                <span class="role-badge">
+
+                                    {{ librarian.get('role', 'librarian')|capitalize }}
+
+                                </span>
+
+                            </td>
+
+
+
+                            <!-- ACTIONS -->
+
+                            <td>
+
+                                <div class="action-buttons">
+
+
+                                    <!-- EDIT -->
+
+                                    <a href="{{ url_for('edit_librarian', email=librarian.get('email')) }}"
+                                       class="edit-btn">
+
+                                        <i class="fa-solid fa-pen"></i>
+
+                                        Edit
+
+                                    </a>
+
+
+
+                                    <!-- DELETE -->
+
+                                    <a href="{{ url_for('delete_librarian', email=librarian.get('email')) }}"
+                                       class="delete-btn"
+                                       onclick="return confirm('Are you sure you want to remove this staff member?');">
+
+                                        <i class="fa-solid fa-trash"></i>
+
+                                        Delete
+
+                                    </a>
+
+
+                                </div>
+
+                            </td>
+
+
+                        </tr>
+
+
+                        {% endfor %}
+
+
+                    {% else %}
+
+
+                        <tr>
+
+                            <td colspan="5"
+                                class="empty-message">
+
+                                <i class="fa-solid fa-user-slash"></i>
+
+                                No staff members registered yet.
+
+                            </td>
+
+                        </tr>
+
+
+                    {% endif %}
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         BACK TO ADMIN DASHBOARD
+    ================================================== -->
+
+    <div class="bottom-actions">
+
+
+        <a href="{{ url_for('admin_dashboard') }}"
+           class="back-dashboard-btn">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Admin Dashboard
+
+        </a>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+
+
+
+</body>
+
+</html>

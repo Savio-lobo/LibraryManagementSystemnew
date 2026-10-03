@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Borrow Books | Library Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        .borrow-books-page {
+            width: 95%;
+            max-width: 1150px;
+            margin: 40px auto;
+        }
+
+        .borrow-books-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+        }
+
+        .borrow-books-header {
+            text-align: center;
+            margin-bottom: 22px;
+        }
+
+        .borrow-books-header .icon {
+            font-size: 30px;
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 18px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.35);
+        }
+
+        .borrow-books-header h2 {
+            color: #222222;
+            margin-bottom: 6px;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .borrow-books-header .subtitle {
+            color: #666;
+        }
+
+        .borrow-search {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            background: #fff;
+            color: #333;
+        }
+
+        .borrow-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .borrow-books-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .borrow-books-table th,
+        .borrow-books-table td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            color: #333;
+        }
+
+        .borrow-books-table th {
+            background: #f5f7fb;
+            font-weight: 600;
+        }
+
+        .borrow-books-table tbody tr:hover td {
+            background: #f8f9ff;
+        }
+
+        .borrow-status-available {
+            color: #16803c;
+            font-weight: 600;
+        }
+
+        .borrow-status-unavailable {
+            color: #b7791f;
+            font-weight: 600;
+        }
+
+        .borrow-action-btn {
+            width: auto;
+            padding: 9px 16px;
+            font-size: 13px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .borrow-action-btn.waitlist-btn {
+            background: #f59e0b;
+        }
+
+        .borrow-action-btn:hover {
+            filter: brightness(1.05);
+            transform: translateY(-1px);
+        }
+
+        .borrow-no-books {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+        }
+
+        .borrow-books-card hr {
+            border: none;
+            border-top: 1px solid #eee;
+            margin: 28px 0 18px;
+        }
+
+        .borrow-books-back {
+            display: block;
+            width: fit-content;
+            margin: 0 auto;
+            text-align: center;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .borrow-books-back:hover {
+            color: #4c56c9;
+        }
+
+        @media (max-width: 700px) {
+            .borrow-books-card {
+                padding: 20px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="borrow-books-page">
+
+    <div class="borrow-books-card">
+
+        <!-- ================= HEADER ================= -->
+
+        <div class="borrow-books-header">
+
+            <div class="icon">
+                <i class="fa-solid fa-book-open-reader"></i>
+            </div>
+
+            <h2>Borrow Books</h2>
+
+            <p class="subtitle">
+                Select a book below to borrow it. If a book is
+                currently unavailable, you will automatically be
+                added to the waitlist for it.
+            </p>
+
+        </div>
+
+
+        <!-- ================= FLASH MESSAGES ================= -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="flash-message
+                        {% if category == 'success' %}
+                            flash-success
+                        {% elif category == 'error' %}
+                            flash-error
+                        {% else %}
+                            flash-warning
+                        {% endif %}"
+                        style="background:
+                            {% if category == 'success' %}#e8f7ee
+                            {% elif category == 'error' %}#fdecec
+                            {% else %}#fff7df{% endif %};
+                            color:
+                            {% if category == 'success' %}#16803c
+                            {% elif category == 'error' %}#d93025
+                            {% else %}#8a6500{% endif %};">
+
+                        {{ message }}
+
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <!-- ================= SEARCH ================= -->
+
+        <input
+            type="text"
+            id="borrowSearch"
+            class="borrow-search"
+            placeholder="🔍 Search by Book ID, Title or Author">
+
+
+        <!-- ================= BOOKS TABLE ================= -->
+
+        {% if books %}
+
+            <div class="borrow-table-wrapper">
+
+                <table class="borrow-books-table" id="borrowBooksTable">
+
+                    <thead>
+
+                        <tr>
+                            <th>Book ID</th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for book in books %}
+
+                            <tr>
+
+                                <td>{{ book.get("book_id", "N/A") }}</td>
+
+                                <td>{{ book.get("book_name", "N/A") }}</td>
+
+                                <td>{{ book.get("author", "N/A") }}</td>
+
+                                <td>{{ book.get("category", "N/A") }}</td>
+
+                                <td>
+
+                                    {% if book.get("copies", 0)|int > 0 %}
+
+                                        <span class="borrow-status-available">
+                                            <i class="fa-solid fa-circle-check"></i>
+                                            Available ({{ book.get("copies", 0) }})
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="borrow-status-unavailable">
+                                            <i class="fa-solid fa-hourglass-half"></i>
+                                            Unavailable
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                                <td>
+
+                                    <form
+                                        method="POST"
+                                        action="{{ url_for('borrow_books') }}">
+
+                                        <input
+                                            type="hidden"
+                                            name="book_id"
+                                            value="{{ book.get('book_id') }}">
+
+                                        {% if book.get("copies", 0)|int > 0 %}
+
+                                            <button
+                                                type="submit"
+                                                class="borrow-action-btn">
+                                                <i class="fa-solid fa-book"></i>
+                                                Borrow
+                                            </button>
+
+                                        {% else %}
+
+                                            <button
+                                                type="submit"
+                                                class="borrow-action-btn waitlist-btn">
+                                                <i class="fa-solid fa-list-ol"></i>
+                                                Join Waitlist
+                                            </button>
+
+                                        {% endif %}
+
+                                    </form>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        {% else %}
+
+            <div class="borrow-no-books">
+                <i class="fa-solid fa-book"></i>
+                No books are currently available in the library.
+            </div>
+
+        {% endif %}
+
+
+        <hr>
+
+
+        <!-- ================= BACK BUTTON ================= -->
+
+        <a
+            class="borrow-books-back"
+            href="{{ url_for('dashboard') }}">
+
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Dashboard
+
+        </a>
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+const searchInput = document.getElementById("borrowSearch");
+const table = document.getElementById("borrowBooksTable");
+
+if (searchInput && table) {
+
+    searchInput.addEventListener("input", function () {
+
+        const value = searchInput.value.toLowerCase().trim();
+
+        table.querySelectorAll("tbody tr").forEach(function (row) {
+
+            const text = row.innerText.toLowerCase();
+
+            row.style.display = text.includes(value) ? "" : "none";
+
+        });
+
+    });
+
+}
+
+</script>
+
+
+</body>
+
+</html>

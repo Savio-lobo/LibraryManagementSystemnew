@@ -1,0 +1,58 @@
+[
+    {
+        "id": 1,
+        "user_email": "xyz@gmail.com",
+        "message": "'heavenly parasole' was issued to you. Due back on 2026-09-17.",
+        "type": "borrow_success",
+        "created_date": "2026-09-03 11:56:10",
+        "read": false
+    },
+    {
+        "id": 2,
+        "user_email": "xyz@gmail.com",
+        "message": "'heavenly parasole' was issued to you. Due back on 2026-09-17.",
+        "type": "borrow_success",
+        "created_date": "2026-09-03 12:00:54",
+        "read": false
+    },
+    {
+        "id": 3,
+        "user_email": "xyz@gmail.com",
+        "message": "Your book 'heavenly parasole' was returned by the librarian.",
+        "type": "return_success",
+        "created_date": "2026-09-03 12:00:54",
+        "read": false
+    },
+    {
+        "id": 4,
+        "user_email": "abc@gmail.com",
+        "message": "'Harry Potter and the Philosopher's Stone' was issued to you. Due back on 2026-09-18.",
+        "type": "borrow_success",
+        "created_date": "2026-09-04 04:07:48",
+        "read": false
+    },
+    {
+        "id": 5,
+        "user_email": "abc@gmail.com",
+        "message": "Your book 'Harry Potter and the Philosopher's Stone' was returned by the librarian.",
+        "type": "return_success",
+        "created_date": "2026-09-04 04:07:48",
+        "read": false
+    },
+    {
+        "id": 6,
+        "user_email": "abc@gmail.com",
+        "message": "Good news! 'Harry Potter and the Philosopher's Stone' you were waiting for has been automatically issued to you. Due back on 2026-09-18.",
+        "type": "waitlist_available",
+        "created_date": "2026-09-04 04:07:48",
+        "read": false
+    },
+    {
+        "id": 7,
+        "user_email": "savio@gmail.com",
+        "message": "Book 'heavenly parasole' has been successfully renewed. New due date: 18-09-2026.",
+        "type": "renew_success",
+        "created_date": "2026-09-04 04:08:05",
+        "read": false
+    }
+]

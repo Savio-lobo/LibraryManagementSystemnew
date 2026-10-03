@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Verify OTP</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<div class="form-container">
+
+
+    <div class="form-card">
+
+        <h2>Verify OTP</h2>
+
+        <p class="subtitle">
+            Enter the 6-digit OTP sent to your registered email address
+        </p>
+
+
+        <!-- FLASH MESSAGES -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="flash-message"
+                        style="background:
+                            {% if category == 'success' %}#e8f7ee
+                            {% else %}#fdecec{% endif %};
+                            color:
+                            {% if category == 'success' %}#16803c
+                            {% else %}#d93025{% endif %};
+                            padding:12px 16px; border-radius:8px;
+                            margin-bottom:15px; text-align:center;">
+
+                        {{ message }}
+
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <form method="POST" action="/verify-otp" autocomplete="off">
+
+
+            <div class="input-group">
+
+                <input type="text"
+                       name="otp"
+                       placeholder="Enter 6-digit OTP"
+                       inputmode="numeric"
+                       pattern="[0-9]{6}"
+                       maxlength="6"
+                       minlength="6"
+                       autocomplete="one-time-code"
+                       required>
+
+            </div>
+
+
+
+            <button type="submit" class="btn">
+                Verify OTP
+            </button>
+
+
+        </form>
+
+
+
+        <p class="back-link">
+
+            Did not get the OTP?
+            <a href="{{ url_for('forgot_password') }}">
+                Request a new OTP
+            </a>
+
+        </p>
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

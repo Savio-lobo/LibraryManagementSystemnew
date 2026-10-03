@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Fine Management | Library Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        .fine-management-card {
+            width: 95% !important;
+            max-width: 1450px !important;
+            margin: 30px auto !important;
+            padding: 40px !important;
+            box-sizing: border-box;
+            background: #ffffff !important;
+            border: none !important;
+            backdrop-filter: none !important;
+            border-radius: 24px !important;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18) !important;
+        }
+
+        .fine-management-card .icon {
+            background: linear-gradient(135deg, #667eea, #764ba2) !important;
+            color: #ffffff !important;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.35);
+        }
+
+        .fine-management-card h2 {
+            color: #222222 !important;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .fine-management-card .subtitle {
+            color: #666666 !important;
+        }
+
+        .fine-search-wrap {
+            margin-top: 20px;
+        }
+
+        .fine-search-input {
+            width: 100%;
+            max-width: 420px;
+            padding: 13px 18px;
+            border: 2px solid #dbeafe;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            color: #222222;
+            background: #ffffff;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease;
+        }
+
+        .fine-search-input:focus {
+            border-color: #2563eb;
+        }
+
+        .fine-table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        .fine-table {
+            border: 1px solid #dfe3f5 !important;
+        }
+
+        .fine-table th,
+        .fine-table td {
+            border: 1px solid #e9ebf7 !important;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="page-container">
+
+
+    <!-- WIDE FINE CARD -->
+
+    <div class="book-card fine-management-card">
+
+
+        <!-- ICON -->
+
+        <div class="icon">
+
+            <i class="fa-solid fa-money-bill-wave"></i>
+
+        </div>
+
+
+        <!-- TITLE -->
+
+        <h2>
+            Fine Management
+        </h2>
+
+
+        <p class="subtitle">
+            View and manage fines for late, damaged and lost books.
+        </p>
+
+
+        <!-- FLASH MESSAGES -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="flash-message {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+
+        <!-- FINE TABLE -->
+
+        {% if fines %}
+
+            <div class="fine-search-wrap">
+                <input
+                    type="text"
+                    id="fineSearchInput"
+                    class="fine-search-input"
+                    placeholder="🔍 Search by User, Email or Book">
+            </div>
+
+            <div class="fine-table-container">
+
+                <table class="fine-table" id="fineTable">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>User Name</th>
+
+                            <th>User Email</th>
+
+                            <th>Book</th>
+
+                            <th>Due Date</th>
+
+                            <th>Condition</th>
+
+                            <th>Days Late</th>
+
+                            <th>Late Fine</th>
+
+                            <th>Damage</th>
+
+                            <th>Lost</th>
+
+                            <th>Total Fine</th>
+
+                            <th>Status</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    {% for fine in fines %}
+
+                        <tr>
+
+
+                            <!-- USER -->
+
+                            <td>
+                                <strong>
+                                    {{ fine.member_name }}
+                                </strong>
+                            </td>
+
+                            <td>
+                                {{ fine.user_email }}
+                            </td>
+
+
+                            <!-- BOOK -->
+
+                            <td>
+
+                                <strong>
+                                    {{ fine.book_name }}
+                                </strong>
+
+                                <br>
+
+                                <small>
+                                    ID: {{ fine.book_id }}
+                                </small>
+
+                            </td>
+
+
+                            <!-- DUE DATE -->
+
+                            <td>
+                                {{ fine.due_date }}
+                            </td>
+
+
+                            <!-- CONDITION -->
+
+                            <td>
+                                {{ fine.condition }}
+                            </td>
+
+
+                            <!-- DAYS LATE -->
+
+                            <td>
+                                {{ fine.days_late }}
+                            </td>
+
+
+                            <!-- LATE FINE -->
+
+                            <td>
+                                ₹{{ fine.late_fine }}
+                            </td>
+
+
+                            <!-- DAMAGE -->
+
+                            <td>
+                                ₹{{ fine.damage_fine }}
+                            </td>
+
+
+                            <!-- LOST -->
+
+                            <td>
+                                ₹{{ fine.lost_fine }}
+                            </td>
+
+
+                            <!-- TOTAL -->
+
+                            <td>
+
+                                <strong>
+                                    ₹{{ fine.total_fine }}
+                                </strong>
+
+                            </td>
+
+
+                            <!-- STATUS -->
+
+                            <td>
+
+                                <strong>
+                                    {{ fine.status }}
+                                </strong>
+
+                            </td>
+
+
+                            <!-- ACTION -->
+
+                            <td>
+
+                                {% if fine.status != "Paid" %}
+
+                                    <form
+                                        action="{{ url_for('fine_management') }}"
+                                        method="POST">
+
+                                        <input
+                                            type="hidden"
+                                            name="record_index"
+                                            value="{{ fine._index }}">
+
+                                        <button type="submit">
+
+                                            <i class="fa-solid fa-check"></i>
+
+                                            Mark Paid
+
+                                        </button>
+
+                                    </form>
+
+                                {% else %}
+
+                                    <span>
+                                        Paid
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+        {% else %}
+
+
+            <!-- NO FINES -->
+
+            <div class="no-fines">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                <p>
+                    No fines currently recorded.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+
+        <!-- BACK BUTTON -->
+
+        <div class="fine-back-section">
+
+            <a
+                class="back-home"
+                href="{{ url_for('back_to_dashboard') }}">
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Back to Dashboard
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+<script>
+
+    // =====================================================
+    // SEARCH — filters the fines table by User Name, Email
+    // or Book. Client-side only, so it never touches the
+    // "Mark Paid" form/route logic.
+    // =====================================================
+
+    (function() {
+
+        const searchInput = document.getElementById("fineSearchInput");
+        const table = document.getElementById("fineTable");
+
+        if (!searchInput || !table) {
+            return;
+        }
+
+        searchInput.addEventListener("input", function() {
+
+            const query = searchInput.value.toLowerCase().trim();
+            const rows = table.querySelectorAll("tbody tr");
+
+            rows.forEach(function(row) {
+
+                const cells = row.querySelectorAll("td");
+
+                if (cells.length < 3) {
+                    return;
+                }
+
+                const userName = cells[0].innerText.toLowerCase();
+                const userEmail = cells[1].innerText.toLowerCase();
+                const book = cells[2].innerText.toLowerCase();
+
+                const matches =
+                    userName.includes(query) ||
+                    userEmail.includes(query) ||
+                    book.includes(query);
+
+                row.style.display = matches ? "" : "none";
+
+            });
+
+        });
+
+    })();
+
+</script>
+
+</body>
+
+</html>

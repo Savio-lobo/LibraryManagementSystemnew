@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>View Books | Library Management System</title>
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
+<style>
+
+/* ===============================
+   BOOKS PAGE
+================================ */
+
+.books-page {
+    width: 95%;
+    max-width: 1200px;
+    margin: 40px auto;
+}
+
+.books-card {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+
+/* ===============================
+   HEADER
+================================ */
+
+.books-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.books-header .icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.books-header h2 {
+    margin-bottom: 8px;
+}
+
+.books-header .subtitle {
+    color: #666;
+}
+
+
+/* ===============================
+   FLASH MESSAGES
+================================ */
+
+.flash-container {
+    margin-bottom: 20px;
+}
+
+.flash-message {
+    padding: 13px 18px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.flash-success {
+    background: #e8f7ee;
+    color: #16803c;
+    border: 1px solid #b8e5c8;
+}
+
+.flash-error {
+    background: #fdecec;
+    color: #d93025;
+    border: 1px solid #f5bcbc;
+}
+
+.flash-warning {
+    background: #fff7df;
+    color: #8a6500;
+    border: 1px solid #f0d98a;
+}
+
+
+/* ===============================
+   SEARCH
+================================ */
+
+.search-section {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.book-search {
+    flex: 1;
+    min-width: 250px;
+    padding: 12px 15px;
+
+    border: 1px solid #ddd;
+    border-radius: 8px;
+
+    font-size: 15px;
+
+    background: white;
+    color: #333;
+}
+
+.book-category {
+    padding: 12px 15px;
+
+    border: 1px solid #ddd;
+    border-radius: 8px;
+
+    font-size: 15px;
+
+    min-width: 200px;
+
+    background: white;
+    color: #333;
+}
+
+
+/* ===============================
+   BOOK TABLE
+================================ */
+
+.books-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.books-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.books-table th,
+.books-table td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.books-table th {
+    background: #f5f7fb;
+    font-weight: 600;
+    color: #333;
+}
+
+.books-table td {
+    color: #333;
+    background: white;
+}
+
+.books-table tbody tr:hover {
+    background: #f8f9ff;
+}
+
+
+/* ===============================
+   STATUS
+================================ */
+
+.available-status {
+    color: #16803c;
+    font-weight: 600;
+}
+
+.unavailable-status {
+    color: #d93025;
+    font-weight: 600;
+}
+
+
+/* ===============================
+   NO BOOKS
+================================ */
+
+.no-books {
+    text-align: center;
+
+    padding: 30px !important;
+
+    color: #777 !important;
+
+    font-size: 15px;
+}
+
+.no-books i {
+    margin-right: 8px;
+}
+
+
+/* ===============================
+   BACK BUTTON
+================================ */
+
+.back-home {
+    display: block;
+
+    width: fit-content;
+
+    margin: 30px auto 0;
+
+    text-align: center;
+
+    text-decoration: none;
+}
+
+
+/* ===============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 800px) {
+
+    .books-card {
+        padding: 15px;
+    }
+
+    .books-table {
+        min-width: 700px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="page-container">
+
+    <div class="books-page">
+
+        <div class="books-card">
+
+
+            <!-- ===============================
+                 HEADER
+            ================================= -->
+
+            <div class="books-header">
+
+                <div class="icon">
+
+                    <i class="fa-solid fa-book-open"></i>
+
+                </div>
+
+                <h2>
+                    Library Books
+                </h2>
+
+                <p class="subtitle">
+                    Browse all books available in the library.
+                </p>
+
+            </div>
+
+
+            <!-- ===============================
+                 FLASH MESSAGE
+            ================================= -->
+
+            <div class="flash-container">
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+
+                    {% if messages %}
+
+                        {% for category, message in messages %}
+
+                            <div class="flash-message
+                                {% if category == 'success' %}
+                                    flash-success
+                                {% elif category == 'error' %}
+                                    flash-error
+                                {% else %}
+                                    flash-warning
+                                {% endif %}">
+
+                                <i class="fa-solid
+                                    {% if category == 'success' %}
+                                        fa-circle-check
+                                    {% elif category == 'error' %}
+                                        fa-circle-xmark
+                                    {% else %}
+                                        fa-circle-exclamation
+                                    {% endif %}">
+                                </i>
+
+                                {{ message }}
+
+                            </div>
+
+                        {% endfor %}
+
+                    {% endif %}
+
+                {% endwith %}
+
+            </div>
+
+
+            <!-- ===============================
+                 SEARCH
+            ================================= -->
+
+            <div class="search-section">
+
+                <input
+                    type="text"
+                    id="bookSearch"
+                    class="book-search"
+                    placeholder="🔍 Search by Book ID, Title or Author">
+
+
+                <select
+                    id="bookCategory"
+                    class="book-category">
+
+                    <option value="">
+                        All Categories
+                    </option>
+
+                    <option value="Programming">
+                        Programming
+                    </option>
+
+                    <option value="Database">
+                        Database
+                    </option>
+
+                    <option value="Artificial Intelligence">
+                        Artificial Intelligence
+                    </option>
+
+                    <option value="Science">
+                        Science
+                    </option>
+
+                    <option value="Mathematics">
+                        Mathematics
+                    </option>
+
+                    <option value="History">
+                        History
+                    </option>
+
+                    <option value="Novel">
+                        Novel
+                    </option>
+
+                    <option value="Computer Science">
+                        Computer Science
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- ===============================
+                 BOOK TABLE
+            ================================= -->
+
+            <div class="books-table-wrapper">
+
+                <table
+                    class="books-table"
+                    id="booksTable">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Book ID</th>
+
+                            <th>Title</th>
+
+                            <th>Author</th>
+
+                            <th>Category</th>
+
+                            <th>Copies</th>
+
+                            <th>Status</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                    {% if books %}
+
+                        {% for book in books %}
+
+                            <tr>
+
+                                <!-- BOOK ID -->
+
+                                <td>
+                                    {{ book.get("book_id", "N/A") }}
+                                </td>
+
+
+                                <!-- TITLE -->
+
+                                <td>
+                                    {{ book.get("book_name", "N/A") }}
+                                </td>
+
+
+                                <!-- AUTHOR -->
+
+                                <td>
+                                    {{ book.get("author", "N/A") }}
+                                </td>
+
+
+                                <!-- CATEGORY -->
+
+                                <td>
+                                    {{ book.get("category", "N/A") }}
+                                </td>
+
+
+                                <!-- COPIES -->
+
+                                <td>
+                                    {{ book.get("copies", 0) }}
+                                </td>
+
+
+                                <!-- STATUS -->
+
+                                <td>
+
+                                    {% if book.get("copies", 0)|int > 0 %}
+
+                                        <span class="available-status">
+
+                                            <i class="fa-solid fa-circle-check"></i>
+
+                                            Available
+
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="unavailable-status">
+
+                                            <i class="fa-solid fa-circle-xmark"></i>
+
+                                            Unavailable
+
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <tr>
+
+                            <td
+                                colspan="6"
+                                class="no-books">
+
+                                <i class="fa-solid fa-book"></i>
+
+                                No books are currently available
+                                in the library.
+
+                            </td>
+
+                        </tr>
+
+                    {% endif %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- ===============================
+                 BACK
+            ================================= -->
+
+            <a
+                class="back-home"
+                href="{{ url_for('dashboard') }}">
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Back to Dashboard
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ===============================
+     JAVASCRIPT
+================================= -->
+
+<script>
+
+const searchInput =
+    document.getElementById("bookSearch");
+
+const categoryFilter =
+    document.getElementById("bookCategory");
+
+const table =
+    document.getElementById("booksTable");
+
+
+function filterBooks() {
+
+    const searchValue =
+        searchInput.value
+        .toLowerCase()
+        .trim();
+
+
+    const categoryValue =
+        categoryFilter.value
+        .toLowerCase()
+        .trim();
+
+
+    const rows =
+        table.querySelectorAll("tbody tr");
+
+
+    rows.forEach(function(row) {
+
+        const cells =
+            row.querySelectorAll("td");
+
+
+        /* Ignore "No books" row */
+
+        if (cells.length < 6) {
+            return;
+        }
+
+
+        const bookId =
+            cells[0].innerText.toLowerCase();
+
+        const bookName =
+            cells[1].innerText.toLowerCase();
+
+        const author =
+            cells[2].innerText.toLowerCase();
+
+        const category =
+            cells[3].innerText.toLowerCase();
+
+
+        const matchesSearch =
+
+            bookId.includes(searchValue) ||
+
+            bookName.includes(searchValue) ||
+
+            author.includes(searchValue);
+
+
+        const matchesCategory =
+
+            categoryValue === "" ||
+
+            category === categoryValue;
+
+
+        if (
+            matchesSearch &&
+            matchesCategory
+        ) {
+
+            row.style.display = "";
+
+        } else {
+
+            row.style.display = "none";
+
+        }
+
+    });
+
+}
+
+
+searchInput.addEventListener(
+    "input",
+    filterBooks
+);
+
+
+categoryFilter.addEventListener(
+    "change",
+    filterBooks
+);
+
+</script>
+
+
+</body>
+
+</html>

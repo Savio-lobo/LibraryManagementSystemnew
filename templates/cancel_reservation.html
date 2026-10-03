@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Cancel Reservation | Library Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="page-container">
+
+    <div class="book-card">
+
+        <div class="icon">
+
+            <i class="fa-solid fa-ban"></i>
+
+        </div>
+
+        <h2>Cancel Reservation</h2>
+
+        <p class="subtitle">
+
+            Enter your Reservation ID to cancel your reserved book.
+
+        </p>
+
+        <form action="" method="POST">
+
+            <div class="input-group">
+
+                <label>Reservation ID</label>
+
+                <input
+                    type="text"
+                    name="reservation_id"
+                    placeholder="Enter Reservation ID"
+                    required>
+
+            </div>
+
+            <button type="submit">
+
+                <i class="fa-solid fa-xmark"></i>
+
+                Cancel Reservation
+
+            </button>
+
+        </form>
+
+        <hr>
+
+        <a class="back-home"
+           href="{{ url_for('dashboard') }}">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Dashboard
+
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

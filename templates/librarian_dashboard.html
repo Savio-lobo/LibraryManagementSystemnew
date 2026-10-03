@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Librarian Dashboard | Library Management System</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        /* =====================================================
+           UNIFIED STATISTICS PANEL (below Welcome)
+           Scoped to this page only.
+        ===================================================== */
+
+        .librarian-stats-panel {
+
+            width: 100%;
+
+            padding: 20px 24px;
+
+            margin-bottom: 25px;
+
+            background: rgba(255, 255, 255, 0.10) !important;
+
+            border: 1px solid rgba(255, 255, 255, 0.20);
+
+            border-radius: 18px;
+
+            backdrop-filter: blur(15px);
+
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.12);
+        }
+
+
+        .librarian-stats-panel-head {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 16px;
+        }
+
+
+        .librarian-stats-panel-head i {
+
+            color: #e5e7eb !important;
+
+            font-size: 13px;
+        }
+
+
+        .librarian-stats-panel-head span {
+
+            color: #e5e7eb !important;
+
+            font-size: 12.5px;
+
+            font-weight: 600;
+
+            letter-spacing: 0.4px;
+
+            text-transform: uppercase;
+        }
+
+
+        .librarian-mini-reports {
+
+            width: 100%;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+        }
+
+
+        .librarian-mini-report-card {
+
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            padding: 4px 20px;
+        }
+
+
+        .librarian-mini-report-card + .librarian-mini-report-card {
+
+            border-left: 1px solid rgba(255, 255, 255, 0.20);
+        }
+
+
+        .librarian-mini-report-icon {
+
+            width: 44px;
+            height: 44px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: #ffffff !important;
+
+            box-shadow:
+                0 4px 12px rgba(0, 0, 0, 0.15);
+
+            font-size: 17px;
+
+            transition: transform 0.2s ease;
+        }
+
+
+        .librarian-mini-report-card:hover .librarian-mini-report-icon {
+
+            transform: translateY(-2px) scale(1.04);
+        }
+
+
+        .librarian-mini-report-icon.stat-books {
+            color: #2563eb !important;
+        }
+
+        .librarian-mini-report-icon.stat-users {
+            color: #7c3aed !important;
+        }
+
+        .librarian-mini-report-icon.stat-issued {
+            color: #ea8c00 !important;
+        }
+
+        .librarian-mini-report-icon.stat-fines {
+            color: #dc2626 !important;
+        }
+
+
+        .librarian-mini-report-text {
+
+            min-width: 0;
+        }
+
+
+        .librarian-mini-report-text h4 {
+
+            margin: 0 0 2px;
+
+            color: #ffffff !important;
+
+            font-size: 20px;
+
+            font-weight: 800;
+
+            letter-spacing: 0.2px;
+
+            line-height: 1.2;
+        }
+
+
+        .librarian-mini-report-text p {
+
+            margin: 0;
+
+            color: #e5e7eb !important;
+
+            font-size: 12px;
+
+            font-weight: 500;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.3px;
+        }
+
+
+        @media (max-width: 1000px) {
+
+            .librarian-mini-reports {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+
+                row-gap: 18px;
+            }
+
+            .librarian-mini-report-card:nth-child(3) {
+                border-left: none;
+            }
+
+            .librarian-mini-report-card:nth-child(2n) {
+                border-left: 1px solid rgba(255, 255, 255, 0.20);
+            }
+
+            .librarian-mini-report-card:nth-child(2n + 1) {
+                border-left: none;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .librarian-stats-panel {
+                padding: 16px 16px;
+
+                margin-bottom: 18px;
+            }
+
+            .librarian-mini-report-card {
+                padding: 0;
+
+                border-left: none !important;
+            }
+
+            .librarian-mini-report-card + .librarian-mini-report-card {
+                border-left: none;
+
+                padding-top: 14px;
+
+                border-top: 1px solid rgba(255, 255, 255, 0.16);
+            }
+
+            .librarian-mini-reports {
+                grid-template-columns: 1fr;
+
+                gap: 10px;
+
+                margin-bottom: 18px;
+            }
+        }
+
+
+        /* =====================================================
+           MEDIUM-SIZED DASHBOARD CARDS
+           Scoped to the Librarian dashboard grid only, so the
+           shared .dashboard-grid / .card styles used on other
+           pages (e.g. the User dashboard) are not affected.
+        ===================================================== */
+
+        .librarian-dashboard-page .dashboard-grid {
+            gap: 18px !important;
+        }
+
+        .librarian-dashboard-page .dashboard-grid .card {
+            padding: 18px !important;
+        }
+
+        .librarian-dashboard-page .dashboard-grid .card .icon {
+            width: 54px !important;
+            height: 54px !important;
+            margin-bottom: 12px !important;
+            font-size: 22px !important;
+        }
+
+        .librarian-dashboard-page .dashboard-grid .card h3 {
+            font-size: 16px !important;
+            margin-bottom: 8px !important;
+        }
+
+        .librarian-dashboard-page .dashboard-grid .card p {
+            font-size: 12.5px !important;
+            line-height: 1.45 !important;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="navbar">
+
+    <!-- LOGO -->
+
+    <div class="nav-logo">
+
+        <i class="fa-solid fa-book-open-reader"></i>
+
+        <span>
+            Library Management System
+        </span>
+
+    </div>
+
+
+    <!-- NAVIGATION BUTTONS -->
+
+    <div class="nav-buttons">
+
+        <!-- Profile -->
+
+        <a href="{{ url_for('profile') }}"
+           class="nav-btn profile-btn">
+
+            <i class="fa-solid fa-user"></i>
+
+            Profile
+
+        </a>
+
+
+        <!-- Change Password -->
+
+        <a href="{{ url_for('change_password') }}"
+           class="nav-btn password-btn">
+
+            <i class="fa-solid fa-key"></i>
+
+            Change Password
+
+        </a>
+
+
+        <!-- Logout -->
+
+        <a href="{{ url_for('logout') }}"
+           class="nav-btn logout-btn">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            Logout
+
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     MAIN CONTAINER
+===================================================== -->
+
+<div class="container librarian-dashboard-page">
+
+
+    <!-- =================================================
+         WELCOME SECTION
+    ================================================== -->
+
+    <section class="welcome-card">
+
+        <h1>
+
+            Welcome,
+
+            <span>
+                {{ session.get('name', 'Librarian') }}
+            </span>
+
+            👋
+
+        </h1>
+
+
+        <p>
+
+            Manage library operations quickly and efficiently
+            from one place.
+
+        </p>
+
+    </section>
+
+
+
+    <!-- =================================================
+         UNIFIED STATISTICS PANEL
+    ================================================== -->
+
+    <section class="librarian-stats-panel">
+
+        <div class="librarian-stats-panel-head">
+            <i class="fa-solid fa-chart-simple"></i>
+            <span>Library Overview</span>
+        </div>
+
+        <div class="librarian-mini-reports">
+
+            <div class="librarian-mini-report-card">
+                <div class="librarian-mini-report-icon stat-books">
+                    <i class="fa-solid fa-book"></i>
+                </div>
+                <div class="librarian-mini-report-text">
+                    <h4>{{ report_stats.total_books }}</h4>
+                    <p>Total Books</p>
+                </div>
+            </div>
+
+            <div class="librarian-mini-report-card">
+                <div class="librarian-mini-report-icon stat-users">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <div class="librarian-mini-report-text">
+                    <h4>{{ report_stats.total_users }}</h4>
+                    <p>Registered Users</p>
+                </div>
+            </div>
+
+            <div class="librarian-mini-report-card">
+                <div class="librarian-mini-report-icon stat-issued">
+                    <i class="fa-solid fa-book-open-reader"></i>
+                </div>
+                <div class="librarian-mini-report-text">
+                    <h4>{{ report_stats.total_issued }}</h4>
+                    <p>Books Issued</p>
+                </div>
+            </div>
+
+            <div class="librarian-mini-report-card">
+                <div class="librarian-mini-report-icon stat-fines">
+                    <i class="fa-solid fa-money-bill-wave"></i>
+                </div>
+                <div class="librarian-mini-report-text">
+                    <h4>₹{{ report_stats.total_fine }}</h4>
+                    <p>Outstanding Fines</p>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         DASHBOARD GRID
+    ================================================== -->
+
+    <section class="dashboard-grid">
+
+
+        <!-- =================================================
+             BOOK MANAGEMENT
+        ================================================== -->
+
+        <a href="{{ url_for('book_management') }}"
+           class="card">
+
+            <div class="icon">
+
+                <i class="fa-solid fa-book-open"></i>
+
+            </div>
+
+
+            <h3>
+                Book Management
+            </h3>
+
+
+            <p>
+                Manage and maintain library book information.
+            </p>
+
+        </a>
+
+
+
+        <!-- =================================================
+             USER MANAGEMENT
+        ================================================== -->
+
+        <a href="{{ url_for('user_management') }}"
+           class="card">
+
+            <div class="icon">
+
+                <i class="fa-solid fa-users"></i>
+
+            </div>
+
+
+            <h3>
+                User Management
+            </h3>
+
+
+            <p>
+                View, edit and manage registered users and librarians.
+            </p>
+
+        </a>
+
+
+
+        <!-- =================================================
+             ISSUE BOOKS
+        ================================================== -->
+
+        <a href="{{ url_for('issue_books') }}"
+           class="card">
+
+            <div class="icon">
+
+                <i class="fa-solid fa-book-open-reader"></i>
+
+            </div>
+
+
+            <h3>
+                Issue Books
+            </h3>
+
+
+            <p>
+                Issue books to registered library users.
+            </p>
+
+        </a>
+
+
+
+        <!-- =================================================
+             RETURN BOOKS
+        ================================================== -->
+
+        <a href="{{ url_for('librarian_return_books') }}"
+           class="card">
+
+            <div class="icon">
+
+                <i class="fa-solid fa-right-left"></i>
+
+            </div>
+
+
+            <h3>
+                Return Books
+            </h3>
+
+
+            <p>
+                Manage returned books and update records.
+            </p>
+
+        </a>
+
+
+
+        <!-- =================================================
+             RENEW BOOKS
+        ================================================== -->
+
+        <a href="{{ url_for('librarian_renew_books') }}"
+           class="card">
+
+            <div class="icon">
+
+                <i class="fa-solid fa-rotate-right"></i>
+
+            </div>
+
+
+            <h3>
+                Renew Books
+            </h3>
+
+
+            <p>
+                Extend the borrowing period of issued books.
+            </p>
+
+        </a>
+
+
+
+        <!-- =================================================
+             WAITLIST MANAGEMENT
+        ================================================== -->
+
+        <a href="{{ url_for('waitlist_management') }}"
+           class="card">
+
+            <div class="icon">
+
+                <i class="fa-solid fa-list"></i>
+
+            </div>
+
+
+            <h3>
+                Waitlist Management
+            </h3>
+
+
+            <p>
+                Manage users waiting for unavailable books.
+            </p>
+
+        </a>
+
+
+
+        <!-- =================================================
+             FINE MANAGEMENT
+        ================================================== -->
+
+        <a href="{{ url_for('fine_management') }}"
+           class="card">
+
+            <div class="icon">
+
+                <i class="fa-solid fa-money-bill-wave"></i>
+
+            </div>
+
+
+            <h3>
+                Fine Management
+            </h3>
+
+
+            <p>
+                Manage fines and overdue book records.
+            </p>
+
+        </a>
+
+
+
+        <!-- =================================================
+             BORROW RECORDS
+        ================================================== -->
+
+        <a href="{{ url_for('borrow_records') }}"
+           class="card">
+
+            <div class="icon">
+
+                <i class="fa-solid fa-clock-rotate-left"></i>
+
+            </div>
+
+
+            <h3>
+                Borrow Records
+            </h3>
+
+
+            <p>
+                View and manage book borrowing records.
+            </p>
+
+        </a>
+
+
+
+    </section>
+
+</div>
+
+
+</body>
+
+</html>

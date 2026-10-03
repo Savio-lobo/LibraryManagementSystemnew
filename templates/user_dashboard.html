@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>User Dashboard | Library Management System</title>
+
+
+    <!-- Google Font -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+
+    <!-- Font Awesome -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
+    <!-- Main CSS -->
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="navbar">
+
+    <!-- Logo -->
+
+    <div class="nav-logo">
+
+        <i class="fa-solid fa-book-open-reader"></i>
+
+        <span>
+            Library Management System
+        </span>
+
+    </div>
+
+
+    <!-- Navigation Buttons -->
+
+    <div class="nav-buttons">
+
+        <!-- Notification Bell -->
+
+        <a href="{{ url_for('notifications') }}"
+           class="nav-bell"
+           title="Notifications">
+
+            <i class="fa-solid fa-bell"></i>
+
+            {% if unread_notification_count and unread_notification_count > 0 %}
+                <span class="bell-badge">{{ unread_notification_count }}</span>
+            {% endif %}
+
+        </a>
+
+
+        <!-- Profile -->
+
+        <a href="{{ url_for('profile') }}"
+           class="nav-btn profile-btn">
+
+            <i class="fa-solid fa-user"></i>
+
+            Profile
+
+        </a>
+
+
+        <!-- Change Password -->
+
+        <a href="{{ url_for('change_password') }}"
+           class="nav-btn password-btn">
+
+            <i class="fa-solid fa-key"></i>
+
+            Change Password
+
+        </a>
+
+
+        <!-- Logout -->
+
+        <a href="{{ url_for('logout') }}"
+           class="nav-btn logout-btn">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            Logout
+
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<div class="container">
+
+
+    <!-- =================================================
+         WELCOME SECTION
+    ================================================== -->
+
+    <section class="welcome-card">
+
+        <h1>
+
+            Welcome,
+            <span>
+                {{ session.get('username', session.get('name', 'User')) }}
+            </span>
+
+            👋
+
+        </h1>
+
+
+        <p>
+
+            Manage your library activities quickly and
+            efficiently from one place.
+
+        </p>
+
+    </section>
+
+
+
+    <!-- =================================================
+         DASHBOARD CARDS
+    ================================================== -->
+
+    <section class="dashboard-grid">
+
+
+
+        <!-- =================================================
+             BORROW BOOKS
+        ================================================== -->
+
+        <a href="{{ url_for('borrow_books') }}"
+           class="card">
+
+            <div class="icon">
+
+                <i class="fa-solid fa-book-medical"></i>
+
+            </div>
+
+
+            <h3>
+
+                Borrow Books
+
+            </h3>
+
+
+            <p>
+
+                Borrow an available book, or join the
+                waitlist automatically.
+
+            </p>
+
+        </a>
+
+
+        <!-- =================================================
+             RETURN BOOKS
+        ================================================== -->
+
+        <a href="{{ url_for('return_books') }}"
+           class="card">
+
+            <div class="icon">
+
+                <i class="fa-solid fa-right-left"></i>
+
+            </div>
+
+
+            <h3>
+
+                Return Books
+
+            </h3>
+
+
+            <p>
+
+                Request the return of your
+                borrowed books.
+
+            </p>
+
+        </a>
+
+
+
+        <!-- =================================================
+             RENEW BOOKS
+        ================================================== -->
+
+        <a href="{{ url_for('renew_books') }}"
+           class="card">
+
+            <div class="icon">
+
+                <i class="fa-solid fa-rotate-right"></i>
+
+            </div>
+
+
+            <h3>
+
+                Renew Books
+
+            </h3>
+
+
+            <p>
+
+                Extend your borrowing
+                period easily.
+
+            </p>
+
+        </a>
+
+
+
+
+
+        <!-- =================================================
+             BORROW HISTORY
+        ================================================== -->
+
+        <a href="{{ url_for('borrow_history') }}"
+           class="card">
+
+            <div class="icon">
+
+                <i class="fa-solid fa-clock-rotate-left"></i>
+
+            </div>
+
+
+            <h3>
+
+                Borrow History
+
+            </h3>
+
+
+            <p>
+
+                View your previous
+                borrowing records.
+
+            </p>
+
+        </a>
+
+
+    </section>
+
+</div>
+
+
+{% include "_chatbot_widget.html" %}
+
+
+</body>
+
+</html>
