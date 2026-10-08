@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add New Book | Library Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        /* ===============================
+           PAGE  (Renew Books reference)
+        =============================== */
+
+        .ab-page {
+            min-height: 100vh;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #3569d8, #2858c7);
+            box-sizing: border-box;
+        }
+
+        .ab-card {
+            width: 95%;
+            max-width: 850px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 40px;
+            box-sizing: border-box;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+        }
+
+
+        /* ===============================
+           HEADER
+        =============================== */
+
+        .ab-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .ab-icon {
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-size: 30px;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.35);
+        }
+
+        .ab-title {
+            margin: 0;
+            color: #222222;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .ab-description {
+            margin: 10px auto 0;
+            color: #666666;
+            font-size: 16px;
+        }
+
+
+        /* ===============================
+           FORM
+        =============================== */
+
+        .ab-form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-top: 10px;
+        }
+
+        .ab-form-grid input,
+        .ab-form-grid select {
+            padding: 13px 14px;
+            border: 1px solid #e2e5f5;
+            border-radius: 10px;
+            font-size: 15px;
+            color: #333333;
+            background: #f8f9ff;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .ab-form-grid input:focus,
+        .ab-form-grid select:focus {
+            border-color: #667eea;
+            outline: none;
+            background: #ffffff;
+        }
+
+
+        /* ===============================
+           BUTTONS
+        =============================== */
+
+        .ab-form-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .ab-save-btn,
+        .ab-cancel-btn {
+            width: auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 13px 26px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            transition: .2s ease;
+        }
+
+        .ab-save-btn {
+            color: white;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .ab-save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(102, 126, 234, 0.35);
+        }
+
+        .ab-cancel-btn {
+            color: #444444;
+            background: #eef0fb;
+        }
+
+        .ab-cancel-btn:hover {
+            background: #e2e5f5;
+        }
+
+
+        /* ===============================
+           BACK
+        =============================== */
+
+        .ab-back-area {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .ab-back-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            padding: 13px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: white;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            font-weight: 600;
+            transition: .2s ease;
+        }
+
+        .ab-back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(102, 126, 234, 0.35);
+        }
+
+
+        /* ===============================
+           MOBILE
+        =============================== */
+
+        @media (max-width: 700px) {
+
+            .ab-page {
+                padding: 20px 10px;
+            }
+
+            .ab-card {
+                width: 100%;
+                padding: 25px 15px;
+                border-radius: 18px;
+            }
+
+            .ab-title {
+                font-size: 26px;
+            }
+
+            .ab-form-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="ab-page">
+
+    <div class="ab-card">
+
+        <div class="ab-header">
+
+            <div class="ab-icon">
+                <i class="fa-solid fa-circle-plus"></i>
+            </div>
+
+            <h1 class="ab-title">Add New Book</h1>
+
+            <p class="ab-description">
+                Add a new book to the library.
+            </p>
+
+        </div>
+
+
+        <form action="/add-book" method="POST">
+
+            <div class="ab-form-grid">
+
+                <!-- BOOK ID -->
+
+                <input
+                    type="text"
+                    name="book_id"
+                    placeholder="Book ID"
+                    required
+                >
+
+
+                <!-- BOOK NAME -->
+
+                <input
+                    type="text"
+                    name="book_name"
+                    placeholder="Book Name"
+                    required
+                >
+
+
+                <!-- AUTHOR -->
+
+                <input
+                    type="text"
+                    name="author"
+                    placeholder="Author"
+                    required
+                >
+
+
+                <!-- PUBLISHER -->
+
+                <input
+                    type="text"
+                    name="publisher"
+                    placeholder="Publisher"
+                >
+
+
+                <!-- CATEGORY -->
+
+                <select name="category" required>
+
+                    <option value="">
+                        Select Category
+                    </option>
+
+                    <option value="Programming">
+                        Programming
+                    </option>
+
+                    <option value="Database">
+                        Database
+                    </option>
+
+                    <option value="Artificial Intelligence">
+                        Artificial Intelligence
+                    </option>
+
+                    <option value="Science">
+                        Science
+                    </option>
+
+                    <option value="Mathematics">
+                        Mathematics
+                    </option>
+
+                    <option value="History">
+                        History
+                    </option>
+
+                    <option value="Novel">
+                        Novel
+                    </option>
+
+                    <option value="Computer Science">
+                        Computer Science
+                    </option>
+
+                </select>
+
+
+                <!-- NUMBER OF COPIES -->
+
+                <input
+                    type="number"
+                    name="copies"
+                    placeholder="Number of Copies"
+                    min="0"
+                    required
+                >
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="ab-form-buttons">
+
+                <button
+                    type="submit"
+                    class="ab-save-btn">
+
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Save Book
+
+                </button>
+
+
+                <button
+                    type="reset"
+                    class="ab-cancel-btn">
+
+                    <i class="fa-solid fa-rotate-left"></i>
+                    Reset
+
+                </button>
+
+            </div>
+
+        </form>
+
+
+        <div class="ab-back-area">
+
+            <a href="/book-management" class="ab-back-btn">
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Book Management
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

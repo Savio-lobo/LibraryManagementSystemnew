@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>User Management | Library Management System</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        /* ===============================
+           PAGE (matches Renew Books)
+        =============================== */
+
+        .um-page {
+            min-height: 100vh;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #3569d8, #2858c7);
+            box-sizing: border-box;
+        }
+
+        .um-card {
+            width: 95%;
+            max-width: 1150px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 40px;
+            box-sizing: border-box;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+        }
+
+        .um-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .um-icon {
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 18px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: linear-gradient(135deg, #667eea, #764ba2);
+
+            color: white;
+            font-size: 30px;
+
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.35);
+        }
+
+        .um-title {
+            margin: 0;
+            color: #222222;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .um-description {
+            margin: 10px auto 0;
+            color: #666666;
+            font-size: 16px;
+        }
+
+        .um-flash {
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            background: #f4f4f4;
+            color: #333333;
+        }
+
+        .um-flash.success {
+            background: #e8f7ee;
+            color: #16803c;
+        }
+
+        .um-flash.error {
+            background: #fdecec;
+            color: #d93025;
+        }
+
+        /* ===============================
+           TOOLBAR (Add User / Search)
+        =============================== */
+
+        .um-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 22px;
+        }
+
+        .um-search-box {
+            position: relative;
+            flex: 1;
+            min-width: 220px;
+            max-width: 360px;
+        }
+
+        .um-search-box i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9aa0c2;
+        }
+
+        .um-search-input {
+            width: 100%;
+            padding: 11px 14px 11px 38px;
+            border-radius: 10px;
+            border: 1px solid #e2e5f5;
+            background: #f8f9ff;
+            color: #333333;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .um-search-input:focus {
+            outline: none;
+            border-color: #764ba2;
+        }
+
+        .um-add-user-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+
+            padding: 11px 20px;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+
+            color: white;
+
+            background: linear-gradient(135deg, #667eea, #764ba2);
+
+            font-weight: 600;
+            font-size: 14px;
+
+            white-space: nowrap;
+
+            transition: 0.2s ease;
+        }
+
+        .um-add-user-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(102, 126, 234, 0.35);
+        }
+
+        /* ===============================
+           TABLE
+        =============================== */
+
+        .um-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+
+        .um-table {
+            width: 100%;
+            min-width: 700px;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .um-table th {
+            padding: 15px;
+            text-align: left;
+
+            background: #f1f3ff;
+            color: #333333;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            border-bottom: 2px solid #e2e5f5;
+        }
+
+        .um-table td {
+            padding: 15px;
+            text-align: left;
+
+            color: #444444;
+            font-size: 14px;
+
+            border-bottom: 1px solid #eeeeee;
+            background: #ffffff;
+        }
+
+        .um-table tbody tr:hover td {
+            background: #f8f9ff;
+        }
+
+        .um-role-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 999px;
+            background: #eef0fb;
+            color: #4b4f6b;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .um-action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            padding: 8px 14px;
+
+            margin: 3px;
+
+            border-radius: 8px;
+
+            text-decoration: none;
+
+            color: white;
+
+            font-weight: 600;
+            font-size: 13px;
+
+            border: none;
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+        .um-edit-btn {
+            background: #2563eb;
+        }
+
+        .um-edit-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .um-delete-btn {
+            background: #ef4444;
+        }
+
+        .um-delete-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        /* ===============================
+           NO USERS
+        =============================== */
+
+        .um-no-users {
+            margin-top: 25px;
+
+            padding: 40px 20px;
+
+            text-align: center;
+
+            background: #f8f9ff;
+
+            border: 1px solid #e4e7f5;
+
+            border-radius: 15px;
+
+            color: #666666;
+        }
+
+        .um-no-users i {
+            display: block;
+
+            margin-bottom: 15px;
+
+            color: #667eea;
+
+            font-size: 42px;
+        }
+
+        .um-no-users p {
+            margin: 0;
+            color: #666666;
+            font-size: 16px;
+        }
+
+        /* ===============================
+           BACK BUTTON
+        =============================== */
+
+        .um-back-area {
+            text-align: center;
+            margin-top: 35px;
+        }
+
+        .um-back-btn {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 9px;
+
+            padding: 13px 24px;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+
+            color: white;
+
+            background: linear-gradient(135deg, #667eea, #764ba2);
+
+            font-weight: 600;
+
+            transition: 0.2s ease;
+        }
+
+        .um-back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(102, 126, 234, 0.35);
+        }
+
+        /* ===============================
+           MOBILE
+        =============================== */
+
+        @media (max-width: 700px) {
+
+            .um-page {
+                padding: 20px 10px;
+            }
+
+            .um-card {
+                width: 100%;
+                padding: 25px 15px;
+                border-radius: 18px;
+            }
+
+            .um-title {
+                font-size: 26px;
+            }
+
+            .um-description {
+                font-size: 14px;
+            }
+
+            .um-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .um-search-box {
+                max-width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<div class="um-page">
+
+    <div class="um-card">
+
+
+        <!-- ===============================
+             HEADER
+        =============================== -->
+
+        <div class="um-header">
+
+            <div class="um-icon">
+                <i class="fa-solid fa-users"></i>
+            </div>
+
+            <h1 class="um-title">
+                User Management
+            </h1>
+
+            <p class="um-description">
+                View, edit and delete registered users.
+            </p>
+
+        </div>
+
+
+        <!-- ===============================
+             FLASH MESSAGES
+        =============================== -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="um-flash {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <!-- ===============================
+             TOOLBAR
+        =============================== -->
+
+        <div class="um-toolbar">
+
+            <div class="um-search-box">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="text"
+                    id="umSearchInput"
+                    class="um-search-input"
+                    placeholder="Search by name or email..."
+                    onkeyup="umFilterTable()">
+
+            </div>
+
+            <a href="{{ url_for('create_account', role='user') }}"
+               class="um-add-user-btn">
+
+                <i class="fa-solid fa-user-plus"></i>
+                Add User
+
+            </a>
+
+        </div>
+
+
+        <!-- ===============================
+             USER TABLE
+        =============================== -->
+
+        {% if users %}
+
+            <div class="um-table-wrapper">
+
+                <table class="um-table" id="umUserTable">
+
+                    <thead>
+
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Actions</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for user in users %}
+
+                        <tr>
+
+                            <td>{{ loop.index }}</td>
+
+                            <td>{{ user.get('name', 'N/A') }}</td>
+
+                            <td>{{ user.get('email', 'N/A') }}</td>
+
+                            <td>
+                                <span class="um-role-badge">
+                                    {{ user.get('role', 'user')|capitalize }}
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <a href="{{ url_for('edit_user', email=user.get('email')) }}"
+                                   class="um-action-btn um-edit-btn">
+
+                                    <i class="fa-solid fa-pen"></i>
+                                    Edit
+
+                                </a>
+
+                                <a href="{{ url_for('delete_user', email=user.get('email')) }}"
+                                   class="um-action-btn um-delete-btn"
+                                   onclick="return confirm('Are you sure you want to delete this user?');">
+
+                                    <i class="fa-solid fa-trash"></i>
+                                    Delete
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        {% else %}
+
+            <div class="um-no-users">
+
+                <i class="fa-solid fa-user-slash"></i>
+
+                <p>
+                    No users found.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+        <!-- ===============================
+             BACK BUTTON
+        =============================== -->
+
+        <div class="um-back-area">
+
+            <a class="um-back-btn"
+               href="{{ url_for('go_dashboard') }}">
+
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Dashboard
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+function umFilterTable() {
+
+    const input = document.getElementById("umSearchInput");
+    const filter = input.value.trim().toLowerCase();
+
+    const table = document.getElementById("umUserTable");
+
+    if (!table) {
+        return;
+    }
+
+    const rows = table.getElementsByTagName("tr");
+
+    for (let i = 1; i < rows.length; i++) {
+
+        const nameCell = rows[i].getElementsByTagName("td")[1];
+        const emailCell = rows[i].getElementsByTagName("td")[2];
+
+        if (!nameCell || !emailCell) {
+            continue;
+        }
+
+        const name = nameCell.textContent.toLowerCase();
+        const email = emailCell.textContent.toLowerCase();
+
+        if (name.includes(filter) || email.includes(filter)) {
+            rows[i].style.display = "";
+        } else {
+            rows[i].style.display = "none";
+        }
+
+    }
+
+}
+
+</script>
+
+
+</body>
+
+</html>

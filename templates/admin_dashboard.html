@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard | Library Management System</title>
+
+    <!-- Main CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+
+    <style>
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            font-family: 'Poppins', sans-serif;
+
+            color: #222;
+
+            /* BLUE BACKGROUND - MATCH USER DASHBOARD */
+            background:
+                linear-gradient(135deg, #4f7fe8 0%, #2458d6 100%);
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar {
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+
+            padding: 16px 40px;
+
+            background: #4f7fe8;
+
+            border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+
+            box-shadow:
+                0 3px 15px rgba(0, 0, 0, 0.12);
+        }
+
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+
+            gap: 13px;
+        }
+
+
+        .navbar-right {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+
+        /* =====================================================
+           LOGO
+        ===================================================== */
+
+        .logo-circle {
+            width: 48px;
+            height: 48px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, 0.18) !important;
+
+            color: #ffffff !important;
+
+            font-size: 21px;
+
+            box-shadow:
+                0 5px 15px rgba(0, 0, 0, 0.12);
+        }
+
+
+        .logo-circle i {
+            color: #ffffff !important;
+        }
+
+
+        /* =====================================================
+           BRAND
+        ===================================================== */
+
+        .brand-text h1 {
+            margin: 0;
+
+            color: #ffffff !important;
+
+            font-size: 19px;
+
+            font-weight: 700;
+
+            line-height: 1.3;
+        }
+
+
+        .brand-text span {
+            display: block;
+
+            margin-top: 2px;
+
+            color: rgba(255, 255, 255, 0.85) !important;
+
+            font-size: 12px;
+
+            font-weight: 500;
+        }
+
+
+        /* =====================================================
+           MAIN CONTAINER
+        ===================================================== */
+
+        .admin-container {
+
+            width: 100%;
+
+            max-width: 1450px;
+
+            margin: 0 auto;
+
+            padding: 32px 32px 50px;
+        }
+
+
+        /* =====================================================
+           WELCOME ROW
+        ===================================================== */
+
+        .admin-top {
+
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 25px;
+
+            margin-bottom: 28px;
+        }
+
+
+        .welcome-text {
+            width: 100%;
+        }
+
+
+        .welcome-text h2 {
+
+            margin: 0;
+
+            color: #ffffff !important;
+
+            font-size: 34px;
+
+            font-weight: 700;
+        }
+
+
+        .welcome-text p {
+
+            margin: 6px 0 0;
+
+            color: rgba(255, 255, 255, 0.88) !important;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           PROFILE + LOGOUT
+        ===================================================== */
+
+        .admin-actions {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+        }
+
+
+        .profile-btn-admin,
+        .logout-btn-admin {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            padding: 11px 18px;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+
+            font-family: 'Poppins', sans-serif;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            transition: 0.2s ease;
+        }
+
+
+        /* PROFILE */
+
+        .profile-btn-admin {
+
+            background: #2563eb !important;
+
+            color: #ffffff !important;
+
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+
+        .profile-btn-admin i {
+
+            color: #ffffff !important;
+        }
+
+
+        .profile-btn-admin:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 6px 18px rgba(0, 0, 0, 0.15);
+        }
+
+
+        /* LOGOUT */
+
+        .logout-btn-admin {
+
+            background: #ef4444 !important;
+
+            color: #ffffff !important;
+
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+
+        .logout-btn-admin i {
+
+            color: #ffffff !important;
+        }
+
+
+        .logout-btn-admin:hover {
+
+            background: #222222 !important;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 6px 18px rgba(0, 0, 0, 0.20);
+        }
+
+
+        /* =====================================================
+           DASHBOARD HEADING
+        ===================================================== */
+
+        .dashboard-heading {
+
+            margin-bottom: 22px;
+        }
+
+
+        .dashboard-heading h2 {
+
+            margin: 0 0 5px;
+
+            color: #ffffff !important;
+
+            font-size: 23px;
+
+            font-weight: 700;
+        }
+
+
+        .dashboard-heading p {
+
+            margin: 0;
+
+            color: rgba(255, 255, 255, 0.85) !important;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           UNIFIED STATISTICS PANEL (below Welcome)
+        ===================================================== */
+
+        .admin-stats-panel {
+
+            width: 100%;
+
+            padding: 20px 24px;
+
+            margin-bottom: 28px;
+
+            background: rgba(255, 255, 255, 0.12) !important;
+
+            border: 1px solid rgba(255, 255, 255, 0.24);
+
+            border-radius: 18px;
+
+            backdrop-filter: blur(12px);
+
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.12);
+        }
+
+
+        .admin-stats-panel-head {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 16px;
+        }
+
+
+        .admin-stats-panel-head i {
+
+            color: rgba(255, 255, 255, 0.85) !important;
+
+            font-size: 13px;
+        }
+
+
+        .admin-stats-panel-head span {
+
+            color: rgba(255, 255, 255, 0.85) !important;
+
+            font-size: 12.5px;
+
+            font-weight: 600;
+
+            letter-spacing: 0.4px;
+
+            text-transform: uppercase;
+        }
+
+
+        .admin-mini-reports {
+
+            width: 100%;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+        }
+
+
+        .admin-mini-report-card {
+
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            padding: 4px 20px;
+        }
+
+
+        .admin-mini-report-card + .admin-mini-report-card {
+
+            border-left: 1px solid rgba(255, 255, 255, 0.22);
+        }
+
+
+        .admin-mini-report-icon {
+
+            width: 44px;
+            height: 44px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: rgba(255, 255, 255, 0.95) !important;
+
+            box-shadow:
+                0 4px 12px rgba(0, 0, 0, 0.15);
+
+            font-size: 17px;
+
+            transition: transform 0.2s ease;
+        }
+
+
+        .admin-mini-report-card:hover .admin-mini-report-icon {
+
+            transform: translateY(-2px) scale(1.04);
+        }
+
+
+        .admin-mini-report-icon.stat-books {
+            color: #2458d6 !important;
+        }
+
+        .admin-mini-report-icon.stat-users {
+            color: #7c3aed !important;
+        }
+
+        .admin-mini-report-icon.stat-issued {
+            color: #ea8c00 !important;
+        }
+
+        .admin-mini-report-icon.stat-fines {
+            color: #dc2626 !important;
+        }
+
+
+        .admin-mini-report-text {
+
+            min-width: 0;
+        }
+
+
+        .admin-mini-report-text h4 {
+
+            margin: 0 0 2px;
+
+            color: #ffffff !important;
+
+            font-size: 20px;
+
+            font-weight: 800;
+
+            letter-spacing: 0.2px;
+
+            line-height: 1.2;
+        }
+
+
+        .admin-mini-report-text p {
+
+            margin: 0;
+
+            color: rgba(255, 255, 255, 0.8) !important;
+
+            font-size: 12px;
+
+            font-weight: 500;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.3px;
+        }
+
+
+        @media (max-width: 1000px) {
+
+            .admin-mini-reports {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+
+                row-gap: 18px;
+            }
+
+            .admin-mini-report-card:nth-child(3) {
+                border-left: none;
+            }
+
+            .admin-mini-report-card:nth-child(2n) {
+                border-left: 1px solid rgba(255, 255, 255, 0.22);
+            }
+
+            .admin-mini-report-card:nth-child(2n + 1) {
+                border-left: none;
+            }
+        }
+
+
+        @media (max-width: 650px) {
+
+            .admin-stats-panel {
+                padding: 16px 16px;
+
+                margin-bottom: 20px;
+            }
+
+            .admin-mini-reports {
+                grid-template-columns: 1fr;
+
+                row-gap: 14px;
+            }
+
+            .admin-mini-report-card {
+                padding: 0;
+
+                border-left: none !important;
+            }
+
+            .admin-mini-report-card + .admin-mini-report-card {
+                border-left: none;
+
+                padding-top: 14px;
+
+                border-top: 1px solid rgba(255, 255, 255, 0.18);
+            }
+        }
+
+
+        /* =====================================================
+           OPTIONS GRID
+        ===================================================== */
+
+        .admin-options {
+
+            width: 100%;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 22px;
+        }
+
+
+        /* =====================================================
+           OPTION CARD
+        ===================================================== */
+
+        .admin-option {
+
+            position: relative;
+
+            min-height: 150px;
+
+            padding: 24px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 18px;
+
+            text-decoration: none;
+
+            background: rgba(255, 255, 255, 0.97) !important;
+
+            color: #222222 !important;
+
+            border-radius: 16px;
+
+            border: 1px solid rgba(255, 255, 255, 0.5);
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.15);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .admin-option:hover {
+
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 14px 30px rgba(0, 0, 0, 0.20);
+
+            text-decoration: none;
+        }
+
+
+        /* =====================================================
+           CARD ICON
+        ===================================================== */
+
+        .admin-option-icon {
+
+            width: 58px;
+            height: 58px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 14px;
+
+            background: #eef0ff !important;
+
+            color: #667eea !important;
+
+            font-size: 22px;
+        }
+
+
+        .admin-option-icon i {
+
+            color: #667eea !important;
+        }
+
+
+        /* =====================================================
+           CARD TEXT
+        ===================================================== */
+
+        .admin-option-content {
+
+            flex: 1;
+
+            min-width: 0;
+
+            padding-right: 20px;
+        }
+
+
+        .admin-option-content h3 {
+
+            margin: 0 0 7px;
+
+            color: #222222 !important;
+
+            font-size: 17px;
+
+            font-weight: 700;
+        }
+
+
+        .admin-option-content p {
+
+            margin: 0;
+
+            color: #666666 !important;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           ARROW
+        ===================================================== */
+
+        .admin-option-arrow {
+
+            position: absolute;
+
+            right: 18px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: #667eea !important;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ===================================================== */
+
+        @media (max-width: 1000px) {
+
+            .admin-container {
+                padding: 30px 25px 45px;
+            }
+
+            .admin-options {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 650px) {
+
+            .navbar {
+                padding: 12px 14px;
+                gap: 10px;
+            }
+
+
+            .brand-text h1 {
+                font-size: 16px;
+            }
+
+
+            .admin-container {
+                padding: 25px 16px 40px;
+            }
+
+
+            .admin-top {
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+
+            .welcome-text h2 {
+                font-size: 26px;
+            }
+
+
+            .navbar-right {
+                gap: 6px;
+            }
+
+            .profile-btn-admin,
+            .logout-btn-admin {
+                padding: 9px 11px;
+                font-size: 12px;
+            }
+
+
+            .admin-options {
+                grid-template-columns: 1fr;
+
+                gap: 16px;
+            }
+
+
+            .admin-option {
+                min-height: 135px;
+
+                padding: 20px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+====================================================== -->
+
+<nav class="navbar">
+
+    <div class="navbar-left">
+
+        <div class="logo-circle">
+            <i class="fas fa-book-open"></i>
+        </div>
+
+        <div class="brand-text">
+            <h1>Library Management System</h1>
+            <span>Admin Portal</span>
+        </div>
+
+    </div>
+
+
+    <div class="navbar-right">
+
+        <a href="{{ url_for('profile') }}" class="profile-btn-admin">
+            <i class="fas fa-user"></i>
+            Profile
+        </a>
+
+        <a href="{{ url_for('change_password') }}" class="profile-btn-admin">
+            <i class="fas fa-key"></i>
+            Change Password
+        </a>
+
+        <a href="{{ url_for('logout') }}" class="logout-btn-admin">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     ADMIN DASHBOARD
+====================================================== -->
+
+<main class="admin-container">
+
+
+    <!-- =================================================
+         HEADING
+    ================================================== -->
+
+
+
+    <!-- =================================================
+         WELCOME + PROFILE + LOGOUT
+    ================================================== -->
+
+    <div class="admin-top">
+
+
+        <div class="welcome-text">
+
+            <h2>
+
+                Welcome
+                {{ session.get('name', '') }}
+                👋
+
+            </h2>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+    <!-- =================================================
+         COMPACT REPORTS STRIP
+    ================================================== -->
+
+    <div class="admin-stats-panel">
+
+        <div class="admin-stats-panel-head">
+            <i class="fas fa-chart-simple"></i>
+            <span>Library Overview</span>
+        </div>
+
+        <div class="admin-mini-reports">
+
+            <div class="admin-mini-report-card">
+                <div class="admin-mini-report-icon stat-books">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="admin-mini-report-text">
+                    <h4>{{ report_stats.total_books }}</h4>
+                    <p>Total Books</p>
+                </div>
+            </div>
+
+            <div class="admin-mini-report-card">
+                <div class="admin-mini-report-icon stat-users">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="admin-mini-report-text">
+                    <h4>{{ report_stats.total_users }}</h4>
+                    <p>Registered Users</p>
+                </div>
+            </div>
+
+            <div class="admin-mini-report-card">
+                <div class="admin-mini-report-icon stat-issued">
+                    <i class="fas fa-book-open-reader"></i>
+                </div>
+                <div class="admin-mini-report-text">
+                    <h4>{{ report_stats.total_issued }}</h4>
+                    <p>Books Issued</p>
+                </div>
+            </div>
+
+            <div class="admin-mini-report-card">
+                <div class="admin-mini-report-icon stat-fines">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <div class="admin-mini-report-text">
+                    <h4>₹{{ report_stats.total_fine }}</h4>
+                    <p>Outstanding Fines</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+
+
+    <!-- =================================================
+         ADMIN OPTIONS
+    ================================================== -->
+
+    <div class="admin-options">
+
+
+        <!-- USER & LIBRARIAN MANAGEMENT (COMBINED) -->
+
+        <a href="{{ url_for('user_librarian_management') }}"
+           class="admin-option">
+
+            <div class="admin-option-icon">
+
+                <i class="fas fa-users-gear"></i>
+
+            </div>
+
+
+            <div class="admin-option-content">
+
+                <h3>
+                    User & Librarian Management
+                </h3>
+
+                <p>
+                    View, edit and add users and librarians.
+                </p>
+
+            </div>
+
+
+            <i class="fas fa-arrow-right admin-option-arrow"></i>
+
+        </a>
+
+
+
+        <!-- MANAGE BOOKS -->
+
+        <a href="{{ url_for('book_management') }}"
+           class="admin-option">
+
+            <div class="admin-option-icon">
+
+                <i class="fas fa-book"></i>
+
+            </div>
+
+
+            <div class="admin-option-content">
+
+                <h3>
+                    Manage Books
+                </h3>
+
+                <p>
+                    Add, update, delete and manage library books.
+                </p>
+
+            </div>
+
+
+            <i class="fas fa-arrow-right admin-option-arrow"></i>
+
+        </a>
+
+
+
+        <!-- ISSUE BOOKS -->
+
+        <a href="{{ url_for('issue_books') }}"
+           class="admin-option">
+
+            <div class="admin-option-icon">
+
+                <i class="fas fa-book-open-reader"></i>
+
+            </div>
+
+
+            <div class="admin-option-content">
+
+                <h3>
+                    Issue Books
+                </h3>
+
+                <p>
+                    Issue books to registered library users.
+                </p>
+
+            </div>
+
+
+            <i class="fas fa-arrow-right admin-option-arrow"></i>
+
+        </a>
+
+
+
+        <!-- RETURN BOOKS -->
+
+        <a href="{{ url_for('librarian_return_books') }}"
+           class="admin-option">
+
+            <div class="admin-option-icon">
+
+                <i class="fas fa-right-left"></i>
+
+            </div>
+
+
+            <div class="admin-option-content">
+
+                <h3>
+                    Return Books
+                </h3>
+
+                <p>
+                    Manage returned books and update records.
+                </p>
+
+            </div>
+
+
+            <i class="fas fa-arrow-right admin-option-arrow"></i>
+
+        </a>
+
+
+
+        <!-- RENEW BOOKS -->
+
+        <a href="{{ url_for('librarian_renew_books') }}"
+           class="admin-option">
+
+            <div class="admin-option-icon">
+
+                <i class="fas fa-rotate-right"></i>
+
+            </div>
+
+
+            <div class="admin-option-content">
+
+                <h3>
+                    Renew Books
+                </h3>
+
+                <p>
+                    Extend the borrowing period of issued books.
+                </p>
+
+            </div>
+
+
+            <i class="fas fa-arrow-right admin-option-arrow"></i>
+
+        </a>
+
+
+
+        <!-- WAITLIST MANAGEMENT -->
+
+        <a href="{{ url_for('waitlist_management') }}"
+           class="admin-option">
+
+            <div class="admin-option-icon">
+
+                <i class="fas fa-list"></i>
+
+            </div>
+
+
+            <div class="admin-option-content">
+
+                <h3>
+                    Waitlist Management
+                </h3>
+
+                <p>
+                    Manage users waiting for unavailable books.
+                </p>
+
+            </div>
+
+
+            <i class="fas fa-arrow-right admin-option-arrow"></i>
+
+        </a>
+
+
+
+        <!-- FINE MANAGEMENT -->
+
+        <a href="{{ url_for('fine_management') }}"
+           class="admin-option">
+
+            <div class="admin-option-icon">
+
+                <i class="fas fa-money-bill-wave"></i>
+
+            </div>
+
+
+            <div class="admin-option-content">
+
+                <h3>
+                    Fine Management
+                </h3>
+
+                <p>
+                    Manage fines and overdue book records.
+                </p>
+
+            </div>
+
+
+            <i class="fas fa-arrow-right admin-option-arrow"></i>
+
+        </a>
+
+
+
+        <!-- BOOK AVAILABILITY -->
+
+        <a href="{{ url_for('book_availability') }}"
+           class="admin-option">
+
+            <div class="admin-option-icon">
+
+                <i class="fas fa-box-open"></i>
+
+            </div>
+
+
+            <div class="admin-option-content">
+
+                <h3>
+                    Book Availability
+                </h3>
+
+                <p>
+                    Check live availability for every book.
+                </p>
+
+            </div>
+
+
+            <i class="fas fa-arrow-right admin-option-arrow"></i>
+
+        </a>
+
+
+
+        <!-- BORROW RECORDS -->
+
+        <a href="{{ url_for('borrow_records') }}"
+           class="admin-option">
+
+            <div class="admin-option-icon">
+
+                <i class="fas fa-clock-rotate-left"></i>
+
+            </div>
+
+
+            <div class="admin-option-content">
+
+                <h3>
+                    Borrow Records
+                </h3>
+
+                <p>
+                    View and manage book borrowing records.
+                </p>
+
+            </div>
+
+
+            <i class="fas fa-arrow-right admin-option-arrow"></i>
+
+        </a>
+
+
+
+    </div>
+
+
+</main>
+
+
+</body>
+
+</html>

@@ -1,0 +1,7 @@
+.env
+.env.txt
+__pycache__/
+*.pyc
+# Your original data (contains password hashes) - keep it local, never push it
+backup_original/
+*.db

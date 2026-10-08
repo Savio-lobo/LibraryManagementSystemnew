@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | Library Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+
+<body>
+
+
+<div class="form-container">
+
+
+    <div class="form-card">
+
+
+        <div class="icon">
+
+            <i class="fa-solid fa-user-plus"></i>
+
+        </div>
+
+
+        <h2>
+            {% if locked_role == 'librarian' %}
+                Add Librarian
+            {% elif locked_role == 'user' %}
+                Add User
+            {% else %}
+                Create New Account
+            {% endif %}
+        </h2>
+
+
+        <p class="subtitle">
+            {% if locked_role == 'librarian' %}
+                Create a new librarian account.
+            {% elif locked_role == 'user' %}
+                Create a new normal user account.
+            {% else %}
+                Create a new User or Librarian account.
+            {% endif %}
+        </p>
+
+
+        <!-- Flash Messages -->
+
+        {% with messages = get_flashed_messages() %}
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+            <div class="flash-message">
+
+                {{ message }}
+
+            </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+        {% endwith %}
+
+
+        <form action="{{ url_for('create_account') }}" method="POST">
+
+
+            <div class="input-group">
+
+                <label>
+                    <i class="fa-solid fa-user"></i>
+                    Full Name
+                </label>
+
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Enter full name"
+                    required>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    <i class="fa-solid fa-envelope"></i>
+                    Email Address
+                </label>
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter email address"
+                    required>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    <i class="fa-solid fa-lock"></i>
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    name="password" data-pw-checklist
+                    placeholder="Create a password"
+                    required>
+
+            </div>
+
+
+            {% if locked_role %}
+
+                <input type="hidden" name="role" value="{{ locked_role }}">
+
+                <div class="input-group">
+
+                    <label>
+                        <i class="fa-solid fa-user-tag"></i>
+                        Account Type
+                    </label>
+
+                    <input
+                        type="text"
+                        value="{{ locked_role|capitalize }}"
+                        disabled
+                        style="background:#f1f3ff; color:#4b4f6b; font-weight:600;">
+
+                </div>
+
+            {% else %}
+
+                <div class="input-group">
+
+                    <label>
+                        <i class="fa-solid fa-user-tag"></i>
+                        Account Type
+                    </label>
+
+                    <select name="role" required>
+
+                        <option value="user">User</option>
+
+                        <option value="librarian">Librarian</option>
+
+                    </select>
+
+                </div>
+
+            {% endif %}
+
+
+            <button type="submit">
+                <i class="fa-solid fa-circle-check"></i>
+                {% if locked_role == 'librarian' %}
+                    Create Librarian
+                {% elif locked_role == 'user' %}
+                    Create User
+                {% else %}
+                    Create Account
+                {% endif %}
+            </button>
+
+        </form>
+
+
+        <a
+            href="{{ url_for('user_librarian_management') }}"
+            class="back-home">
+
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to User & Librarian Management
+
+        </a>
+
+
+    </div>
+
+</div>
+
+
+{% include '_password_ui.html' %}
+</body>
+
+</html>

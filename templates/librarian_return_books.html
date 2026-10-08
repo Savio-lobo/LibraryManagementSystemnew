@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Return Books | Library Management System</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        /* ===============================
+           PAGE  (Renew Books reference)
+        =============================== */
+
+        .lrb-page {
+            min-height: 100vh;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #3569d8, #2858c7);
+            box-sizing: border-box;
+        }
+
+        .lrb-card {
+            width: 95%;
+            max-width: 1450px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 40px;
+            box-sizing: border-box;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+        }
+
+
+        /* ===============================
+           HEADER
+        =============================== */
+
+        .lrb-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .lrb-icon {
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-size: 30px;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.35);
+        }
+
+        .lrb-title {
+            margin: 0;
+            color: #222222;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .lrb-description {
+            margin: 10px auto 0;
+            color: #666666;
+            font-size: 16px;
+        }
+
+
+        /* ===============================
+           FLASH MESSAGE
+        =============================== */
+
+        .lrb-flash {
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            background: #f4f4f4;
+            color: #333333;
+        }
+
+        .lrb-flash.success {
+            background: #e8f7ee;
+            color: #16803c;
+        }
+
+        .lrb-flash.error {
+            background: #fdecec;
+            color: #d93025;
+        }
+
+
+        /* ===============================
+           SEARCH
+        =============================== */
+
+        .lrb-search-wrap {
+            margin-bottom: 20px;
+        }
+
+        .lrb-search-input {
+            width: 100%;
+            max-width: 420px;
+            padding: 13px 18px;
+            border: 2px solid #dbeafe;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            color: #222222;
+            background: #ffffff;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease;
+        }
+
+        .lrb-search-input:focus {
+            border-color: #3569d8;
+        }
+
+
+        /* ===============================
+           TABLE
+        =============================== */
+
+        .lrb-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 25px;
+        }
+
+        .lrb-table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .lrb-table th {
+            padding: 14px 10px;
+            text-align: left;
+            background: #f1f3ff;
+            color: #333333;
+            font-size: 13px;
+            font-weight: 700;
+            border-bottom: 2px solid #e2e5f5;
+        }
+
+        .lrb-table td {
+            padding: 13px 10px;
+            text-align: left;
+            color: #444444;
+            font-size: 13px;
+            border-bottom: 1px solid #eeeeee;
+            background: #ffffff;
+            word-wrap: break-word;
+            vertical-align: middle;
+        }
+
+        .lrb-table tbody tr:hover td {
+            background: #f8f9ff;
+        }
+
+        .lrb-table th:nth-child(1), .lrb-table td:nth-child(1) { width: 7%; }
+        .lrb-table th:nth-child(2), .lrb-table td:nth-child(2) { width: 15%; }
+        .lrb-table th:nth-child(3), .lrb-table td:nth-child(3) { width: 12%; }
+        .lrb-table th:nth-child(4), .lrb-table td:nth-child(4) { width: 15%; }
+        .lrb-table th:nth-child(5), .lrb-table td:nth-child(5) { width: 10%; }
+        .lrb-table th:nth-child(6), .lrb-table td:nth-child(6) { width: 10%; }
+        .lrb-table th:nth-child(7), .lrb-table td:nth-child(7) { width: 11%; }
+        .lrb-table th:nth-child(8), .lrb-table td:nth-child(8) { width: 20%; }
+
+
+        /* ===============================
+           RETURN ACTION (condition + button)
+        =============================== */
+
+        .lrb-action-form {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .lrb-condition-select {
+            flex: 1;
+            min-width: 110px;
+            padding: 8px 10px;
+            border: 1px solid #e2e5f5;
+            border-radius: 8px;
+            font-size: 12px;
+            background: #f8f9ff;
+            color: #333;
+        }
+
+        .lrb-return-btn {
+            width: auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            border: none;
+            padding: 9px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: white;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            font-weight: 600;
+            font-size: 12px;
+            white-space: nowrap;
+            transition: .2s ease;
+        }
+
+        .lrb-return-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+
+        /* ===============================
+           STATUS BADGE
+        =============================== */
+
+        .lrb-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 11.5px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .lrb-status-badge.requested {
+            background: #d97706 !important;
+            color: #ffffff !important;
+        }
+
+        .lrb-status-badge.issued {
+            background: #2563eb !important;
+            color: #ffffff !important;
+        }
+
+
+        /* ===============================
+           NO BOOKS
+        =============================== */
+
+        .lrb-no-books {
+            margin-top: 25px;
+            padding: 40px 20px;
+            text-align: center;
+            background: #f8f9ff;
+            border: 1px solid #e4e7f5;
+            border-radius: 15px;
+            color: #666666;
+        }
+
+        .lrb-no-books i {
+            display: block;
+            margin-bottom: 15px;
+            color: #667eea;
+            font-size: 42px;
+        }
+
+
+        /* ===============================
+           BACK BUTTON
+        =============================== */
+
+        .lrb-back-area {
+            text-align: center;
+            margin-top: 35px;
+        }
+
+        .lrb-back-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            padding: 13px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: white;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            font-weight: 600;
+            transition: .2s ease;
+        }
+
+        .lrb-back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(102, 126, 234, 0.35);
+        }
+
+
+        /* ===============================
+           MOBILE
+        =============================== */
+
+        @media (max-width: 700px) {
+
+            .lrb-page {
+                padding: 20px 10px;
+            }
+
+            .lrb-card {
+                width: 100%;
+                padding: 25px 15px;
+                border-radius: 18px;
+            }
+
+            .lrb-title {
+                font-size: 26px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="lrb-page">
+
+    <div class="lrb-card">
+
+        <div class="lrb-header">
+
+            <div class="lrb-icon">
+                <i class="fa-solid fa-arrow-rotate-left"></i>
+            </div>
+
+            <h1 class="lrb-title">Return Books</h1>
+
+            <p class="lrb-description">
+                Manage currently issued books and process returns.
+            </p>
+
+        </div>
+
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="lrb-flash {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        {% if borrowed_books %}
+
+            <div class="lrb-search-wrap">
+                <input
+                    type="text"
+                    id="lrbSearchInput"
+                    class="lrb-search-input"
+                    placeholder="🔍 Search by Book ID, Book Name, User Name or Email">
+            </div>
+
+            <div class="lrb-table-wrapper">
+
+                <table class="lrb-table" id="lrbTable">
+
+                    <thead>
+
+                        <tr>
+                            <th>Book ID</th>
+                            <th>Book Name</th>
+                            <th>User Name</th>
+                            <th>User Email</th>
+                            <th>Borrowed Date</th>
+                            <th>Due Date</th>
+                            <th>Status</th>
+                            <th>Return</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    {% for book in borrowed_books %}
+
+                        <tr>
+
+                            <td>{{ book.book_id }}</td>
+
+                            <td>{{ book.book_name }}</td>
+
+                            <td>{{ book.user_name }}</td>
+
+                            <td>{{ book.user_email }}</td>
+
+                            <td>{{ book.borrowed_date }}</td>
+
+                            <td>{{ book.due_date if book.due_date else "Not available" }}</td>
+
+                            <td>
+
+                                {% if book.return_requested %}
+
+                                    <span class="lrb-status-badge requested">
+                                        <i class="fa-solid fa-clock"></i>
+                                        Return Requested
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="lrb-status-badge issued">
+                                        <i class="fa-solid fa-book"></i>
+                                        Issued
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+
+                                <form
+                                    action="{{ url_for('librarian_return_books') }}"
+                                    method="POST"
+                                    class="lrb-action-form">
+
+                                    <input
+                                        type="hidden"
+                                        name="record_index"
+                                        value="{{ book._index }}">
+
+                                    <select
+                                        name="book_condition"
+                                        class="lrb-condition-select"
+                                        required>
+
+                                        <option value="good">Good</option>
+                                        <option value="damaged">Damaged (+₹100)</option>
+                                        <option value="lost">Lost (+₹1000)</option>
+
+                                    </select>
+
+                                    <button type="submit" class="lrb-return-btn">
+                                        <i class="fa-solid fa-rotate-left"></i>
+                                        Return
+                                    </button>
+
+                                </form>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        {% else %}
+
+            <div class="lrb-no-books">
+                <i class="fa-solid fa-check"></i>
+                No books are currently issued.
+            </div>
+
+        {% endif %}
+
+
+        <div class="lrb-back-area">
+
+            <a class="lrb-back-btn"
+               href="{{ url_for('back_to_dashboard') }}">
+
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Dashboard
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    // =====================================================
+    // SEARCH — filters the issued-books table by Book ID,
+    // Book Name, User Name or Email. Client-side only, so it
+    // never touches the return form/route logic.
+    // =====================================================
+
+    (function() {
+
+        const searchInput = document.getElementById("lrbSearchInput");
+        const table = document.getElementById("lrbTable");
+
+        if (!searchInput || !table) {
+            return;
+        }
+
+        searchInput.addEventListener("input", function() {
+
+            const query = searchInput.value.toLowerCase().trim();
+            const rows = table.querySelectorAll("tbody tr");
+
+            rows.forEach(function(row) {
+
+                const cells = row.querySelectorAll("td");
+
+                if (cells.length < 4) {
+                    return;
+                }
+
+                const bookId = cells[0].innerText.toLowerCase();
+                const bookName = cells[1].innerText.toLowerCase();
+                const userName = cells[2].innerText.toLowerCase();
+                const userEmail = cells[3].innerText.toLowerCase();
+
+                const matches =
+                    bookId.includes(query) ||
+                    bookName.includes(query) ||
+                    userName.includes(query) ||
+                    userEmail.includes(query);
+
+                row.style.display = matches ? "" : "none";
+
+            });
+
+        });
+
+    })();
+
+</script>
+
+</body>
+
+</html>

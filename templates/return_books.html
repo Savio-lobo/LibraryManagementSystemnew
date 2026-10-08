@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Return Books | Library Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        .return-books-page {
+            width: 95%;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .return-books-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 45px 40px 50px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+        }
+
+        .return-books-header {
+            text-align: center;
+            margin-bottom: 22px;
+        }
+
+        .return-books-header .icon {
+            font-size: 30px;
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 18px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.35);
+        }
+
+        .return-books-header h2 {
+            color: #222222;
+            margin-bottom: 6px;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .return-books-header .subtitle {
+            color: #666;
+        }
+
+        .return-table-wrapper {
+            width: 100%;
+            overflow: visible;
+        }
+
+        .return-books-table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+        }
+
+        .return-books-table th,
+        .return-books-table td {
+            padding: 14px 10px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            color: #333;
+            font-size: 14px;
+            word-wrap: break-word;
+        }
+
+        .return-books-table th {
+            background: #f5f7fb;
+            font-weight: 600;
+        }
+
+        .return-books-table tbody tr:hover td {
+            background: #f8f9ff;
+        }
+
+        .return-action-btn {
+            width: auto;
+            padding: 9px 16px;
+            font-size: 13px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .return-action-btn:hover {
+            filter: brightness(1.05);
+            transform: translateY(-1px);
+        }
+
+        .return-requested-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 14px;
+            border-radius: 8px;
+            background: #fff7df;
+            color: #8a6500;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .return-no-books {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+        }
+
+        .return-books-card hr {
+            border: none;
+            border-top: 1px solid #eee;
+            margin: 28px 0 18px;
+        }
+
+        .return-books-back {
+            display: block;
+            width: fit-content;
+            margin: 0 auto;
+            text-align: center;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .return-books-back:hover {
+            color: #4c56c9;
+        }
+
+        @media (max-width: 700px) {
+
+            .return-books-card {
+                padding: 20px;
+            }
+
+            .return-books-table th:nth-child(3),
+            .return-books-table td:nth-child(3) {
+                display: none;
+            }
+
+        }
+
+    
+        /* BACK TO DASHBOARD (same as Return Books) */
+        .lrb-back-area {
+            text-align: center;
+            margin-top: 35px;
+        }
+
+        .lrb-back-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            padding: 13px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: white;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            font-weight: 600;
+            transition: .2s ease;
+        }
+
+        .lrb-back-btn:hover {
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(102, 126, 234, 0.35);
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="return-books-page">
+
+    <div class="return-books-card">
+
+        <!-- ================= HEADER ================= -->
+
+        <div class="return-books-header">
+
+            <div class="icon">
+                <i class="fa-solid fa-right-to-bracket"></i>
+            </div>
+
+            <h2>Return Books</h2>
+
+            <p class="subtitle">
+                Here are the books you currently have borrowed.
+                Click "Request Return" when you're ready to return
+                one - a librarian will inspect the book and
+                complete the return.
+            </p>
+
+        </div>
+
+
+        <!-- ================= FLASH MESSAGES ================= -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="flash-message"
+                        style="background:
+                            {% if category == 'success' %}#e8f7ee
+                            {% elif category == 'error' %}#fdecec
+                            {% else %}#fff7df{% endif %};
+                            color:
+                            {% if category == 'success' %}#16803c
+                            {% elif category == 'error' %}#d93025
+                            {% else %}#8a6500{% endif %};
+                            padding:12px 16px; border-radius:8px;
+                            margin-bottom:18px;">
+
+                        {{ message }}
+
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <!-- ================= BORROWED BOOKS TABLE ================= -->
+
+        {% if borrowed_books %}
+
+            <div class="return-table-wrapper">
+
+                <table class="return-books-table">
+
+                    <thead>
+
+                        <tr>
+                            <th style="width:10%;">Book ID</th>
+                            <th style="width:24%;">Title</th>
+                            <th style="width:16%;">Author</th>
+                            <th style="width:15%;">Borrowed On</th>
+                            <th style="width:15%;">Due Date</th>
+                            <th style="width:20%;">Action</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for book in borrowed_books %}
+
+                            <tr>
+
+                                <td>{{ book.book_id }}</td>
+
+                                <td>{{ book.book_name }}</td>
+
+                                <td>{{ book.author }}</td>
+
+                                <td>{{ book.borrowed_date }}</td>
+
+                                <td>{{ book.due_date }}</td>
+
+                                <td>
+
+                                    {% if book.return_requested %}
+
+                                        <span class="return-requested-badge">
+                                            <i class="fa-solid fa-clock"></i>
+                                            Requested
+                                        </span>
+
+                                    {% else %}
+
+                                        <form
+                                            method="POST"
+                                            action="{{ url_for('return_books') }}">
+
+                                            <input
+                                                type="hidden"
+                                                name="book_id"
+                                                value="{{ book.book_id }}">
+
+                                            <button
+                                                type="submit"
+                                                class="return-action-btn">
+                                                <i class="fa-solid fa-right-from-bracket"></i>
+                                                Request Return
+                                            </button>
+
+                                        </form>
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        {% else %}
+
+            <div class="return-no-books">
+                <i class="fa-solid fa-check"></i>
+                You have no borrowed books to return right now.
+            </div>
+
+        {% endif %}
+
+
+        <div class="lrb-back-area">
+
+            <a class="lrb-back-btn"
+               href="{{ url_for('dashboard') }}">
+
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Dashboard
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,3663 @@
+/* =========================================================
+   LIBRARY MANAGEMENT SYSTEM
+   MODERN STYLE.CSS
+========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+
+    background: linear-gradient(
+        135deg,
+        #3b6fe8 0%,
+        #2f65da 45%,
+        #1d4ed8 100%
+    ) !important;
+
+    background-attachment: fixed;
+
+    color: #fff;
+}
+
+
+/* =========================================================
+   LINKS
+========================================================= */
+
+a {
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   HOME PAGE
+========================================================= */
+
+.home-container {
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 40px;
+}
+
+.card {
+    width: 650px;
+
+    text-align: center;
+
+    background: rgba(255,255,255,.12);
+
+    backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255,255,255,.2);
+
+    border-radius: 25px;
+
+    padding: 55px;
+
+    box-shadow: 0 20px 45px rgba(0,0,0,.35);
+
+    animation: fadeUp .8s ease;
+}
+
+.home-logo {
+    width: 110px;
+    height: 110px;
+
+    margin: auto;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    background: #fff;
+
+    color: #2563eb;
+
+    font-size: 50px;
+
+    margin-bottom: 25px;
+}
+
+.card h1 {
+    font-size: 36px;
+
+    font-weight: 700;
+
+    margin-bottom: 12px;
+}
+
+.subtitle {
+    color: #FFD43B;
+
+    font-size: 17px;
+
+    margin-bottom: 20px;
+}
+
+.description {
+    color: #f3f4f6;
+
+    line-height: 1.8;
+
+    margin-bottom: 35px;
+}
+
+.buttons {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 20px;
+}
+
+.primary-btn,
+.secondary-btn {
+    padding: 15px 35px;
+
+    border-radius: 12px;
+
+    font-weight: 600;
+
+    transition: .3s;
+}
+
+.primary-btn {
+    background: #10b981;
+
+    color: #fff;
+}
+
+.primary-btn:hover {
+    background: #059669;
+
+    transform: translateY(-4px);
+}
+
+.secondary-btn {
+    background: #fff;
+
+    color: #2563eb;
+}
+
+.secondary-btn:hover {
+    transform: translateY(-4px);
+}
+
+
+/* =========================================================
+   COMMON FORM PAGES
+========================================================= */
+
+.form-container,
+.page-container {
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 40px;
+}
+
+.form-card,
+.book-card,
+.history-card {
+    width: 470px;
+
+    background: rgba(255,255,255,.12);
+
+    backdrop-filter: blur(18px);
+
+    border-radius: 22px;
+
+    border: 1px solid rgba(255,255,255,.18);
+
+    padding: 40px;
+
+    box-shadow: 0 20px 45px rgba(0,0,0,.35);
+
+    animation: fadeUp .7s ease;
+}
+
+.history-card {
+    width: 1000px;
+}
+
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.icon {
+    width: 90px;
+    height: 90px;
+
+    margin: auto;
+
+    border-radius: 50%;
+
+    background: #fff;
+
+    color: #2563eb;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 38px;
+
+    margin-bottom: 22px;
+}
+
+.form-card h2,
+.book-card h2,
+.history-card h2 {
+    text-align: center;
+
+    margin-bottom: 12px;
+
+    font-size: 30px;
+}
+
+.form-card .subtitle,
+.book-card .subtitle,
+.history-card .subtitle {
+    text-align: center;
+
+    margin-bottom: 28px;
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+.input-group {
+    margin-bottom: 14px;
+}
+
+.input-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 15px;
+
+    font-weight: 500;
+}
+
+.input-group label i {
+    margin-right: 8px;
+}
+
+.input-group input {
+    width: 100%;
+
+    padding: 15px;
+
+    border: none;
+
+    outline: none;
+
+    border-radius: 12px;
+
+    font-size: 15px;
+
+    background: #fff;
+
+    color: #1f2937;
+
+    transition: .3s;
+}
+
+.input-group input:focus {
+    box-shadow: 0 0 0 4px rgba(255,255,255,.25);
+}
+
+.input-group select {
+    width: 100%;
+
+    padding: 15px;
+
+    border: none;
+
+    outline: none;
+
+    border-radius: 12px;
+
+    font-size: 15px;
+
+    background: #fff;
+
+    color: #1f2937;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+button {
+    width: 100%;
+
+    padding: 15px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #10b981;
+
+    color: #fff;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .3s;
+}
+
+button:hover {
+    background: #059669;
+
+    transform: translateY(-3px);
+}
+
+button i {
+    margin-right: 8px;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.back-home {
+    display: block;
+
+    margin-top: 25px;
+
+    text-align: center;
+
+    color: #FFD43B;
+
+    font-weight: 600;
+
+    transition: .3s;
+}
+
+.back-home:hover {
+    color: #fff;
+}
+
+
+/* =========================================================
+   LOGIN / REGISTER LINKS
+========================================================= */
+
+.register-section,
+.forgot-link {
+    text-align: center;
+
+    margin-top: 18px;
+}
+
+.register-section a,
+.forgot-link a {
+    color: #FFD43B;
+
+    font-weight: 600;
+}
+
+.register-section a:hover,
+.forgot-link a:hover {
+    color: #fff;
+}
+
+
+/* =========================================================
+   HR
+========================================================= */
+
+hr {
+    border: none;
+
+    border-top: 1px solid rgba(255,255,255,.2);
+
+    margin: 28px 0;
+}
+
+
+/* =========================================================
+   FLASH MESSAGE
+========================================================= */
+
+.flash-message {
+    background: #d1fae5;
+
+    color: #065f46;
+
+    border-radius: 10px;
+
+    padding: 13px;
+
+    text-align: center;
+
+    margin-bottom: 18px;
+
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+@keyframes fadeUp {
+
+    from {
+        opacity: 0;
+
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================================================
+   USER DASHBOARD
+========================================================= */
+
+.navbar {
+    width: 100%;
+
+    height: 80px;
+
+    background: rgba(255,255,255,.12);
+
+    backdrop-filter: blur(18px);
+
+    border-bottom: 1px solid rgba(255,255,255,.18);
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 0 45px;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 1000;
+}
+
+.navbar.logo {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    font-size: 24px;
+
+    font-weight: 700;
+
+    color: #fff;
+}
+
+.logo i {
+    font-size: 34px;
+
+    color: #FFD43B;
+}
+
+.nav-buttons {
+    display: flex;
+
+    gap: 15px;
+}
+
+.nav-btn {
+    padding: 12px 22px;
+
+    border-radius: 10px;
+
+    color: #fff;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    transition: .3s;
+}
+
+.profile-btn {
+    background: #2563eb;
+}
+
+.profile-btn:hover {
+    background: #1d4ed8;
+}
+
+.password-btn {
+    background: #0ea5e9;
+}
+
+.password-btn:hover {
+    background: #0284c7;
+}
+
+.logout-btn {
+    background: #ef4444;
+}
+
+.logout-btn:hover {
+    background: #dc2626;
+}
+
+.nav-btn:hover {
+    transform: translateY(-3px);
+}
+
+/* =========================================================
+   NOTIFICATION BELL (compact, navbar)
+========================================================= */
+
+.nav-bell {
+    position: relative;
+
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.14);
+    color: #fff;
+
+    font-size: 17px;
+
+    transition: .25s;
+}
+
+.nav-bell:hover {
+    background: rgba(255,255,255,.26);
+    transform: translateY(-3px);
+}
+
+.nav-bell .bell-badge {
+    position: absolute;
+
+    top: -2px;
+    right: -2px;
+
+    min-width: 17px;
+    height: 17px;
+
+    padding: 0 4px;
+
+    border-radius: 999px;
+
+    background: #e53935;
+    color: #fff;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    line-height: 1;
+
+    border: 2px solid rgba(15,15,25,.35);
+}
+
+.container {
+    max-width: 1350px;
+
+    margin: auto;
+
+    padding: 25px;
+}
+
+.welcome-card {
+    background: rgba(255,255,255,.12);
+
+    backdrop-filter: blur(18px);
+
+    border-radius: 22px;
+
+    border: 1px solid rgba(255,255,255,.18);
+
+    padding: 30px;
+
+    margin-bottom: 30px;
+
+    box-shadow: 0 15px 35px rgba(0,0,0,.25);
+}
+
+.welcome-card h1 {
+    font-size: 34px;
+
+    margin-bottom: 10px;
+
+    color: #fff;
+}
+
+.welcome-card span {
+    color: #FFD43B;
+}
+
+.welcome-card p {
+    color: #f1f5f9;
+
+    font-size: 16px;
+}
+
+
+/* =========================================================
+   DASHBOARD GRID
+========================================================= */
+
+.dashboard-grid {
+    display: grid;
+
+    grid-template-columns: repeat(4,1fr);
+
+    gap: 20px;
+}
+
+.dashboard-grid .card {
+    width: 100%;
+
+    padding: 25px;
+
+    background: rgba(255,255,255,.12);
+
+    border-radius: 20px;
+
+    border: 1px solid rgba(255,255,255,.18);
+
+    backdrop-filter: blur(15px);
+
+    text-align: center;
+
+    color: #fff;
+
+    transition: .35s;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,.25);
+}
+
+.dashboard-grid .card:hover {
+    transform: translateY(-8px);
+
+    background: rgba(255,255,255,.18);
+
+    box-shadow: 0 18px 35px rgba(0,0,0,.35);
+}
+
+.dashboard-grid .card .icon {
+    width: 80px;
+    height: 80px;
+
+    margin: auto;
+
+    margin-bottom: 18px;
+
+    border-radius: 50%;
+
+    background: #fff;
+
+    color: #2563eb;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 32px;
+}
+
+.dashboard-grid .card h3 {
+    font-size: 20px;
+
+    margin-bottom: 12px;
+
+    color: #fff;
+}
+
+.dashboard-grid .card p {
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    color: #e5e7eb;
+}
+
+.dashboard-grid .card:nth-child(1):hover {
+    border-color: #3b82f6;
+}
+
+.dashboard-grid .card:nth-child(2):hover {
+    border-color: #10b981;
+}
+
+.dashboard-grid .card:nth-child(3):hover {
+    border-color: #f59e0b;
+}
+
+.dashboard-grid .card:nth-child(4):hover {
+    border-color: #ef4444;
+}
+
+.dashboard-grid .card:nth-child(5):hover {
+    border-color: #06b6d4;
+}
+
+.dashboard-grid .card:nth-child(6):hover {
+    border-color: #8b5cf6;
+}
+
+.dashboard-grid .card:nth-child(7):hover {
+    border-color: #ec4899;
+}
+
+.dashboard-grid .card:nth-child(8):hover {
+    border-color: #22c55e;
+}
+
+
+/* =========================================================
+   BOOK MANAGEMENT
+========================================================= */
+
+.table-container {
+    width: 92%;
+
+    margin: 30px auto;
+
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 25px;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,.15);
+}
+
+.table-top {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+
+    margin-bottom: 25px;
+
+    flex-wrap: wrap;
+}
+
+.search-box {
+    flex: 1;
+
+    min-width: 250px;
+
+    padding: 14px 18px;
+
+    border: 2px solid #dbeafe;
+
+    border-radius: 10px;
+
+    font-size: 15px;
+
+    outline: none;
+
+    color: #1f2937;
+
+    background: #fff;
+}
+
+.search-box:focus {
+    border-color: #2563eb;
+}
+
+.category-filter {
+    padding: 14px 18px;
+
+    border: 2px solid #dbeafe;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    color: #1f2937;
+
+    background: #fff;
+}
+
+.add-book-btn {
+    background: #2563eb;
+
+    color: white;
+
+    border: none;
+
+    padding: 14px 22px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-weight: 600;
+
+    transition: .3s;
+}
+
+.add-book-btn:hover {
+    background: #1d4ed8;
+
+    transform: translateY(-3px);
+}
+
+
+/* BOOK TABLE */
+
+.book-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    background: #fff;
+}
+
+.book-table th {
+    background: #f1f3ff;
+
+    color: #333333 !important;
+
+    padding: 16px;
+
+    text-align: left;
+
+    font-weight: 700;
+
+    border-bottom: 2px solid #e2e5f5;
+}
+
+.book-table td {
+    padding: 16px;
+
+    border-bottom: 1px solid #e5e7eb;
+
+    color: #1f2937 !important;
+
+    background: #fff;
+}
+
+.book-table tr:hover td {
+    background: #f8fbff;
+
+    color: #1f2937 !important;
+}
+
+.available {
+    background: #22c55e;
+
+    color: white !important;
+
+    padding: 6px 14px;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+}
+
+.issued {
+    background: #ef4444;
+
+    color: white !important;
+
+    padding: 6px 14px;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+}
+
+.view-btn,
+.edit-btn,
+.delete-btn {
+    border: none;
+
+    padding: 10px 12px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    color: white !important;
+
+    margin-right: 5px;
+
+    transition: .3s;
+}
+
+.view-btn {
+    background: #3b82f6;
+}
+
+.edit-btn {
+    background: #f59e0b;
+}
+
+.delete-btn {
+    background: #ef4444;
+}
+
+.view-btn:hover,
+.edit-btn:hover,
+.delete-btn:hover {
+    transform: scale(1.08);
+}
+
+
+/* =========================================================
+   BOOK FORM
+========================================================= */
+
+.book-form {
+    width: 92%;
+
+    margin: 35px auto;
+
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 30px;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,.15);
+}
+
+.book-form h2 {
+    margin-bottom: 25px;
+
+    color: #2563eb;
+}
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2,1fr);
+
+    gap: 20px;
+}
+
+.form-grid input,
+.form-grid select {
+    padding: 14px;
+
+    border: 2px solid #dbeafe;
+
+    border-radius: 10px;
+
+    font-size: 15px;
+
+    color: #1f2937;
+
+    background: #fff;
+}
+
+.form-grid input:focus,
+.form-grid select:focus {
+    border-color: #2563eb;
+
+    outline: none;
+}
+
+.form-buttons {
+    margin-top: 25px;
+
+    display: flex;
+
+    gap: 15px;
+}
+
+.save-btn {
+    background: #22c55e;
+
+    color: white;
+
+    border: none;
+
+    padding: 14px 24px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-weight: 600;
+}
+
+.cancel-btn {
+    background: #ef4444;
+
+    color: white;
+
+    border: none;
+
+    padding: 14px 24px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-weight: 600;
+}
+
+.save-btn:hover {
+    background: #16a34a;
+}
+
+.cancel-btn:hover {
+    background: #dc2626;
+}
+
+
+/* =========================================================
+   BOOK MANAGEMENT OPTIONS
+========================================================= */
+
+.book-management-options {
+    width: 90%;
+
+    max-width: 1200px;
+
+    margin: 25px auto;
+
+    display: grid;
+
+    grid-template-columns: repeat(3,1fr);
+
+    gap: 20px;
+}
+
+.management-option {
+    text-decoration: none;
+
+    background: white;
+
+    padding: 25px;
+
+    border-radius: 15px;
+
+    text-align: center;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,.08);
+
+    transition: .3s ease;
+
+    color: #222;
+}
+
+.management-option:hover {
+    transform: translateY(-5px);
+
+    box-shadow: 0 10px 25px rgba(0,0,0,.15);
+}
+
+.management-option i {
+    font-size: 35px;
+
+    margin-bottom: 12px;
+}
+
+.management-option h3 {
+    margin: 8px 0;
+
+    font-size: 20px;
+}
+
+.management-option p {
+    margin: 0;
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   STAFF MANAGEMENT
+========================================================= */
+
+.dashboard-container {
+    width: 100%;
+
+    max-width: 1350px;
+
+    margin: 0 auto;
+
+    padding: 30px 25px;
+}
+
+.dashboard-container .dashboard-grid {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: stretch;
+
+    gap: 25px;
+
+    flex-wrap: wrap;
+}
+
+.dashboard-container .dashboard-card {
+    flex: 0 1 420px;
+}
+
+.dashboard-card {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+
+    background: rgba(255,255,255,.12);
+
+    border: 1px solid rgba(255,255,255,.2);
+
+    border-radius: 20px;
+
+    padding: 25px;
+
+    color: white;
+
+    transition: .3s;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,.2);
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+
+    background: rgba(255,255,255,.18);
+}
+
+.card-icon {
+    width: 65px;
+    height: 65px;
+
+    min-width: 65px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    color: #2563eb;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 27px;
+}
+
+.card-content {
+    flex: 1;
+}
+
+.card-content h3 {
+    font-size: 22px;
+
+    margin-bottom: 8px;
+
+    color: #fff;
+}
+
+.card-content p {
+    font-size: 15px;
+
+    line-height: 1.6;
+
+    color: #e5e7eb;
+}
+
+.card-arrow {
+    color: #fff;
+
+    font-size: 20px;
+}
+
+
+/* =========================================================
+   STAFF LIST
+========================================================= */
+
+.management-section {
+    width: 100%;
+
+    margin-top: 40px;
+}
+
+.section-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    color: #fff;
+
+    font-size: 28px;
+}
+
+.section-header p {
+    color: #e5e7eb;
+
+    margin-top: 5px;
+}
+
+
+/* STAFF TABLE */
+
+.management-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    background: #fff;
+
+    border: 1px solid #dfe3f5;
+}
+
+.management-table th {
+    background: #f1f3ff;
+
+    color: #333333 !important;
+
+    padding: 16px;
+
+    text-align: center;
+
+    font-weight: 700;
+
+    border: 1px solid #dfe3f5;
+}
+
+.management-table td {
+    padding: 16px;
+
+    text-align: center;
+
+    color: #1f2937 !important;
+
+    background: #fff;
+
+    border: 1px solid #e9ebf7;
+}
+
+.management-table tbody tr:hover td {
+    background: #f8fbff;
+
+    color: #1f2937 !important;
+}
+
+
+/* ROLE */
+
+.role-badge {
+    display: inline-block;
+
+    background: #2563eb;
+
+    color: #fff !important;
+
+    padding: 6px 12px;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+}
+
+
+/* ACTION BUTTONS */
+
+.action-buttons {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+.action-buttons .edit-btn {
+    background: #f59e0b;
+
+    color: #fff !important;
+}
+
+.action-buttons .delete-btn {
+    background: #ef4444;
+
+    color: #fff !important;
+}
+
+
+/* EMPTY MESSAGE */
+
+.empty-message {
+    color: #64748b !important;
+
+    padding: 30px !important;
+
+    text-align: center;
+}
+
+
+/* CENTER BACK TO DASHBOARD */
+
+.bottom-actions {
+    width: 100%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    margin: 35px 0 10px;
+}
+
+.back-dashboard-btn {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    padding: 14px 24px;
+
+    border-radius: 12px;
+
+    background: #fff;
+
+    color: #2563eb !important;
+
+    font-weight: 600;
+
+    transition: .3s;
+}
+
+.back-dashboard-btn:hover {
+    background: #eff6ff;
+
+    transform: translateY(-3px);
+}
+
+
+/* =========================================================
+   DASHBOARD FOOTER
+========================================================= */
+
+.dashboard-footer {
+    width: 100%;
+
+    text-align: center;
+
+    padding: 22px;
+
+    color: white;
+
+    background: rgba(255,255,255,.12);
+
+    backdrop-filter: blur(10px);
+
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   USER MANAGEMENT
+   FIXED CARD - NO HORIZONTAL SCROLL
+========================================================= */
+
+.user-management-page {
+    min-height: 100vh;
+
+    width: 100%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: flex-start;
+
+    padding: 45px 25px;
+}
+
+
+/* MAIN CARD */
+
+.user-management-card {
+    width: 100%;
+
+    max-width: 1150px;
+
+    background: rgba(255,255,255,.13);
+
+    backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255,255,255,.20);
+
+    border-radius: 24px;
+
+    padding: 35px 40px;
+
+    box-shadow: 0 20px 45px rgba(0,0,0,.30);
+
+    animation: fadeUp .7s ease;
+}
+
+
+/* ICON */
+
+.user-management-icon {
+    width: 75px;
+    height: 75px;
+
+    margin: 0 auto 15px auto;
+
+    border-radius: 50%;
+
+    background: #fff;
+
+    color: #2563eb;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 32px;
+}
+
+
+/* TITLE */
+
+.user-management-card h2 {
+    text-align: center;
+
+    font-size: 30px;
+
+    color: #fff;
+
+    margin-bottom: 8px;
+}
+
+
+/* SUBTITLE */
+
+.user-management-subtitle {
+    text-align: center;
+
+    color: #FFD43B;
+
+    font-size: 15px;
+
+    margin-bottom: 25px;
+}
+
+
+/* TABLE WRAPPER */
+
+.user-table-wrapper {
+    width: 100%;
+
+    margin-top: 20px;
+
+    overflow: hidden;
+}
+
+
+/* USER TABLE */
+
+.user-management-table {
+    width: 100%;
+
+    table-layout: fixed;
+
+    border-collapse: separate;
+
+    border-spacing: 0;
+
+    background: #fff;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    box-shadow: 0 8px 25px rgba(0,0,0,.15);
+}
+
+
+/* TABLE HEADER */
+
+.user-management-table th {
+    background: #2563eb;
+
+    color: #fff !important;
+
+    padding: 15px 8px;
+
+    text-align: center;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* COLUMN WIDTH */
+
+.user-management-table th:nth-child(1) {
+    width: 7%;
+}
+
+.user-management-table th:nth-child(2) {
+    width: 20%;
+}
+
+.user-management-table th:nth-child(3) {
+    width: 32%;
+}
+
+.user-management-table th:nth-child(4) {
+    width: 15%;
+}
+
+.user-management-table th:nth-child(5) {
+    width: 26%;
+}
+
+
+/* TABLE DATA */
+
+.user-management-table td {
+    padding: 14px 8px;
+
+    text-align: center;
+
+    color: #1f2937 !important;
+
+    background: #fff;
+
+    border-bottom: 1px solid #e5e7eb;
+
+    font-size: 14px;
+
+    word-break: break-word;
+}
+
+
+/* LAST ROW */
+
+.user-management-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* HOVER */
+
+.user-management-table tbody tr:hover td {
+    background: #f8fbff;
+
+    color: #1f2937 !important;
+}
+
+
+/* ROLE BADGE */
+
+.user-role-badge {
+    display: inline-block;
+
+    background: #2563eb;
+
+    color: #fff !important;
+
+    padding: 6px 13px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+
+/* ACTION BUTTONS */
+
+.user-action-buttons {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 7px;
+
+    white-space: nowrap;
+}
+
+
+/* EDIT */
+
+.user-edit-btn {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 5px;
+
+    padding: 8px 12px;
+
+    border-radius: 8px;
+
+    background: #f59e0b;
+
+    color: #fff !important;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    transition: .3s;
+}
+
+.user-edit-btn:hover {
+    background: #d97706;
+
+    transform: translateY(-2px);
+}
+
+
+/* DELETE */
+
+.user-delete-btn {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 5px;
+
+    padding: 8px 12px;
+
+    border-radius: 8px;
+
+    background: #ef4444;
+
+    color: #fff !important;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    transition: .3s;
+}
+
+.user-delete-btn:hover {
+    background: #dc2626;
+
+    transform: translateY(-2px);
+}
+
+
+/* NO USERS */
+
+.no-users {
+    background: #fff;
+
+    color: #64748b;
+
+    border-radius: 14px;
+
+    padding: 35px;
+
+    text-align: center;
+}
+
+.no-users i {
+    font-size: 35px;
+
+    margin-bottom: 10px;
+
+    color: #2563eb;
+}
+
+
+/* USER MANAGEMENT DIVIDER */
+
+.user-management-card hr {
+    margin: 28px 0;
+
+    border: none;
+
+    border-top: 1px solid rgba(255,255,255,.25);
+}
+
+
+/* BACK BUTTON */
+
+.user-management-bottom {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+}
+
+.user-back-btn {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    padding: 12px 22px;
+
+    border-radius: 10px;
+
+    background: #fff;
+
+    color: #2563eb !important;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    transition: .3s;
+}
+
+.user-back-btn:hover {
+    background: #eff6ff;
+
+    transform: translateY(-3px);
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #dbeafe;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #2563eb;
+
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #1d4ed8;
+}
+
+
+/* =========================================================
+   ROLE SELECTION PAGE
+========================================================= */
+
+.role-header {
+    text-align: center;
+
+    margin-top: 60px;
+
+    margin-bottom: 40px;
+}
+
+.role-logo {
+    width: 80px;
+    height: 80px;
+
+    margin: 0 auto 20px auto;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #2563eb;
+
+    color: white;
+
+    font-size: 36px;
+
+    box-shadow: 0 8px 20px rgba(37,99,235,.25);
+}
+
+.role-header h1 {
+    margin: 0;
+
+    font-size: 34px;
+
+    font-weight: 700;
+
+    color: #1e293b;
+}
+
+.role-header p {
+    margin-top: 10px;
+
+    font-size: 16px;
+
+    color: #64748b;
+}
+
+
+/* ROLE GRID */
+
+.role-grid {
+    width: 90%;
+
+    max-width: 1100px;
+
+    margin: 0 auto 60px auto;
+
+    display: grid;
+
+    grid-template-columns: repeat(3,1fr);
+
+    gap: 30px;
+
+    justify-content: center;
+}
+
+
+/* ROLE CARD */
+
+.role-card {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    min-height: 230px;
+
+    padding: 30px;
+
+    text-decoration: none;
+
+    background: white;
+
+    border-radius: 18px;
+
+    border: 1px solid #e2e8f0;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,.08);
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
+
+    color: #1e293b;
+}
+
+
+/* ROLE ICON */
+
+.role-card i {
+    font-size: 45px;
+
+    margin-bottom: 18px;
+
+    color: #2563eb;
+}
+
+
+/* ROLE TITLE */
+
+.role-card h2 {
+    margin: 0 0 10px 0;
+
+    font-size: 24px;
+
+    font-weight: 700;
+
+    color: #1e293b;
+}
+
+
+/* ROLE DESCRIPTION */
+
+.role-card p {
+    margin: 0;
+
+    font-size: 15px;
+
+    line-height: 1.6;
+
+    color: #64748b;
+}
+
+
+/* ROLE HOVER */
+
+.role-card:hover {
+    transform: translateY(-8px);
+
+    box-shadow: 0 18px 35px rgba(0,0,0,.12);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1200px) {
+
+    .dashboard-grid {
+        grid-template-columns: repeat(3,1fr);
+    }
+
+}
+
+
+@media(max-width:900px) {
+
+    .dashboard-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .navbar {
+        padding: 20px;
+
+        height: auto;
+
+        flex-direction: column;
+
+        gap: 20px;
+    }
+
+    .logo-section {
+        flex-direction: column;
+
+        text-align: center;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .table-top {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .book-table {
+        display: block;
+
+        overflow-x: auto;
+    }
+
+    .book-management-options {
+        grid-template-columns: 1fr;
+    }
+
+    /* USER MANAGEMENT */
+
+    .user-management-card {
+        padding: 30px 20px;
+    }
+
+    .user-management-table th,
+    .user-management-table td {
+        padding: 11px 6px;
+
+        font-size: 12px;
+    }
+
+    .user-edit-btn,
+    .user-delete-btn {
+        padding: 7px 8px;
+
+        font-size: 11px;
+    }
+
+}
+
+
+@media(max-width:768px) {
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .welcome-box {
+        text-align: center;
+
+        padding: 25px;
+    }
+
+    .welcome-box h1 {
+        font-size: 30px;
+    }
+
+    .logo-section h2 {
+        font-size: 22px;
+    }
+
+    .role-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-btn,
+    .logout-btn {
+        width: 100%;
+    }
+
+    .navbar-right {
+        width: 100%;
+
+        flex-direction: column;
+    }
+
+    .dashboard-container .dashboard-grid {
+        flex-direction: column;
+
+        align-items: center;
+    }
+
+    .dashboard-container .dashboard-card {
+        width: 100%;
+
+        max-width: 420px;
+    }
+
+    .book-table,
+    .management-table {
+        font-size: 13px;
+    }
+
+}
+
+
+@media(max-width:650px) {
+
+    .user-management-page {
+        padding: 25px 10px;
+    }
+
+    .user-management-card {
+        padding: 25px 12px;
+    }
+
+    .user-management-card h2 {
+        font-size: 25px;
+    }
+
+    .user-management-table th,
+    .user-management-table td {
+        padding: 9px 4px;
+
+        font-size: 10px;
+    }
+
+    .user-role-badge {
+        padding: 5px 8px;
+
+        font-size: 10px;
+    }
+
+    .user-action-buttons {
+        gap: 3px;
+    }
+
+    .user-edit-btn,
+    .user-delete-btn {
+        padding: 6px 5px;
+
+        font-size: 9px;
+    }
+
+}
+
+
+@media(max-width:600px) {
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .welcome-box {
+        text-align: center;
+
+        padding: 25px;
+    }
+
+    .welcome-box h1 {
+        font-size: 30px;
+    }
+
+    .logo-section h2 {
+        font-size: 22px;
+    }
+
+    .role-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-btn,
+    .logout-btn {
+        width: 100%;
+    }
+
+    .navbar-right {
+        width: 100%;
+
+        flex-direction: column;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+    }
+
+}
+
+/* =========================================================
+   BORROW BOOKS
+   CENTERED & SLIGHTLY LARGER
+========================================================= */
+
+.borrow-page-container{
+    min-height:100vh;
+    width:100%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:40px 20px;
+}
+
+
+/* BORROW MAIN CARD */
+
+.borrow-management-card{
+    width:100%;
+    max-width:550px;
+
+    background:rgba(255,255,255,.12);
+
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.2);
+
+    border-radius:22px;
+
+    padding:45px 40px;
+
+    box-shadow:0 20px 45px rgba(0,0,0,.35);
+
+    animation:fadeUp .7s ease;
+
+    text-align:center;
+}
+
+
+/* BORROW ICON */
+
+.borrow-icon{
+    width:90px;
+    height:90px;
+
+    margin:0 auto 20px auto;
+
+    border-radius:50%;
+
+    background:#fff;
+
+    color:#2563eb;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:45px;
+}
+
+
+/* BORROW TITLE */
+
+.borrow-management-card h2{
+    text-align:center;
+
+    font-size:32px;
+
+    margin-bottom:12px;
+
+    color:#fff;
+}
+
+
+/* BORROW SUBTITLE */
+
+.borrow-subtitle{
+    text-align:center;
+
+    color:#FFD43B;
+
+    font-size:16px;
+
+    margin-bottom:30px;
+
+    line-height:1.6;
+}
+
+
+/* BORROW FORM */
+
+.borrow-form{
+    width:100%;
+
+    max-width:500px;
+
+    margin:0 auto;
+}
+
+
+/* BORROW INPUT GROUP */
+
+.borrow-input-group{
+    text-align:left;
+
+    margin-bottom:25px;
+}
+
+
+/* BORROW LABEL */
+
+.borrow-input-group label{
+    display:block;
+
+    margin-bottom:10px;
+
+    color:#fff;
+
+    font-size:16px;
+
+    font-weight:600;
+}
+
+
+.borrow-input-group label i{
+    margin-right:8px;
+
+    color:#FFD43B;
+}
+
+
+/* BORROW INPUT */
+
+.borrow-input-group input{
+    width:100%;
+
+    padding:15px 16px;
+
+    border:none;
+
+    outline:none;
+
+    border-radius:10px;
+
+    background:#fff;
+
+    color:#1f2937;
+
+    font-size:16px;
+
+    transition:.3s;
+}
+
+
+.borrow-input-group input:focus{
+    box-shadow:0 0 0 4px rgba(255,255,255,.25);
+}
+
+
+/* BORROW BUTTON */
+
+.borrow-submit-btn{
+    width:100%;
+
+    padding:15px 20px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#10b981;
+
+    color:#fff;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+
+.borrow-submit-btn:hover{
+    background:#059669;
+
+    transform:translateY(-3px);
+}
+
+
+.borrow-submit-btn i{
+    margin-right:8px;
+}
+
+
+/* BORROW DIVIDER */
+
+.borrow-management-card hr{
+    border:none;
+
+    border-top:1px solid rgba(255,255,255,.2);
+
+    margin:30px 0;
+}
+
+
+/* BORROW BACK BUTTON */
+
+.borrow-back-container{
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    margin-top:25px;
+}
+
+
+.borrow-back-btn{
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+    padding:14px 25px;
+
+    border-radius:12px;
+
+    background:#fff;
+
+    color:#2563eb !important;
+
+    font-weight:600;
+
+    transition:.3s;
+}
+
+
+.borrow-back-btn:hover{
+    background:#eff6ff;
+
+    transform:translateY(-3px);
+}
+
+
+/* =========================================================
+   FINE MANAGEMENT
+========================================================= */
+
+.fine-page-container{
+    min-height:100vh;
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:40px 25px;
+}
+
+
+/* FINE MAIN CARD */
+
+.fine-management-card{
+    width:100%;
+
+    max-width:1100px;
+
+    background:rgba(255,255,255,.12);
+
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.2);
+
+    border-radius:22px;
+
+    padding:40px;
+
+    box-shadow:0 20px 45px rgba(0,0,0,.35);
+
+    animation:fadeUp .7s ease;
+}
+
+
+/* FINE ICON */
+
+.fine-icon{
+    width:80px;
+    height:80px;
+
+    margin:0 auto 20px auto;
+
+    border-radius:50%;
+
+    background:#fff;
+
+    color:#2563eb;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:34px;
+}
+
+
+/* FINE TITLE */
+
+.fine-management-card h2{
+    text-align:center;
+
+    font-size:30px;
+
+    margin-bottom:10px;
+
+    color:#fff;
+}
+
+
+/* FINE SUBTITLE */
+
+.fine-subtitle{
+    text-align:center;
+
+    color:#FFD43B;
+
+    font-size:16px;
+
+    margin-bottom:30px;
+}
+
+
+/* FINE TABLE CONTAINER */
+
+.fine-table-container{
+    width:100%;
+
+    overflow-x:auto;
+
+    border-radius:15px;
+
+    background:#fff;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+
+/* FINE TABLE */
+
+.fine-table{
+    width:100%;
+
+    border-collapse:collapse;
+
+    background:#fff;
+
+    color:#1f2937;
+}
+
+
+/* FINE TABLE HEADER */
+
+.fine-table th{
+    background:#f1f3ff;
+
+    color:#333333 !important;
+
+    padding:16px;
+
+    text-align:center;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    border-bottom:2px solid #e2e5f5;
+}
+
+
+/* FINE TABLE DATA */
+
+.fine-table td{
+    padding:16px;
+
+    text-align:center;
+
+    color:#1f2937 !important;
+
+    background:#fff;
+
+    border-bottom:1px solid #e5e7eb;
+
+    font-size:15px;
+}
+
+
+/* FINE TABLE HOVER */
+
+.fine-table tbody tr:hover td{
+    background:#f8fbff;
+
+    color:#1f2937 !important;
+}
+
+
+/* FINE STATUS */
+
+.fine-status{
+    display:inline-block;
+
+    padding:7px 16px;
+
+    border-radius:20px;
+
+    font-size:13px;
+
+    font-weight:600;
+}
+
+
+/* PENDING STATUS */
+
+.fine-status.pending{
+    background:#fef3c7;
+
+    color:#92400e !important;
+}
+
+
+/* FINE BACK BUTTON */
+
+.fine-back-container{
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    margin-top:30px;
+}
+
+
+.fine-back-btn{
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+    padding:14px 25px;
+
+    border-radius:12px;
+
+    background:#fff;
+
+    color:#2563eb !important;
+
+    font-weight:600;
+
+    transition:.3s;
+}
+
+
+.fine-back-btn:hover{
+    background:#eff6ff;
+
+    transform:translateY(-3px);
+}
+
+
+/* =========================================================
+   RESPONSIVE - BORROW BOOKS
+========================================================= */
+
+@media(max-width:768px){
+
+    .borrow-page-container{
+        padding:25px 15px;
+
+        align-items:flex-start;
+    }
+
+
+    .borrow-management-card{
+        padding:30px 20px;
+
+        margin-top:30px;
+    }
+
+
+    .borrow-management-card h2{
+        font-size:25px;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - FINE MANAGEMENT
+========================================================= */
+
+@media(max-width:768px){
+
+    .fine-page-container{
+        padding:25px 15px;
+
+        align-items:flex-start;
+    }
+
+
+    .fine-management-card{
+        padding:30px 15px;
+
+        margin-top:30px;
+    }
+
+
+    .fine-management-card h2{
+        font-size:25px;
+    }
+
+
+    .fine-table{
+        min-width:750px;
+    }
+
+}
+/* =========================================================
+   BORROW BOOKS - CENTERED & SLIGHTLY LARGER
+========================================================= */
+
+.borrow-page-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.borrow-management-card {
+    width: 100%;
+    max-width: 550px;
+    padding: 45px 40px;
+    text-align: center;
+}
+
+.borrow-icon {
+    font-size: 55px;
+    margin-bottom: 20px;
+}
+
+.borrow-management-card h2 {
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+.borrow-subtitle {
+    font-size: 16px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.borrow-input-group {
+    text-align: left;
+    margin-bottom: 25px;
+}
+
+.borrow-input-group label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.borrow-input-group input {
+    width: 100%;
+    padding: 15px 16px;
+    font-size: 16px;
+    border-radius: 10px;
+}
+
+.borrow-submit-btn {
+    width: 100%;
+    padding: 15px 20px;
+    font-size: 16px;
+    border-radius: 10px;
+}
+
+.borrow-back-container {
+    margin-top: 25px;
+}
+
+.borrow-back-btn {
+    font-size: 15px;
+}
+/* =========================================================
+   BORROW RECORDS
+========================================================= */
+
+.borrow-records-page {
+    min-height: 100vh;
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    padding: 50px 25px;
+}
+
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.borrow-records-card {
+    width: 100%;
+    max-width: 1100px;
+
+    background: rgba(255,255,255,.12);
+    backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255,255,255,.20);
+
+    border-radius: 24px;
+
+    padding: 40px;
+
+    box-shadow: 0 20px 45px rgba(0,0,0,.35);
+
+    animation: fadeUp .7s ease;
+}
+
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.borrow-records-icon {
+    width: 80px;
+    height: 80px;
+
+    margin: 0 auto 18px auto;
+
+    border-radius: 50%;
+
+    background: #fff;
+
+    color: #2563eb;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    font-size: 34px;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.borrow-records-card h2 {
+    text-align: center;
+
+    font-size: 32px;
+
+    margin-bottom: 10px;
+
+    color: #fff;
+}
+
+
+/* =========================================================
+   SUBTITLE
+========================================================= */
+
+.borrow-records-subtitle {
+    text-align: center;
+
+    color: #FFD43B;
+
+    font-size: 15px;
+
+    margin-bottom: 30px;
+}
+
+
+/* =========================================================
+   TABLE CONTAINER
+========================================================= */
+
+.borrow-records-table-container {
+    width: 100%;
+
+    overflow-x: auto;
+
+    border-radius: 14px;
+
+    background: #fff;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,.15);
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.borrow-records-table {
+    width: 100%;
+
+    min-width: 700px;
+
+    border-collapse: collapse;
+
+    background: #fff;
+}
+
+
+/* =========================================================
+   TABLE HEADER
+========================================================= */
+
+.borrow-records-table th {
+    background: #2563eb;
+
+    color: #fff !important;
+
+    padding: 16px;
+
+    text-align: center;
+
+    font-size: 15px;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   TABLE DATA
+========================================================= */
+
+.borrow-records-table td {
+    padding: 16px;
+
+    text-align: center;
+
+    color: #1f2937 !important;
+
+    background: #fff;
+
+    border-bottom: 1px solid #e5e7eb;
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   TABLE HOVER
+========================================================= */
+
+.borrow-records-table tbody tr:hover td {
+    background: #f8fbff;
+
+    color: #1f2937 !important;
+}
+
+
+/* =========================================================
+   STATUS BADGE
+========================================================= */
+
+.borrow-status {
+    display: inline-block;
+
+    padding: 7px 15px;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   RETURNED
+========================================================= */
+
+.borrow-status.returned {
+    background: #dcfce7;
+
+    color: #166534 !important;
+}
+
+
+/* =========================================================
+   BORROWED
+========================================================= */
+
+.borrow-status.borrowed {
+    background: #dbeafe;
+
+    color: #1d4ed8 !important;
+}
+
+
+/* =========================================================
+   OVERDUE
+========================================================= */
+
+.borrow-status.overdue {
+    background: #fee2e2;
+
+    color: #b91c1c !important;
+}
+
+
+/* =========================================================
+   BACK BUTTON CONTAINER
+========================================================= */
+
+.borrow-records-back-container {
+    width: 100%;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 30px;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.borrow-records-back-btn {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    padding: 14px 25px;
+
+    border-radius: 12px;
+
+    background: #fff;
+
+    color: #2563eb !important;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition: .3s;
+}
+
+
+.borrow-records-back-btn:hover {
+    background: #eff6ff;
+
+    transform: translateY(-3px);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:768px) {
+
+    .borrow-records-page {
+        padding: 30px 15px;
+    }
+
+    .borrow-records-card {
+        padding: 30px 15px;
+    }
+
+    .borrow-records-card h2 {
+        font-size: 26px;
+    }
+
+    .borrow-records-subtitle {
+        font-size: 14px;
+    }
+
+    .borrow-records-table th,
+    .borrow-records-table td {
+        padding: 12px 8px;
+        
+        font-size: 12px;
+    }
+
+}
+/* =====================================================
+   BORROW RECORDS PAGE
+===================================================== */
+
+.borrow-records-card {
+    width: 95%;
+    max-width: 1400px;
+    margin: 30px auto;
+    padding: 30px;
+}
+
+
+/* =====================================================
+   BORROW RECORDS TABLE CONTAINER
+===================================================== */
+
+.borrow-table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 25px;
+}
+
+
+/* =====================================================
+   BORROW RECORDS TABLE
+===================================================== */
+
+.borrow-table {
+    width: 100%;
+    min-width: 1150px;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+
+/* TABLE HEADER */
+
+.borrow-table th {
+    padding: 13px 12px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+
+/* TABLE DATA */
+
+.borrow-table td {
+    padding: 13px 12px;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+
+/* =====================================================
+   NO RECORDS MESSAGE
+===================================================== */
+
+.no-borrow-records {
+    margin-top: 30px;
+    text-align: center;
+}
+
+
+.no-borrow-records i {
+    font-size: 40px;
+}
+
+
+/* =====================================================
+   BACK TO DASHBOARD
+===================================================== */
+
+.borrow-back-section {
+    margin-top: 25px;
+}
+
+    /* =====================================================
+       RETURN BOOKS PAGE - FULL WIDTH
+    ===================================================== */
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        min-width: 100%;
+        font-family: 'Poppins', sans-serif;
+    }
+
+
+    /* =====================================================
+       MAIN PAGE
+    ===================================================== */
+
+    .return-page {
+
+        width: 100vw !important;
+
+        max-width: none !important;
+
+        min-height: 100vh;
+
+        margin: 0 !important;
+
+        padding: 25px 20px !important;
+
+        box-sizing: border-box;
+
+        overflow-x: auto;
+    }
+
+
+    /* =====================================================
+       REMOVE RESTRICTIONS FROM BOOK CARD
+    ===================================================== */
+
+    .return-page .book-card.return-card {
+
+        width: calc(100vw - 40px) !important;
+
+        max-width: none !important;
+
+        min-width: 0 !important;
+
+        margin: 0 !important;
+
+        padding: 35px 40px !important;
+
+        box-sizing: border-box;
+
+        border-radius: 12px;
+
+        overflow: visible !important;
+    }
+
+
+    /* =====================================================
+       ICON
+    ===================================================== */
+
+    .return-icon {
+
+        text-align: center;
+
+        font-size: 45px;
+
+        margin-bottom: 15px;
+    }
+
+
+    /* =====================================================
+       TITLE
+    ===================================================== */
+
+    .return-card h2 {
+
+        text-align: center;
+
+        margin: 0 0 8px 0;
+
+        font-size: 32px;
+    }
+
+
+    /* =====================================================
+       SUBTITLE
+    ===================================================== */
+
+    .return-subtitle {
+
+        text-align: center;
+
+        margin: 0 0 30px 0;
+
+        font-size: 17px;
+    }
+
+
+    /* =====================================================
+       FLASH MESSAGE
+    ===================================================== */
+
+    .flash-message {
+
+        width: 100% !important;
+
+        box-sizing: border-box;
+
+        margin-bottom: 20px;
+    }
+
+
+    /* =====================================================
+       TABLE CONTAINER
+    ===================================================== */
+
+    .return-table-container {
+
+        width: 100% !important;
+
+        max-width: none !important;
+
+        margin: 20px 0 0 0 !important;
+
+        padding: 0 !important;
+
+        overflow-x: auto;
+
+        overflow-y: visible;
+    }
+
+
+    /* =====================================================
+       TABLE
+    ===================================================== */
+
+    .return-table {
+
+        width: 100% !important;
+
+        max-width: none !important;
+
+        min-width: 1250px;
+
+        border-collapse: collapse;
+
+        table-layout: fixed;
+    }
+
+
+    /* =====================================================
+       TABLE HEADER
+    ===================================================== */
+
+    .return-table th {
+
+        padding: 16px 15px;
+
+        text-align: left;
+
+        font-size: 15px;
+
+        white-space: nowrap;
+    }
+
+
+    /* =====================================================
+       TABLE DATA
+    ===================================================== */
+
+    .return-table td {
+
+        padding: 20px 15px;
+
+        text-align: left;
+
+        font-size: 15px;
+
+        vertical-align: middle;
+
+        word-wrap: break-word;
+
+        overflow-wrap: break-word;
+
+        line-height: 1.5;
+    }
+
+
+    /* =====================================================
+       COLUMN WIDTHS
+    ===================================================== */
+
+    /* BOOK ID */
+    .return-table th:nth-child(1),
+    .return-table td:nth-child(1) {
+
+        width: 8%;
+    }
+
+
+    /* BOOK NAME */
+    .return-table th:nth-child(2),
+    .return-table td:nth-child(2) {
+
+        width: 22%;
+    }
+
+
+    /* BORROWER */
+    .return-table th:nth-child(3),
+    .return-table td:nth-child(3) {
+
+        width: 14%;
+    }
+
+
+    /* EMAIL */
+    .return-table th:nth-child(4),
+    .return-table td:nth-child(4) {
+
+        width: 22%;
+    }
+
+
+    /* BORROWED DATE */
+    .return-table th:nth-child(5),
+    .return-table td:nth-child(5) {
+
+        width: 12%;
+    }
+
+
+    /* DUE DATE */
+    .return-table th:nth-child(6),
+    .return-table td:nth-child(6) {
+
+        width: 12%;
+    }
+
+
+    /* ACTION */
+    .return-table th:nth-child(7),
+    .return-table td:nth-child(7) {
+
+        width: 10%;
+    }
+
+
+    /* =====================================================
+       BOOK NAME
+    ===================================================== */
+
+    .return-table td:nth-child(2) strong {
+
+        display: block;
+
+        font-size: 15px;
+
+        white-space: normal;
+    }
+
+
+    /* =====================================================
+       EMAIL
+    ===================================================== */
+
+    .return-table td:nth-child(4) {
+
+        white-space: normal;
+
+        word-break: break-word;
+    }
+
+
+    /* =====================================================
+       RETURN BUTTON
+    ===================================================== */
+
+    .return-action-button {
+
+        padding: 10px 18px;
+
+        border: none;
+
+        border-radius: 6px;
+
+        cursor: pointer;
+
+        font-size: 14px;
+
+        white-space: nowrap;
+
+        min-width: 90px;
+    }
+
+
+    /* =====================================================
+       NO RECORDS
+    ===================================================== */
+
+    .no-return-records {
+
+        width: 100%;
+
+        text-align: center;
+
+        padding: 50px 20px;
+
+        font-size: 16px;
+
+        box-sizing: border-box;
+    }
+
+
+    .no-return-records i {
+
+        font-size: 45px;
+
+        margin-bottom: 12px;
+    }
+
+
+    /* =====================================================
+       BACK BUTTON
+    ===================================================== */
+
+    .return-back-section {
+
+        margin-top: 30px;
+
+        text-align: left;
+    }
+
+
+    /* =====================================================
+       HR
+    ===================================================== */
+
+    .return-card hr {
+
+        margin-top: 30px;
+
+        margin-bottom: 0;
+
+        border: 0;
+
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+
+    /* =====================================================
+       LARGE DESKTOP
+    ===================================================== */
+
+    @media (min-width: 1600px) {
+
+        .return-page {
+
+            padding-left: 15px !important;
+
+            padding-right: 15px !important;
+        }
+
+        .return-page .book-card.return-card {
+
+            width: calc(100vw - 30px) !important;
+
+            padding-left: 50px !important;
+
+            padding-right: 50px !important;
+        }
+
+        .return-table th {
+
+            font-size: 16px;
+
+            padding: 18px 16px;
+        }
+
+        .return-table td {
+
+            font-size: 16px;
+
+            padding: 22px 16px;
+        }
+    }
+
+
+    /* =====================================================
+       TABLET
+    ===================================================== */
+
+    @media (max-width: 1100px) {
+
+        .return-page {
+
+            padding: 20px 15px !important;
+        }
+
+        .return-page .book-card.return-card {
+
+            width: calc(100vw - 30px) !important;
+
+            padding: 30px 25px !important;
+        }
+
+        .return-table {
+
+            min-width: 1200px;
+        }
+    }
+
+
+    /* =====================================================
+       MOBILE
+    ===================================================== */
+
+    @media (max-width: 700px) {
+
+        .return-page {
+
+            padding: 15px 10px !important;
+        }
+
+        .return-page .book-card.return-card {
+
+            width: calc(100vw - 20px) !important;
+
+            padding: 25px 15px !important;
+        }
+
+        .return-card h2 {
+
+            font-size: 27px;
+        }
+
+        .return-subtitle {
+
+            font-size: 14px;
+        }
+
+        .return-table {
+
+            min-width: 1100px;
+        }
+
+        .return-table th,
+        .return-table td {
+
+            padding: 11px 9px;
+
+            font-size: 13px;
+        }
+    }
+

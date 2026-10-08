@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Book | Library Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<header class="navbar">
+
+    <div class="logo-section">
+
+        <div class="logo-circle">
+
+            <i class="fa-solid fa-book-open"></i>
+
+        </div>
+
+        <div>
+
+            <h2>
+                Library Management System
+            </h2>
+
+            <p>
+
+                {% if session.get('role') == 'admin' %}
+                    Admin Portal
+                {% elif session.get('role') == 'librarian' %}
+                    Librarian Portal
+                {% endif %}
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="navbar-right">
+
+        <a href="{{ url_for('book_management') }}"
+           class="profile-btn">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Books
+
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<!-- ================= PAGE HEADER ================= -->
+
+<section class="welcome-box">
+
+    <h1>
+
+        <i class="fa-solid fa-pen"></i>
+
+        Edit Book
+
+    </h1>
+
+    <p>
+        Update the details of this library book.
+    </p>
+
+</section>
+
+
+
+<!-- ================= EDIT FORM ================= -->
+
+<section class="book-form">
+
+    <h2>
+
+        <i class="fa-solid fa-book"></i>
+
+        Book Details
+
+    </h2>
+
+
+    <form
+        method="POST"
+        action="{{ url_for(
+            'edit_book',
+            book_id=book.get('book_id')
+        ) }}">
+
+
+        <div class="form-grid">
+
+
+            <!-- BOOK ID -->
+
+            <input
+                type="text"
+                name="book_id"
+                placeholder="Book ID"
+                value="{{ book.get('book_id', '') }}"
+                required
+            >
+
+
+            <!-- BOOK NAME -->
+
+            <input
+                type="text"
+                name="book_name"
+                placeholder="Book Name"
+                value="{{ book.get('book_name', '') }}"
+                required
+            >
+
+
+            <!-- AUTHOR -->
+
+            <input
+                type="text"
+                name="author"
+                placeholder="Author"
+                value="{{ book.get('author', '') }}"
+                required
+            >
+
+
+            <!-- PUBLISHER -->
+
+            <input
+                type="text"
+                name="publisher"
+                placeholder="Publisher"
+                value="{{ book.get('publisher', '') }}"
+            >
+
+
+            <!-- ISBN is no longer shown in the UI, but the existing
+                 value must not be lost when this form is submitted. -->
+
+            <input
+                type="hidden"
+                name="isbn"
+                value="{{ book.get('isbn', '') }}"
+            >
+
+
+            <!-- CATEGORY -->
+
+            <select
+                name="category"
+                required>
+
+                <option value="">
+                    Select Category
+                </option>
+
+                <option value="Programming"
+                    {% if book.get('category') == 'Programming' %}
+                        selected
+                    {% endif %}>
+                    Programming
+                </option>
+
+                <option value="Database"
+                    {% if book.get('category') == 'Database' %}
+                        selected
+                    {% endif %}>
+                    Database
+                </option>
+
+                <option value="Artificial Intelligence"
+                    {% if book.get('category') == 'Artificial Intelligence' %}
+                        selected
+                    {% endif %}>
+                    Artificial Intelligence
+                </option>
+
+                <option value="Science"
+                    {% if book.get('category') == 'Science' %}
+                        selected
+                    {% endif %}>
+                    Science
+                </option>
+
+                <option value="Mathematics"
+                    {% if book.get('category') == 'Mathematics' %}
+                        selected
+                    {% endif %}>
+                    Mathematics
+                </option>
+
+                <option value="History"
+                    {% if book.get('category') == 'History' %}
+                        selected
+                    {% endif %}>
+                    History
+                </option>
+
+                <option value="Novel"
+                    {% if book.get('category') == 'Novel' %}
+                        selected
+                    {% endif %}>
+                    Novel
+                </option>
+
+                <option value="Computer Science"
+                    {% if book.get('category') == 'Computer Science' %}
+                        selected
+                    {% endif %}>
+                    Computer Science
+                </option>
+
+            </select>
+
+
+            <!-- COPIES -->
+
+            <input
+                type="number"
+                name="copies"
+                placeholder="Number of Copies"
+                min="0"
+                value="{{ book.get('copies', 0) }}"
+                required
+            >
+
+        </div>
+
+
+
+        <!-- BUTTONS -->
+
+        <div class="form-buttons">
+
+            <button
+                type="submit"
+                class="save-btn">
+
+                <i class="fa-solid fa-floppy-disk"></i>
+
+                Save Changes
+
+            </button>
+
+
+            <a
+                href="{{ url_for('book_management') }}"
+                class="cancel-btn">
+
+                <i class="fa-solid fa-xmark"></i>
+
+                Cancel
+
+            </a>
+
+        </div>
+
+    </form>
+
+</section>
+
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="dashboard-footer">
+
+    <p>
+        © 2026 Library Management System | Edit Book
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>

@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Book Availability | Library Management System</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .avail-page {
+            min-height: 100vh !important;
+
+            width: 100% !important;
+
+            padding: 40px 20px !important;
+
+            box-sizing: border-box !important;
+
+            background: linear-gradient(
+                135deg,
+                #3569d8,
+                #2858c7
+            ) !important;
+
+            display: flex !important;
+
+            justify-content: center !important;
+
+            align-items: flex-start !important;
+        }
+
+
+        /* =====================================================
+           MAIN CARD
+        ===================================================== */
+
+        .avail-main-card {
+            width: 100% !important;
+
+            max-width: 1200px !important;
+
+            margin: 0 auto !important;
+
+            padding: 40px !important;
+
+            box-sizing: border-box !important;
+
+            background: #ffffff !important;
+
+            border-radius: 22px !important;
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.20) !important;
+
+            color: #333333 !important;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .avail-header {
+            text-align: center !important;
+
+            margin-bottom: 35px !important;
+        }
+
+
+        .avail-icon {
+            width: 75px !important;
+
+            height: 75px !important;
+
+            margin: 0 auto 18px !important;
+
+            display: flex !important;
+
+            align-items: center !important;
+
+            justify-content: center !important;
+
+            border-radius: 50% !important;
+
+            background: linear-gradient(
+                135deg,
+                #667eea,
+                #764ba2
+            ) !important;
+
+            color: white !important;
+
+            font-size: 30px !important;
+
+            box-shadow:
+                0 8px 20px rgba(102, 126, 234, 0.30) !important;
+        }
+
+
+        .avail-title {
+            margin: 0 !important;
+
+            color: #222222 !important;
+
+            font-size: 32px !important;
+
+            font-weight: 700 !important;
+        }
+
+
+        .avail-subtitle {
+            margin: 10px auto 0 !important;
+
+            color: #666666 !important;
+
+            font-size: 16px !important;
+
+            line-height: 1.5 !important;
+        }
+
+
+        /* =====================================================
+           SEARCH
+        ===================================================== */
+
+        .avail-search-wrap {
+            margin-top: 26px !important;
+        }
+
+        .avail-search-input {
+            width: 100% !important;
+            max-width: 420px !important;
+            padding: 13px 18px !important;
+            border: 2px solid #dbeafe !important;
+            border-radius: 10px !important;
+            font-size: 14px !important;
+            font-family: inherit !important;
+            color: #222222 !important;
+            background: #ffffff !important;
+            outline: none !important;
+            box-sizing: border-box !important;
+            transition: border-color 0.2s ease !important;
+        }
+
+        .avail-search-input:focus {
+            border-color: #2563eb !important;
+        }
+
+
+        /* =====================================================
+           TABLE OUTER BOX
+        ===================================================== */
+
+        .avail-table-wrapper {
+            width: 100% !important;
+
+            overflow-x: auto !important;
+
+            margin-top: 30px !important;
+
+            border: 1px solid #e1e4ec !important;
+
+            border-radius: 12px !important;
+        }
+
+
+        /* =====================================================
+           TABLE
+        ===================================================== */
+
+        .avail-table {
+            width: 100% !important;
+
+            min-width: 750px !important;
+
+            border-collapse: collapse !important;
+
+            table-layout: fixed !important;
+
+            background: #ffffff !important;
+
+            color: #333333 !important;
+        }
+
+
+        .avail-table thead th {
+            padding: 16px 12px !important;
+
+            background: #f1f3ff !important;
+
+            color: #333333 !important;
+
+            text-align: center !important;
+
+            vertical-align: middle !important;
+
+            font-size: 14px !important;
+
+            font-weight: 700 !important;
+
+            border-bottom: 2px solid #dfe3ef !important;
+        }
+
+
+        .avail-table tbody td {
+            padding: 16px 12px !important;
+
+            background: #ffffff !important;
+
+            color: #444444 !important;
+
+            text-align: center !important;
+
+            vertical-align: middle !important;
+
+            font-size: 14px !important;
+
+            line-height: 1.5 !important;
+
+            border-bottom: 1px solid #eeeeee !important;
+
+            word-break: break-word !important;
+        }
+
+
+        .avail-table tbody td:nth-child(2) {
+            text-align: left !important;
+        }
+
+
+        .avail-table tbody tr:hover td {
+            background: #f8f9ff !important;
+        }
+
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .avail-status {
+            display: inline-flex !important;
+
+            align-items: center !important;
+
+            justify-content: center !important;
+
+            min-width: 90px !important;
+
+            padding: 7px 12px !important;
+
+            border-radius: 20px !important;
+
+            font-size: 13px !important;
+
+            font-weight: 700 !important;
+        }
+
+
+        .avail-status.available {
+            background: #e8f8ee !important;
+
+            color: #16803c !important;
+        }
+
+
+        .avail-status.unavailable {
+            background: #fdeaea !important;
+
+            color: #b91c1c !important;
+        }
+
+
+        /* =====================================================
+           EMPTY MESSAGE
+        ===================================================== */
+
+        .avail-empty {
+            padding: 35px !important;
+
+            text-align: center !important;
+
+            color: #777777 !important;
+
+            background: #ffffff !important;
+        }
+
+
+        /* =====================================================
+           BACK BUTTON
+        ===================================================== */
+
+        .avail-back-area {
+            text-align: center !important;
+
+            margin-top: 30px !important;
+        }
+
+
+        .avail-back-btn {
+            display: inline-flex !important;
+
+            align-items: center !important;
+
+            justify-content: center !important;
+
+            gap: 8px !important;
+
+            padding: 12px 24px !important;
+
+            border-radius: 10px !important;
+
+            text-decoration: none !important;
+
+            color: white !important;
+
+            background: linear-gradient(
+                135deg,
+                #667eea,
+                #764ba2
+            ) !important;
+
+            font-size: 15px !important;
+
+            font-weight: 600 !important;
+
+            transition: 0.2s ease !important;
+        }
+
+
+        .avail-back-btn:hover {
+            transform: translateY(-2px) !important;
+
+            box-shadow:
+                0 7px 18px rgba(102, 126, 234, 0.35) !important;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .avail-page {
+                padding: 20px 10px !important;
+            }
+
+            .avail-main-card {
+                padding: 25px 15px !important;
+
+                border-radius: 18px !important;
+            }
+
+            .avail-title {
+                font-size: 26px !important;
+            }
+
+            .avail-subtitle {
+                font-size: 14px !important;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="avail-page">
+
+
+    <div class="avail-main-card">
+
+
+        <!-- =================================================
+             HEADER
+        ================================================= -->
+
+        <div class="avail-header">
+
+            <div class="avail-icon">
+
+                <i class="fa-solid fa-box-open"></i>
+
+            </div>
+
+
+            <h1 class="avail-title">
+                Book Availability
+            </h1>
+
+
+            <p class="avail-subtitle">
+                Live availability for every book, based on current copies in Book Management.
+            </p>
+
+        </div>
+
+
+
+        <!-- =================================================
+             TABLE
+        ================================================= -->
+
+        <div class="avail-search-wrap">
+            <input
+                type="text"
+                id="availSearchInput"
+                class="avail-search-input"
+                placeholder="🔍 Search by Book ID, Book Name or Category">
+        </div>
+
+        <div class="avail-table-wrapper">
+
+            <table class="avail-table" id="availTable">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Book ID
+                        </th>
+
+                        <th>
+                            Book Name
+                        </th>
+
+                        <th>
+                            Category
+                        </th>
+
+                        <th>
+                            Total Copies
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% if books %}
+
+                        {% for book in books %}
+
+                        <tr>
+
+                            <td>
+                                {{ book.get('book_id', 'N/A') }}
+                            </td>
+
+                            <td>
+                                {{ book.get('book_name', 'N/A') }}
+                            </td>
+
+                            <td>
+                                {{ book.get('category', 'N/A') }}
+                            </td>
+
+                            <td>
+                                {{ book.get('copies', 0) }}
+                            </td>
+
+                            <td>
+
+                                {% if book.get('copies', 0)|int > 0 %}
+
+                                    <span class="avail-status available">
+                                        <i class="fa-solid fa-check"></i>
+                                        &nbsp;Available
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="avail-status unavailable">
+                                        <i class="fa-solid fa-xmark"></i>
+                                        &nbsp;Unavailable
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <tr>
+
+                            <td
+                                colspan="5"
+                                class="avail-empty"
+                            >
+
+                                <i class="fa-solid fa-book-open"></i>
+
+                                <br><br>
+
+                                No books available in the library.
+
+                            </td>
+
+                        </tr>
+
+                    {% endif %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+
+        <!-- =================================================
+             BACK TO DASHBOARD
+        ================================================= -->
+
+        <div class="avail-back-area">
+
+            <a
+                href="{{ url_for('back_to_dashboard') }}"
+                class="avail-back-btn"
+            >
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Back to Dashboard
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+<script>
+
+    // =====================================================
+    // SEARCH — filters the availability table by Book ID,
+    // Book Name or Category. Client-side only, read-only page.
+    // =====================================================
+
+    (function() {
+
+        const searchInput = document.getElementById("availSearchInput");
+        const table = document.getElementById("availTable");
+
+        if (!searchInput || !table) {
+            return;
+        }
+
+        searchInput.addEventListener("input", function() {
+
+            const query = searchInput.value.toLowerCase().trim();
+            const rows = table.querySelectorAll("tbody tr");
+
+            rows.forEach(function(row) {
+
+                const cells = row.querySelectorAll("td");
+
+                // Skip the "no books available" empty-state row
+                // (single colspan cell, not a real data row).
+                if (cells.length < 4) {
+                    return;
+                }
+
+                const bookId = cells[0].innerText.toLowerCase();
+                const bookName = cells[1].innerText.toLowerCase();
+                const category = cells[2].innerText.toLowerCase();
+
+                const matches =
+                    bookId.includes(query) ||
+                    bookName.includes(query) ||
+                    category.includes(query);
+
+                row.style.display = matches ? "" : "none";
+
+            });
+
+        });
+
+    })();
+
+</script>
+
+</body>
+
+</html>

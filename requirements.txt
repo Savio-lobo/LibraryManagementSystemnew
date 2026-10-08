@@ -1,0 +1,5 @@
+Flask
+Flask-Bcrypt
+Flask-Mail
+psycopg[binary,pool]>=3.2
+gunicorn

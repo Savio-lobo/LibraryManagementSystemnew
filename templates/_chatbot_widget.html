@@ -1,0 +1,751 @@
+<!-- =====================================================
+     LIBRARY CHATBOT DOLL (simple RAG assistant)
+     USER DASHBOARD ONLY - this partial must only ever be
+     included from user_dashboard.html. It is a small
+     floating, draggable bot; click it to open a compact
+     chat window with 9 fixed ready-made questions that are
+     answered using live library data (books/waitlist/fine
+     rules), no external AI/ML model involved.
+====================================================== -->
+
+<style>
+
+    #libChatbotDoll {
+
+        position: fixed;
+
+        bottom: 26px;
+        right: 26px;
+
+        width: 56px;
+        height: 56px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 50%;
+
+        background: linear-gradient(135deg, #667eea, #764ba2);
+
+        color: #ffffff;
+
+        font-size: 24px;
+
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.45);
+
+        cursor: grab;
+
+        z-index: 9999;
+
+        touch-action: none;
+        user-select: none;
+
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    #libChatbotDoll:hover {
+        transform: scale(1.08);
+        box-shadow: 0 10px 26px rgba(102, 126, 234, 0.55);
+    }
+
+    #libChatbotDoll.dragging {
+        cursor: grabbing;
+        transform: scale(1.05);
+    }
+
+    #libChatbotDoll .lib-chatbot-ping {
+        position: absolute;
+        top: -2px;
+        right: -2px;
+
+        width: 14px;
+        height: 14px;
+
+        border-radius: 50%;
+
+        background: #22c55e;
+
+        border: 2px solid #ffffff;
+    }
+
+    #libChatbotWindow {
+
+        position: fixed;
+
+        bottom: 92px;
+        right: 26px;
+
+        width: 320px;
+        max-width: 90vw;
+
+        height: 440px;
+        max-height: 72vh;
+
+        background: #ffffff;
+
+        border-radius: 18px;
+
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
+
+        display: none;
+
+        flex-direction: column;
+
+        overflow: hidden;
+
+        z-index: 9999;
+
+        font-family: 'Poppins', sans-serif;
+    }
+
+    #libChatbotWindow.open {
+        display: flex;
+    }
+
+    .lib-chatbot-header {
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 14px 16px;
+
+        background: linear-gradient(135deg, #667eea, #764ba2);
+
+        color: #ffffff;
+    }
+
+    .lib-chatbot-header-left {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .lib-chatbot-header-left i {
+        font-size: 16px;
+    }
+
+    .lib-chatbot-close {
+        border: none;
+        background: rgba(255, 255, 255, 0.18);
+        color: #ffffff;
+
+        width: 26px;
+        height: 26px;
+
+        border-radius: 50%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        cursor: pointer;
+
+        font-size: 12px;
+    }
+
+    .lib-chatbot-close:hover {
+        background: rgba(255, 255, 255, 0.32);
+    }
+
+    .lib-chatbot-body {
+
+        flex: 1;
+
+        overflow-y: auto;
+
+        padding: 14px;
+
+        background: #f8f9ff;
+
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .lib-chatbot-msg {
+        max-width: 88%;
+
+        padding: 10px 12px;
+
+        border-radius: 12px;
+
+        font-size: 13px;
+
+        line-height: 1.5;
+
+        white-space: pre-line;
+    }
+
+    .lib-chatbot-msg-bot {
+        align-self: flex-start;
+
+        background: #ffffff;
+        color: #333333;
+
+        border: 1px solid #e4e7f5;
+
+        border-bottom-left-radius: 4px;
+    }
+
+    .lib-chatbot-msg-user {
+        align-self: flex-end;
+
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: #ffffff;
+
+        border-bottom-right-radius: 4px;
+    }
+
+    .lib-chatbot-questions {
+
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+
+        padding: 12px;
+
+        border-top: 1px solid #eeeeee;
+
+        max-height: 150px;
+
+        overflow-y: auto;
+
+        background: #ffffff;
+    }
+
+    .lib-chatbot-q-btn {
+
+        border: 1px solid #dde1fb;
+
+        background: #eef0ff;
+
+        color: #4c4fc7;
+
+        padding: 7px 10px;
+
+        border-radius: 20px;
+
+        font-size: 11.5px;
+
+        font-weight: 600;
+
+        cursor: pointer;
+
+        transition: 0.15s ease;
+
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .lib-chatbot-q-btn:hover {
+        background: #667eea;
+        color: #ffffff;
+    }
+
+    .lib-chatbot-q-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .lib-chatbot-input-row {
+
+        display: none;
+
+        align-items: center;
+        gap: 8px;
+
+        padding: 10px 12px;
+
+        border-top: 1px solid #eeeeee;
+
+        background: #f8f9ff;
+    }
+
+    .lib-chatbot-input-row.open {
+        display: flex;
+    }
+
+    .lib-chatbot-input {
+
+        flex: 1;
+
+        border: 1px solid #dde1fb;
+        background: #ffffff;
+        color: #333333;
+
+        padding: 9px 12px;
+
+        border-radius: 20px;
+
+        font-size: 12.5px;
+
+        font-family: 'Poppins', sans-serif;
+
+        outline: none;
+    }
+
+    .lib-chatbot-input:focus {
+        border-color: #667eea;
+    }
+
+    .lib-chatbot-input:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .lib-chatbot-send-btn {
+
+        flex-shrink: 0;
+
+        width: 34px;
+        height: 34px;
+
+        border: none;
+        border-radius: 50%;
+
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: #ffffff;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 13px;
+
+        cursor: pointer;
+    }
+
+    .lib-chatbot-send-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    @media (max-width: 480px) {
+
+        #libChatbotWindow {
+            right: 12px;
+            left: 12px;
+            width: auto;
+            bottom: 88px;
+        }
+
+        #libChatbotDoll {
+            right: 16px;
+            bottom: 16px;
+        }
+    }
+
+</style>
+
+
+<!-- FLOATING BOT / DOLL -->
+<div id="libChatbotDoll" title="Ask the Library Assistant">
+    <i class="fa-solid fa-robot"></i>
+    <span class="lib-chatbot-ping"></span>
+</div>
+
+
+<!-- CHAT WINDOW -->
+<div id="libChatbotWindow">
+
+    <div class="lib-chatbot-header" id="libChatbotHeader">
+
+        <div class="lib-chatbot-header-left">
+            <i class="fa-solid fa-robot"></i>
+            <span>Library Assistant</span>
+        </div>
+
+        <button type="button" id="libChatbotClose" class="lib-chatbot-close" aria-label="Close chat">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+    </div>
+
+    <div class="lib-chatbot-body" id="libChatbotBody">
+
+        <div class="lib-chatbot-msg lib-chatbot-msg-bot">
+            Hi 👋 I'm your library assistant. Tap a question below and I'll answer using live library data.
+        </div>
+
+    </div>
+
+    <div class="lib-chatbot-input-row" id="libChatbotInputRow">
+
+        <input type="text"
+               id="libChatbotBookInput"
+               class="lib-chatbot-input"
+               placeholder="Type a book title..."
+               autocomplete="off">
+
+        <button type="button" id="libChatbotBookSend" class="lib-chatbot-send-btn" aria-label="Send">
+            <i class="fa-solid fa-paper-plane"></i>
+        </button>
+
+    </div>
+
+    <div class="lib-chatbot-questions" id="libChatbotQuestions">
+
+        {% for q in chatbot_questions %}
+
+            <button type="button" class="lib-chatbot-q-btn" data-qid="{{ q.id }}">
+                {{ q.question }}
+            </button>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+<script>
+(function () {
+
+    var doll = document.getElementById("libChatbotDoll");
+    var win = document.getElementById("libChatbotWindow");
+    var closeBtn = document.getElementById("libChatbotClose");
+    var body = document.getElementById("libChatbotBody");
+    var questionButtons = document.querySelectorAll(".lib-chatbot-q-btn");
+    var inputRow = document.getElementById("libChatbotInputRow");
+    var bookInput = document.getElementById("libChatbotBookInput");
+    var bookSendBtn = document.getElementById("libChatbotBookSend");
+
+    var CHATBOT_ASK_URL = "{{ url_for('chatbot_ask') }}";
+    var STORAGE_KEY = "libChatbotDollPosition";
+
+    // -------------------------------------------------
+    // RESTORE SAVED POSITION (so the doll stays where the
+    // user last dragged it, without covering dashboard cards)
+    // -------------------------------------------------
+
+    function applyPosition(left, top) {
+
+        var maxLeft = window.innerWidth - doll.offsetWidth - 6;
+        var maxTop = window.innerHeight - doll.offsetHeight - 6;
+
+        left = Math.max(6, Math.min(left, maxLeft));
+        top = Math.max(6, Math.min(top, maxTop));
+
+        doll.style.left = left + "px";
+        doll.style.top = top + "px";
+        doll.style.right = "auto";
+        doll.style.bottom = "auto";
+
+        positionWindowNear(left, top);
+    }
+
+    function positionWindowNear(dollLeft, dollTop) {
+
+        var winWidth = win.offsetWidth || 320;
+        var winHeight = win.offsetHeight || 440;
+
+        var left = dollLeft;
+        var top = dollTop - winHeight - 12;
+
+        if (top < 10) {
+            top = dollTop + doll.offsetHeight + 12;
+        }
+
+        if (left + winWidth > window.innerWidth - 10) {
+            left = window.innerWidth - winWidth - 10;
+        }
+
+        if (left < 10) {
+            left = 10;
+        }
+
+        win.style.left = left + "px";
+        win.style.top = top + "px";
+        win.style.right = "auto";
+        win.style.bottom = "auto";
+    }
+
+    try {
+
+        var saved = JSON.parse(
+            localStorage.getItem(STORAGE_KEY) || "null"
+        );
+
+        if (saved && typeof saved.left === "number") {
+            applyPosition(saved.left, saved.top);
+        }
+
+    } catch (err) {
+        /* ignore corrupt saved position */
+    }
+
+    // -------------------------------------------------
+    // DRAG TO MOVE (mouse + touch), CLICK TO OPEN
+    // -------------------------------------------------
+
+    var dragState = {
+        active: false,
+        moved: false,
+        startX: 0,
+        startY: 0,
+        dollStartLeft: 0,
+        dollStartTop: 0
+    };
+
+    function getRect() {
+        return doll.getBoundingClientRect();
+    }
+
+    function onPointerDown(e) {
+
+        var point = (e.touches && e.touches[0]) || e;
+
+        var rect = getRect();
+
+        dragState.active = true;
+        dragState.moved = false;
+        dragState.startX = point.clientX;
+        dragState.startY = point.clientY;
+        dragState.dollStartLeft = rect.left;
+        dragState.dollStartTop = rect.top;
+
+        doll.classList.add("dragging");
+
+        window.addEventListener("mousemove", onPointerMove);
+        window.addEventListener("touchmove", onPointerMove, { passive: false });
+        window.addEventListener("mouseup", onPointerUp);
+        window.addEventListener("touchend", onPointerUp);
+    }
+
+    function onPointerMove(e) {
+
+        if (!dragState.active) {
+            return;
+        }
+
+        var point = (e.touches && e.touches[0]) || e;
+
+        var dx = point.clientX - dragState.startX;
+        var dy = point.clientY - dragState.startY;
+
+        if (Math.abs(dx) > 4 || Math.abs(dy) > 4) {
+            dragState.moved = true;
+        }
+
+        if (dragState.moved) {
+
+            if (e.cancelable) {
+                e.preventDefault();
+            }
+
+            applyPosition(
+                dragState.dollStartLeft + dx,
+                dragState.dollStartTop + dy
+            );
+        }
+    }
+
+    function onPointerUp() {
+
+        if (!dragState.active) {
+            return;
+        }
+
+        dragState.active = false;
+        doll.classList.remove("dragging");
+
+        window.removeEventListener("mousemove", onPointerMove);
+        window.removeEventListener("touchmove", onPointerMove);
+        window.removeEventListener("mouseup", onPointerUp);
+        window.removeEventListener("touchend", onPointerUp);
+
+        if (dragState.moved) {
+
+            var rect = getRect();
+
+            try {
+                localStorage.setItem(
+                    STORAGE_KEY,
+                    JSON.stringify({ left: rect.left, top: rect.top })
+                );
+            } catch (err) {
+                /* ignore storage errors */
+            }
+
+            if (win.classList.contains("open")) {
+                positionWindowNear(rect.left, rect.top);
+            }
+
+        } else {
+            toggleChat();
+        }
+    }
+
+    doll.addEventListener("mousedown", onPointerDown);
+    doll.addEventListener("touchstart", onPointerDown, { passive: true });
+
+    // -------------------------------------------------
+    // OPEN / CLOSE CHAT WINDOW
+    // -------------------------------------------------
+
+    function toggleChat() {
+
+        var rect = getRect();
+
+        if (win.classList.contains("open")) {
+            win.classList.remove("open");
+        } else {
+            positionWindowNear(rect.left, rect.top);
+            win.classList.add("open");
+            body.scrollTop = body.scrollHeight;
+        }
+    }
+
+    closeBtn.addEventListener("click", function () {
+        win.classList.remove("open");
+    });
+
+    // -------------------------------------------------
+    // READY-MADE QUESTIONS -> RETRIEVE ANSWER FROM SERVER
+    // -------------------------------------------------
+
+    function addMessage(text, who) {
+
+        var msg = document.createElement("div");
+
+        msg.className = "lib-chatbot-msg " + (
+            who === "user" ? "lib-chatbot-msg-user" : "lib-chatbot-msg-bot"
+        );
+
+        msg.textContent = text;
+
+        body.appendChild(msg);
+
+        body.scrollTop = body.scrollHeight;
+
+        return msg;
+    }
+
+    function setControlsDisabled(disabled) {
+
+        questionButtons.forEach(function (btn) {
+            btn.disabled = disabled;
+        });
+
+        bookInput.disabled = disabled;
+        bookSendBtn.disabled = disabled;
+    }
+
+    function askQuestion(questionId, questionText, extraPayload) {
+
+        addMessage(questionText, "user");
+
+        var thinkingMsg = addMessage("Thinking...", "bot");
+
+        setControlsDisabled(true);
+
+        var payload = Object.assign(
+            { question_id: questionId },
+            extraPayload || {}
+        );
+
+        fetch(CHATBOT_ASK_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        })
+            .then(function (response) {
+                return response.json().then(function (data) {
+                    return { ok: response.ok, data: data };
+                });
+            })
+            .then(function (result) {
+
+                if (result.ok && result.data && result.data.answer) {
+                    thinkingMsg.textContent = result.data.answer;
+                } else {
+                    thinkingMsg.textContent =
+                        (result.data && result.data.error) ||
+                        "Sorry, I couldn't find an answer right now.";
+                }
+            })
+            .catch(function () {
+                thinkingMsg.textContent =
+                    "Sorry, I couldn't reach the library assistant. " +
+                    "Please try again.";
+            })
+            .finally(function () {
+
+                setControlsDisabled(false);
+
+                body.scrollTop = body.scrollHeight;
+            });
+    }
+
+    // -------------------------------------------------
+    // "IS A PARTICULAR BOOK AVAILABLE?" -> ask for a title,
+    // then look it up against the live book catalog.
+    // -------------------------------------------------
+
+    function submitBookQuery() {
+
+        var value = bookInput.value.trim();
+
+        if (!value) {
+            bookInput.focus();
+            return;
+        }
+
+        bookInput.value = "";
+
+        askQuestion("q1", value, { book_query: value });
+    }
+
+    bookSendBtn.addEventListener("click", submitBookQuery);
+
+    bookInput.addEventListener("keydown", function (e) {
+
+        if (e.key === "Enter") {
+            e.preventDefault();
+            submitBookQuery();
+        }
+    });
+
+    questionButtons.forEach(function (btn) {
+
+        btn.addEventListener("click", function () {
+
+            var qid = btn.getAttribute("data-qid");
+            var qtext = btn.textContent.trim();
+
+            if (qid === "q1") {
+
+                addMessage(qtext, "user");
+
+                addMessage(
+                    "Sure! Type the book title (or part of it) " +
+                    "below and I'll check it for you.",
+                    "bot"
+                );
+
+                inputRow.classList.add("open");
+                bookInput.focus();
+
+                body.scrollTop = body.scrollHeight;
+
+                return;
+            }
+
+            askQuestion(qid, qtext);
+        });
+    });
+
+    // Keep the chat window anchored near the doll on resize.
+    window.addEventListener("resize", function () {
+
+        var rect = getRect();
+
+        applyPosition(rect.left, rect.top);
+    });
+
+})();
+</script>

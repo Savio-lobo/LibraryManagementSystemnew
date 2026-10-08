@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Choose Dashboard | Library Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="role-header">
+
+    <div class="role-logo">
+        <i class="fa-solid fa-book-open"></i>
+    </div>
+
+    <h1>
+        Library Management System
+    </h1>
+
+    <p>
+        Select your portal to continue
+    </p>
+
+</div>
+
+
+<div class="role-grid">
+
+    <!-- ADMIN -->
+
+    {% if user_role == "admin" %}
+
+    <a href="{{ url_for('select_role', role='admin') }}"
+       class="role-card">
+
+        <i class="fa-solid fa-user-shield"></i>
+
+        <h2>
+            Admin
+        </h2>
+
+        <p>
+            Manage complete library system
+        </p>
+
+    </a>
+
+    {% endif %}
+
+
+    <!-- LIBRARIAN -->
+
+    {% if user_role == "admin" or user_role == "librarian" %}
+
+    <a href="{{ url_for('select_role', role='librarian') }}"
+       class="role-card">
+
+        <i class="fa-solid fa-book"></i>
+
+        <h2>
+            Librarian
+        </h2>
+
+        <p>
+            Manage books, users and transactions
+        </p>
+
+    </a>
+
+    {% endif %}
+
+
+    <!-- USER -->
+
+    {% if user_role == "admin"
+          or user_role == "librarian"
+          or user_role == "user" %}
+
+    <a href="{{ url_for('select_role', role='user') }}"
+       class="role-card">
+
+        <i class="fa-solid fa-user"></i>
+
+        <h2>
+            User
+        </h2>
+
+        <p>
+            Search, borrow and reserve books
+        </p>
+
+    </a>
+
+    {% endif %}
+
+</div>
+
+</body>
+
+</html>

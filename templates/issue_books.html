@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Issue Books | Library Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        /* ===============================
+           PAGE  (Renew Books reference)
+        =============================== */
+
+        .ib-page {
+            min-height: 100vh;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #3569d8, #2858c7);
+            box-sizing: border-box;
+        }
+
+        .ib-card {
+            width: 95%;
+            max-width: 1450px;
+            margin: 0 auto 30px;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 40px;
+            box-sizing: border-box;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+        }
+
+
+        /* ===============================
+           HEADER
+        =============================== */
+
+        .ib-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .ib-icon {
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-size: 30px;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.35);
+        }
+
+        .ib-title {
+            margin: 0;
+            color: #222222;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .ib-description {
+            margin: 10px auto 0;
+            color: #666666;
+            font-size: 16px;
+        }
+
+
+        /* ===============================
+           FLASH MESSAGE
+        =============================== */
+
+        .ib-flash {
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            background: #f4f4f4;
+            color: #333333;
+        }
+
+        .ib-flash.success {
+            background: #e8f7ee;
+            color: #16803c;
+        }
+
+        .ib-flash.error {
+            background: #fdecec;
+            color: #d93025;
+        }
+
+
+        /* ===============================
+           FORM
+        =============================== */
+
+        .ib-form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-top: 10px;
+        }
+
+        .ib-form-grid input {
+            padding: 13px 14px;
+            border: 1px solid #e2e5f5;
+            border-radius: 10px;
+            font-size: 15px;
+            color: #333333;
+            background: #f8f9ff;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .ib-form-grid input:focus {
+            border-color: #667eea;
+            outline: none;
+            background: #ffffff;
+        }
+
+        .ib-form-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 22px;
+            flex-wrap: wrap;
+        }
+
+        .ib-save-btn,
+        .ib-cancel-btn {
+            width: auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 13px 26px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            transition: .2s ease;
+        }
+
+        .ib-save-btn {
+            color: white;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .ib-save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(102, 126, 234, 0.35);
+        }
+
+        .ib-cancel-btn {
+            color: #444444;
+            background: #eef0fb;
+        }
+
+        .ib-cancel-btn:hover {
+            background: #e2e5f5;
+        }
+
+
+        /* ===============================
+           CONFIRMATION TABLE
+        =============================== */
+
+        .ib-confirm-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .ib-confirm-table td {
+            padding: 12px 10px;
+            color: #444444;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .ib-confirm-table td:first-child {
+            font-weight: 700;
+            color: #333333;
+            width: 200px;
+        }
+
+
+        /* ===============================
+           TABLE  (grid lines)
+        =============================== */
+
+        .ib-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        .ib-table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+            border: 1px solid #dfe3f5;
+        }
+
+        .ib-table th {
+            padding: 14px 10px;
+            text-align: left;
+            background: #f1f3ff;
+            color: #333333;
+            font-size: 13px;
+            font-weight: 700;
+            border: 1px solid #dfe3f5;
+        }
+
+        .ib-table td {
+            padding: 13px 10px;
+            text-align: left;
+            color: #444444;
+            font-size: 13px;
+            background: #ffffff;
+            border: 1px solid #e9ebf7;
+            word-wrap: break-word;
+        }
+
+        .ib-table tbody tr:hover td {
+            background: #f8f9ff;
+        }
+
+        .ib-table th:nth-child(1), .ib-table td:nth-child(1) { width: 18%; }
+        .ib-table th:nth-child(2), .ib-table td:nth-child(2) { width: 10%; }
+        .ib-table th:nth-child(3), .ib-table td:nth-child(3) { width: 20%; }
+        .ib-table th:nth-child(4), .ib-table td:nth-child(4) { width: 14%; }
+        .ib-table th:nth-child(5), .ib-table td:nth-child(5) { width: 14%; }
+        .ib-table th:nth-child(6), .ib-table td:nth-child(6) { width: 12%; }
+        .ib-table th:nth-child(7), .ib-table td:nth-child(7) { width: 12%; }
+
+        .ib-no-records {
+            text-align: center;
+            padding: 30px;
+            color: #666666;
+        }
+
+        .ib-status-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: #eef7ee;
+            color: #16803c;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+
+        /* ===============================
+           SECTION TITLE
+        =============================== */
+
+        .ib-section-title {
+            margin: 0 0 10px;
+            color: #222222;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+
+        /* ===============================
+           BACK
+        =============================== */
+
+        .ib-back-area {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .ib-back-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            padding: 13px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: white;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            font-weight: 600;
+            transition: .2s ease;
+        }
+
+        .ib-back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(102, 126, 234, 0.35);
+        }
+
+
+        /* ===============================
+           MOBILE
+        =============================== */
+
+        @media (max-width: 700px) {
+
+            .ib-page {
+                padding: 20px 10px;
+            }
+
+            .ib-card {
+                width: 100%;
+                padding: 25px 15px;
+                border-radius: 18px;
+            }
+
+            .ib-title {
+                font-size: 26px;
+            }
+
+            .ib-form-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="ib-page">
+
+
+    <!-- ================= ISSUE FORM CARD ================= -->
+
+    <div class="ib-card">
+
+        <div class="ib-header">
+
+            <div class="ib-icon">
+                <i class="fa-solid fa-right-left"></i>
+            </div>
+
+            <h1 class="ib-title">Issue Books</h1>
+
+            <p class="ib-description">
+                Search for a user and an available book to issue it.
+            </p>
+
+        </div>
+
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="ib-flash {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <form method="POST"
+              action="{{ url_for('issue_books') }}">
+
+            <div class="ib-form-grid">
+
+
+                <!-- USER: SEARCH BY NAME OR EMAIL -->
+
+                <input
+                    type="text"
+                    name="user_identifier"
+                    list="userOptions"
+                    placeholder="🔍 Search user by name or email"
+                    autocomplete="off"
+                    required>
+
+                <datalist id="userOptions">
+
+                    {% for member in members %}
+
+                        <option value="{{ member.email }}">
+                            {{ member.name }}
+                        </option>
+
+                        <option value="{{ member.name }}">
+                            {{ member.email }}
+                        </option>
+
+                    {% endfor %}
+
+                </datalist>
+
+
+
+                <!-- BOOK: SEARCH AVAILABLE BOOKS -->
+
+                <input
+                    type="text"
+                    name="book_id"
+                    list="bookOptions"
+                    placeholder="🔍 Search available book by title or author"
+                    autocomplete="off"
+                    required>
+
+                <datalist id="bookOptions">
+
+                    {% for book in books %}
+
+                        {% if book.copies|int > 0 %}
+
+                            <option value="{{ book.book_id }} - {{ book.book_name }}">
+                                {{ book.author }} ({{ book.copies }} copies available)
+                            </option>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                </datalist>
+
+
+            </div>
+
+
+            <div class="ib-form-buttons">
+
+                <button type="submit"
+                        class="ib-save-btn">
+
+                    <i class="fa-solid fa-book"></i>
+                    Issue Book
+
+                </button>
+
+
+                <button type="reset"
+                        class="ib-cancel-btn">
+
+                    <i class="fa-solid fa-rotate-left"></i>
+                    Reset
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- ================= ISSUE CONFIRMATION ================= -->
+
+    {% if last_issued %}
+
+        <div class="ib-card">
+
+            <h2 class="ib-section-title">
+                <i class="fa-solid fa-circle-check" style="color:#16803c;"></i>
+                Book Issued Successfully
+            </h2>
+
+            <table class="ib-confirm-table">
+
+                <tr>
+                    <td>User Name</td>
+                    <td>{{ last_issued.user_name }}</td>
+                </tr>
+
+                <tr>
+                    <td>User Email</td>
+                    <td>{{ last_issued.user_email }}</td>
+                </tr>
+
+                <tr>
+                    <td>Book Name</td>
+                    <td>{{ last_issued.book_name }}</td>
+                </tr>
+
+                <tr>
+                    <td>Book ID</td>
+                    <td>{{ last_issued.book_id }}</td>
+                </tr>
+
+                <tr>
+                    <td>Author</td>
+                    <td>{{ last_issued.author }}</td>
+                </tr>
+
+                <tr>
+                    <td>Issue Date</td>
+                    <td>{{ last_issued.borrowed_date }}</td>
+                </tr>
+
+                <tr>
+                    <td>Due Date</td>
+                    <td>{{ last_issued.due_date }}</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- ================= CURRENTLY ISSUED BOOKS ================= -->
+
+    <div class="ib-card">
+
+        <h2 class="ib-section-title">
+            Currently Issued Books
+        </h2>
+
+        {% if issued_books %}
+
+            <div class="ib-table-wrapper">
+
+                <table class="ib-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>User</th>
+                            <th>Book ID</th>
+                            <th>Book</th>
+                            <th>Author</th>
+                            <th>Issue Date</th>
+                            <th>Due Date</th>
+                            <th>Status</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for record in issued_books %}
+
+                            <tr>
+
+                                <td>{{ record.user_email }}</td>
+
+                                <td>{{ record.book_id }}</td>
+
+                                <td>{{ record.book_name }}</td>
+
+                                <td>{{ record.author }}</td>
+
+                                <td>{{ record.borrowed_date }}</td>
+
+                                <td>{{ record.due_date }}</td>
+
+                                <td>
+                                    <span class="ib-status-tag">Issued</span>
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        {% else %}
+
+            <div class="ib-no-records">
+                No books are currently issued.
+            </div>
+
+        {% endif %}
+
+        <div class="ib-back-area" style="margin-top:25px;">
+
+            <a class="ib-back-btn"
+               href="{{ url_for('back_to_dashboard') }}">
+
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Dashboard
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+</body>
+
+</html>

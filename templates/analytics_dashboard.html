@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Analytics Dashboard | Library Management System</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+
+    <style>
+
+        /* ===============================
+           PAGE (matches Renew Books / Reports)
+        =============================== */
+
+        .an-page {
+            min-height: 100vh;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #3569d8, #2858c7);
+            box-sizing: border-box;
+        }
+
+        .an-card {
+            width: 95%;
+            max-width: 1300px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 40px;
+            box-sizing: border-box;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+        }
+
+        .an-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .an-icon {
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 18px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: linear-gradient(135deg, #667eea, #764ba2);
+
+            color: white;
+            font-size: 30px;
+
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.35);
+        }
+
+        .an-title {
+            margin: 0;
+            color: #222222;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .an-description {
+            margin: 10px auto 0;
+            color: #666666;
+            font-size: 16px;
+        }
+
+        /* ===============================
+           STAT GRID
+        =============================== */
+
+        .an-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .an-stat-card {
+            background: #f8f9ff;
+            border: 1px solid #e4e7f5;
+            border-radius: 18px;
+            padding: 22px 20px;
+
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.08);
+
+            transition: 0.2s ease;
+        }
+
+        .an-stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 26px rgba(102, 126, 234, 0.18);
+        }
+
+        .an-stat-icon {
+            width: 46px;
+            height: 46px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 13px;
+
+            color: white;
+            font-size: 19px;
+        }
+
+        .an-stat-icon.users {
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+        }
+
+        .an-stat-icon.books {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .an-stat-icon.issued {
+            background: linear-gradient(135deg, #16803c, #22a352);
+        }
+
+        .an-stat-icon.available {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+        }
+
+        .an-stat-icon.borrowings {
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+        }
+
+        .an-stat-icon.waitlist {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .an-stat-icon.fine {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+        }
+
+        .an-stat-label {
+            margin: 0;
+            color: #666666;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+        }
+
+        .an-stat-number {
+            margin: 0;
+            color: #1f2333;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 1.1;
+        }
+
+        /* ===============================
+           CHARTS
+        =============================== */
+
+        .an-charts-heading {
+            margin: 40px 0 20px;
+            color: #222222;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .an-charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 22px;
+        }
+
+        .an-chart-card {
+            background: #f8f9ff;
+            border: 1px solid #e4e7f5;
+            border-radius: 18px;
+            padding: 22px;
+
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.08);
+        }
+
+        .an-chart-card h3 {
+            margin: 0 0 16px;
+            color: #333333;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .an-chart-wrapper {
+            position: relative;
+            height: 260px;
+        }
+
+        .an-chart-empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 260px;
+            color: #8a8fa8;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        /* ===============================
+           BACK BUTTON
+        =============================== */
+
+        .an-back-area {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .an-back-btn {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 9px;
+
+            padding: 13px 24px;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+
+            color: white;
+
+            background: linear-gradient(135deg, #667eea, #764ba2);
+
+            font-weight: 600;
+
+            transition: 0.2s ease;
+        }
+
+        .an-back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(102, 126, 234, 0.35);
+        }
+
+        /* ===============================
+           MOBILE
+        =============================== */
+
+        @media (max-width: 700px) {
+
+            .an-page {
+                padding: 20px 10px;
+            }
+
+            .an-card {
+                width: 100%;
+                padding: 25px 15px;
+                border-radius: 18px;
+            }
+
+            .an-title {
+                font-size: 26px;
+            }
+
+            .an-description {
+                font-size: 14px;
+            }
+
+            .an-stat-number {
+                font-size: 26px;
+            }
+
+            .an-chart-wrapper,
+            .an-chart-empty {
+                height: 220px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="an-page">
+
+    <div class="an-card">
+
+
+        <!-- ===============================
+             HEADER
+        =============================== -->
+
+        <div class="an-header">
+
+            <div class="an-icon">
+                <i class="fa-solid fa-chart-pie"></i>
+            </div>
+
+            <h1 class="an-title">
+                Analytics Dashboard
+            </h1>
+
+            <p class="an-description">
+                Live insights into books, borrowing and fines, built
+                from your library's current data.
+            </p>
+
+        </div>
+
+
+        <!-- ===============================
+             SUMMARY STAT CARDS
+        =============================== -->
+
+        <div class="an-stats-grid">
+
+            <div class="an-stat-card">
+                <div class="an-stat-icon users">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <p class="an-stat-label">Total Users</p>
+                <p class="an-stat-number">{{ total_users }}</p>
+            </div>
+
+            <div class="an-stat-card">
+                <div class="an-stat-icon books">
+                    <i class="fa-solid fa-book"></i>
+                </div>
+                <p class="an-stat-label">Total Books</p>
+                <p class="an-stat-number">{{ total_books }}</p>
+            </div>
+
+            <div class="an-stat-card">
+                <div class="an-stat-icon issued">
+                    <i class="fa-solid fa-book-open"></i>
+                </div>
+                <p class="an-stat-label">Currently Issued</p>
+                <p class="an-stat-number">{{ total_issued }}</p>
+            </div>
+
+            <div class="an-stat-card">
+                <div class="an-stat-icon available">
+                    <i class="fa-solid fa-book-medical"></i>
+                </div>
+                <p class="an-stat-label">Available Books</p>
+                <p class="an-stat-number">{{ total_available }}</p>
+            </div>
+
+            <div class="an-stat-card">
+                <div class="an-stat-icon borrowings">
+                    <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                </div>
+                <p class="an-stat-label">Total Borrowings</p>
+                <p class="an-stat-number">{{ total_borrowings }}</p>
+            </div>
+
+            <div class="an-stat-card">
+                <div class="an-stat-icon waitlist">
+                    <i class="fa-solid fa-list"></i>
+                </div>
+                <p class="an-stat-label">Active Waitlist</p>
+                <p class="an-stat-number">{{ active_waitlist }}</p>
+            </div>
+
+            <div class="an-stat-card">
+                <div class="an-stat-icon fine">
+                    <i class="fa-solid fa-money-bill-wave"></i>
+                </div>
+                <p class="an-stat-label">Outstanding Fines</p>
+                <p class="an-stat-number">₹{{ outstanding_fines }}</p>
+            </div>
+
+        </div>
+
+
+        <!-- ===============================
+             CHARTS
+        =============================== -->
+
+        <h2 class="an-charts-heading">
+            Charts
+        </h2>
+
+        <div class="an-charts-grid">
+
+            <!-- BORROWINGS OVER TIME -->
+
+            <div class="an-chart-card">
+                <h3>Borrowings Over Time</h3>
+
+                {% if borrowings_time_labels %}
+                    <div class="an-chart-wrapper">
+                        <canvas id="chartBorrowingsOverTime"></canvas>
+                    </div>
+                {% else %}
+                    <div class="an-chart-empty">
+                        No borrowing history available yet.
+                    </div>
+                {% endif %}
+            </div>
+
+
+            <!-- BOOKS BY GENRE -->
+
+            <div class="an-chart-card">
+                <h3>Books by Genre</h3>
+
+                {% if genre_labels %}
+                    <div class="an-chart-wrapper">
+                        <canvas id="chartBooksByGenre"></canvas>
+                    </div>
+                {% else %}
+                    <div class="an-chart-empty">
+                        No genres found in the catalog yet.
+                    </div>
+                {% endif %}
+            </div>
+
+
+            <!-- MOST BORROWED BOOKS -->
+
+            <div class="an-chart-card">
+                <h3>Most Borrowed Books</h3>
+
+                {% if top_books_labels %}
+                    <div class="an-chart-wrapper">
+                        <canvas id="chartTopBooks"></canvas>
+                    </div>
+                {% else %}
+                    <div class="an-chart-empty">
+                        No borrowing records yet.
+                    </div>
+                {% endif %}
+            </div>
+
+
+            <!-- MOST ACTIVE USERS -->
+
+            <div class="an-chart-card">
+                <h3>Most Active Users</h3>
+
+                {% if top_users_labels %}
+                    <div class="an-chart-wrapper">
+                        <canvas id="chartTopUsers"></canvas>
+                    </div>
+                {% else %}
+                    <div class="an-chart-empty">
+                        No borrowing records yet.
+                    </div>
+                {% endif %}
+            </div>
+
+
+            <!-- FINE STATISTICS -->
+
+            <div class="an-chart-card">
+                <h3>Fine Statistics (Paid vs Outstanding)</h3>
+
+                {% if (fine_paid.late + fine_paid.damage + fine_paid.lost + fine_outstanding.late + fine_outstanding.damage + fine_outstanding.lost) > 0 %}
+                    <div class="an-chart-wrapper">
+                        <canvas id="chartFineStats"></canvas>
+                    </div>
+                {% else %}
+                    <div class="an-chart-empty">
+                        No fines recorded yet.
+                    </div>
+                {% endif %}
+            </div>
+
+        </div>
+
+
+        <!-- ===============================
+             BACK BUTTON
+        =============================== -->
+
+        <div class="an-back-area">
+
+            <a href="{{ url_for('back_to_dashboard') }}"
+               class="an-back-btn">
+
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Dashboard
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+    // All data below comes straight from the server (live library
+    // data) - nothing here is hard-coded or made up on the client.
+
+    var borrowingsTimeLabels = {{ borrowings_time_labels | tojson }};
+    var borrowingsTimeValues = {{ borrowings_time_values | tojson }};
+
+    var genreLabels = {{ genre_labels | tojson }};
+    var genreValues = {{ genre_values | tojson }};
+
+    var topBooksLabels = {{ top_books_labels | tojson }};
+    var topBooksValues = {{ top_books_values | tojson }};
+
+    var topUsersLabels = {{ top_users_labels | tojson }};
+    var topUsersValues = {{ top_users_values | tojson }};
+
+    var finePaid = {{ fine_paid | tojson }};
+    var fineOutstanding = {{ fine_outstanding | tojson }};
+
+    var CHART_PALETTE = [
+        "#667eea", "#764ba2", "#0ea5e9", "#22a352",
+        "#f59e0b", "#f97316", "#06b6d4", "#e879f9"
+    ];
+
+    Chart.defaults.font.family = "'Poppins', sans-serif";
+    Chart.defaults.color = "#555555";
+
+    if (borrowingsTimeLabels.length) {
+        new Chart(document.getElementById("chartBorrowingsOverTime"), {
+            type: "line",
+            data: {
+                labels: borrowingsTimeLabels,
+                datasets: [{
+                    label: "Borrowings",
+                    data: borrowingsTimeValues,
+                    borderColor: "#667eea",
+                    backgroundColor: "rgba(102, 126, 234, 0.15)",
+                    tension: 0.3,
+                    fill: true,
+                    pointBackgroundColor: "#667eea"
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, ticks: { precision: 0 } }
+                }
+            }
+        });
+    }
+
+    if (genreLabels.length) {
+        new Chart(document.getElementById("chartBooksByGenre"), {
+            type: "doughnut",
+            data: {
+                labels: genreLabels,
+                datasets: [{
+                    data: genreValues,
+                    backgroundColor: CHART_PALETTE
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: "bottom" } }
+            }
+        });
+    }
+
+    if (topBooksLabels.length) {
+        new Chart(document.getElementById("chartTopBooks"), {
+            type: "bar",
+            data: {
+                labels: topBooksLabels,
+                datasets: [{
+                    label: "Times Borrowed",
+                    data: topBooksValues,
+                    backgroundColor: "#764ba2",
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                indexAxis: "y",
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { beginAtZero: true, ticks: { precision: 0 } }
+                }
+            }
+        });
+    }
+
+    if (topUsersLabels.length) {
+        new Chart(document.getElementById("chartTopUsers"), {
+            type: "bar",
+            data: {
+                labels: topUsersLabels,
+                datasets: [{
+                    label: "Books Borrowed",
+                    data: topUsersValues,
+                    backgroundColor: "#0ea5e9",
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                indexAxis: "y",
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { beginAtZero: true, ticks: { precision: 0 } }
+                }
+            }
+        });
+    }
+
+    var fineStatsCanvas = document.getElementById("chartFineStats");
+
+    if (fineStatsCanvas) {
+        new Chart(fineStatsCanvas, {
+            type: "bar",
+            data: {
+                labels: ["Late Fine", "Damage Fine", "Lost Fine"],
+                datasets: [
+                    {
+                        label: "Paid",
+                        data: [
+                            finePaid.late,
+                            finePaid.damage,
+                            finePaid.lost
+                        ],
+                        backgroundColor: "#22a352",
+                        borderRadius: 6
+                    },
+                    {
+                        label: "Outstanding",
+                        data: [
+                            fineOutstanding.late,
+                            fineOutstanding.damage,
+                            fineOutstanding.lost
+                        ],
+                        backgroundColor: "#f97316",
+                        borderRadius: 6
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: "bottom" } },
+                scales: {
+                    y: { beginAtZero: true, ticks: { precision: 0 } }
+                }
+            }
+        });
+    }
+
+</script>
+
+
+</body>
+
+</html>

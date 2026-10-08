@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>User & Librarian Management | Library Management System</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        /* ===============================
+           PAGE (matches Renew Books)
+        =============================== */
+
+        .ulm-page {
+            min-height: 100vh;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #3569d8, #2858c7);
+            box-sizing: border-box;
+        }
+
+        .ulm-card {
+            width: 95%;
+            max-width: 1250px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 40px;
+            box-sizing: border-box;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+        }
+
+        .ulm-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .ulm-icon {
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 18px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: linear-gradient(135deg, #667eea, #764ba2);
+
+            color: white;
+            font-size: 30px;
+
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.35);
+        }
+
+        .ulm-title {
+            margin: 0;
+            color: #222222;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .ulm-description {
+            margin: 10px auto 0;
+            color: #666666;
+            font-size: 16px;
+        }
+
+        .ulm-flash {
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            background: #f4f4f4;
+            color: #333333;
+        }
+
+        .ulm-flash.success {
+            background: #e8f7ee;
+            color: #16803c;
+        }
+
+        .ulm-flash.error {
+            background: #fdecec;
+            color: #d93025;
+        }
+
+        /* ===============================
+           TOOLBAR (Tabs / Search / Add)
+        =============================== */
+
+        .ulm-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+
+        .ulm-tab-btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 1px solid #e2e5f5;
+            background: #f1f3ff;
+            color: #4b4f6b;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .ulm-tab-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-color: transparent;
+            color: #fff;
+        }
+
+        .ulm-search-box {
+            position: relative;
+            flex: 1;
+            min-width: 200px;
+            max-width: 320px;
+        }
+
+        .ulm-search-box i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9aa0c2;
+        }
+
+        .ulm-search-input {
+            width: 100%;
+            padding: 11px 14px 11px 38px;
+            border-radius: 10px;
+            border: 1px solid #e2e5f5;
+            background: #f8f9ff;
+            color: #333333;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .ulm-search-input:focus {
+            outline: none;
+            border-color: #764ba2;
+        }
+
+        .ulm-spacer {
+            flex: 1;
+        }
+
+        .ulm-add-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+
+            padding: 11px 20px;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+
+            color: white;
+
+            font-weight: 600;
+            font-size: 14px;
+
+            white-space: nowrap;
+
+            transition: 0.2s ease;
+        }
+
+        .ulm-add-user-btn {
+            background: linear-gradient(135deg, #16803c, #22a352);
+        }
+
+        .ulm-add-librarian-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .ulm-add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(102, 126, 234, 0.3);
+        }
+
+        /* ===============================
+           TABLE (matches Renew Books)
+        =============================== */
+
+        .ulm-panel {
+            display: none;
+        }
+
+        .ulm-panel.active {
+            display: block;
+        }
+
+        .ulm-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+
+        .ulm-table {
+            width: 100%;
+            min-width: 700px;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .ulm-table th {
+            padding: 15px;
+            text-align: left;
+
+            background: #f1f3ff;
+            color: #333333;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            border-bottom: 2px solid #e2e5f5;
+        }
+
+        .ulm-table td {
+            padding: 15px;
+            text-align: left;
+
+            color: #444444;
+            font-size: 14px;
+
+            border-bottom: 1px solid #eeeeee;
+            background: #ffffff;
+        }
+
+        .ulm-table tbody tr:hover td {
+            background: #f8f9ff;
+        }
+
+        .ulm-role-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 999px;
+            background: #eef0fb;
+            color: #4b4f6b;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .ulm-action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            padding: 8px 14px;
+
+            margin: 3px;
+
+            border-radius: 8px;
+
+            text-decoration: none;
+
+            color: white;
+
+            font-weight: 600;
+            font-size: 13px;
+
+            border: none;
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+        .ulm-edit-btn {
+            background: #2563eb;
+        }
+
+        .ulm-edit-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .ulm-delete-btn {
+            background: #ef4444;
+        }
+
+        .ulm-delete-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .ulm-no-rows {
+            margin-top: 25px;
+
+            padding: 40px 20px;
+
+            text-align: center;
+
+            background: #f8f9ff;
+
+            border: 1px solid #e4e7f5;
+
+            border-radius: 15px;
+
+            color: #666666;
+        }
+
+        .ulm-no-rows i {
+            display: block;
+            margin-bottom: 15px;
+            color: #667eea;
+            font-size: 42px;
+        }
+
+        .ulm-no-rows p {
+            margin: 0;
+            color: #666666;
+            font-size: 16px;
+        }
+
+        /* ===============================
+           BACK BUTTON
+        =============================== */
+
+        .ulm-back-area {
+            text-align: center;
+            margin-top: 35px;
+        }
+
+        .ulm-back-btn {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 9px;
+
+            padding: 13px 24px;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+
+            color: white;
+
+            background: linear-gradient(135deg, #667eea, #764ba2);
+
+            font-weight: 600;
+
+            transition: 0.2s ease;
+        }
+
+        .ulm-back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(102, 126, 234, 0.35);
+        }
+
+        /* ===============================
+           MOBILE
+        =============================== */
+
+        @media (max-width: 700px) {
+
+            .ulm-page {
+                padding: 20px 10px;
+            }
+
+            .ulm-card {
+                width: 100%;
+                padding: 25px 15px;
+                border-radius: 18px;
+            }
+
+            .ulm-title {
+                font-size: 26px;
+            }
+
+            .ulm-description {
+                font-size: 14px;
+            }
+
+            .ulm-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .ulm-search-box {
+                max-width: 100%;
+            }
+
+            .ulm-spacer {
+                display: none;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="ulm-page">
+
+    <div class="ulm-card">
+
+
+        <!-- ===============================
+             HEADER
+        =============================== -->
+
+        <div class="ulm-header">
+
+            <div class="ulm-icon">
+                <i class="fa-solid fa-users-gear"></i>
+            </div>
+
+            <h1 class="ulm-title">
+                User & Librarian Management
+            </h1>
+
+            <p class="ulm-description">
+                Manage all registered users and librarians from one place.
+            </p>
+
+        </div>
+
+
+        <!-- ===============================
+             FLASH MESSAGES
+        =============================== -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="ulm-flash {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <!-- ===============================
+             TOOLBAR
+        =============================== -->
+
+        <div class="ulm-toolbar">
+
+            <button
+                type="button"
+                class="ulm-tab-btn active"
+                id="usersTabBtn"
+                onclick="showUlmTab('users')">
+                <i class="fa-solid fa-user"></i>
+                Users ({{ users|length }})
+            </button>
+
+            <button
+                type="button"
+                class="ulm-tab-btn"
+                id="librariansTabBtn"
+                onclick="showUlmTab('librarians')">
+                <i class="fa-solid fa-user-tie"></i>
+                Librarians ({{ librarians|length }})
+            </button>
+
+            <div class="ulm-search-box">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="text"
+                    id="ulmSearchInput"
+                    class="ulm-search-input"
+                    placeholder="Search by name or email..."
+                    onkeyup="ulmFilterTable()">
+
+            </div>
+
+            <div class="ulm-spacer"></div>
+
+            <a href="{{ url_for('create_account', role='user') }}"
+               class="ulm-add-btn ulm-add-user-btn">
+                <i class="fa-solid fa-user-plus"></i>
+                Add User
+            </a>
+
+            <a href="{{ url_for('create_account', role='librarian') }}"
+               class="ulm-add-btn ulm-add-librarian-btn">
+                <i class="fa-solid fa-user-tie"></i>
+                Add Librarian
+            </a>
+
+        </div>
+
+
+        <!-- ===============================
+             USERS PANEL
+        =============================== -->
+
+        <div class="ulm-panel active" id="usersPanel">
+
+            {% if users %}
+
+                <div class="ulm-table-wrapper">
+
+                    <table class="ulm-table" id="ulmUsersTable">
+
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for user in users %}
+
+                            <tr>
+
+                                <td>{{ loop.index }}</td>
+
+                                <td>{{ user.get('name', 'N/A') }}</td>
+
+                                <td>{{ user.get('email', 'N/A') }}</td>
+
+                                <td>
+                                    <span class="ulm-role-badge">
+                                        {{ user.get('role', 'user')|capitalize }}
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    <a href="{{ url_for('edit_user', email=user.get('email')) }}"
+                                       class="ulm-action-btn ulm-edit-btn">
+                                        <i class="fa-solid fa-pen"></i>
+                                        Edit
+                                    </a>
+
+                                    <a href="{{ url_for('delete_user', email=user.get('email')) }}"
+                                       class="ulm-action-btn ulm-delete-btn"
+                                       onclick="return confirm('Are you sure you want to remove this user?');">
+                                        <i class="fa-solid fa-trash"></i>
+                                        Delete
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <div class="ulm-no-rows">
+                    <i class="fa-solid fa-user-slash"></i>
+                    <p>No users registered yet.</p>
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- ===============================
+             LIBRARIANS PANEL
+        =============================== -->
+
+        <div class="ulm-panel" id="librariansPanel">
+
+            {% if librarians %}
+
+                <div class="ulm-table-wrapper">
+
+                    <table class="ulm-table" id="ulmLibrariansTable">
+
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for librarian in librarians %}
+
+                            <tr>
+
+                                <td>{{ loop.index }}</td>
+
+                                <td>{{ librarian.get('name', 'N/A') }}</td>
+
+                                <td>{{ librarian.get('email', 'N/A') }}</td>
+
+                                <td>
+                                    <span class="ulm-role-badge">
+                                        {{ librarian.get('role', 'librarian')|capitalize }}
+                                    </span>
+                                </td>
+
+                                <td>
+
+                                    <a href="{{ url_for('edit_librarian', email=librarian.get('email')) }}"
+                                       class="ulm-action-btn ulm-edit-btn">
+                                        <i class="fa-solid fa-pen"></i>
+                                        Edit
+                                    </a>
+
+                                    <a href="{{ url_for('delete_librarian', email=librarian.get('email')) }}"
+                                       class="ulm-action-btn ulm-delete-btn"
+                                       onclick="return confirm('Are you sure you want to remove this staff member?');">
+                                        <i class="fa-solid fa-trash"></i>
+                                        Delete
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <div class="ulm-no-rows">
+                    <i class="fa-solid fa-user-slash"></i>
+                    <p>No librarians registered yet.</p>
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- ===============================
+             BACK BUTTON
+        =============================== -->
+
+        <div class="ulm-back-area">
+
+            <a href="{{ url_for('admin_dashboard') }}"
+               class="ulm-back-btn">
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Admin Dashboard
+            </a>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+function showUlmTab(tab) {
+
+    const usersPanel = document.getElementById("usersPanel");
+    const librariansPanel = document.getElementById("librariansPanel");
+
+    const usersBtn = document.getElementById("usersTabBtn");
+    const librariansBtn = document.getElementById("librariansTabBtn");
+
+    if (tab === "users") {
+
+        usersPanel.classList.add("active");
+        librariansPanel.classList.remove("active");
+
+        usersBtn.classList.add("active");
+        librariansBtn.classList.remove("active");
+
+    } else {
+
+        librariansPanel.classList.add("active");
+        usersPanel.classList.remove("active");
+
+        librariansBtn.classList.add("active");
+        usersBtn.classList.remove("active");
+
+    }
+
+    // Re-apply any active search filter to the panel just shown
+    ulmFilterTable();
+
+}
+
+function ulmFilterTable() {
+
+    const input = document.getElementById("ulmSearchInput");
+    const filter = input.value.trim().toLowerCase();
+
+    const activePanel = document.querySelector(".ulm-panel.active");
+
+    if (!activePanel) {
+        return;
+    }
+
+    const table = activePanel.querySelector("table");
+
+    if (!table) {
+        return;
+    }
+
+    const rows = table.getElementsByTagName("tr");
+
+    for (let i = 1; i < rows.length; i++) {
+
+        const nameCell = rows[i].getElementsByTagName("td")[1];
+        const emailCell = rows[i].getElementsByTagName("td")[2];
+
+        if (!nameCell || !emailCell) {
+            continue;
+        }
+
+        const name = nameCell.textContent.toLowerCase();
+        const email = emailCell.textContent.toLowerCase();
+
+        if (name.includes(filter) || email.includes(filter)) {
+            rows[i].style.display = "";
+        } else {
+            rows[i].style.display = "none";
+        }
+
+    }
+
+}
+
+</script>
+
+
+</body>
+
+</html>

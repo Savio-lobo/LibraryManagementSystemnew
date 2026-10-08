@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Categories</title>
+
+<link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+
+</head>
+
+
+<body>
+
+
+<div class="form-card">
+
+
+<h2>📂 Book Categories</h2>
+
+
+<table>
+
+
+<tr>
+
+<th>Category ID</th>
+<th>Category Name</th>
+<th>Total Books</th>
+
+</tr>
+
+
+<tr>
+
+<td>1</td>
+<td>Programming</td>
+<td>120</td>
+
+</tr>
+
+
+<tr>
+
+<td>2</td>
+<td>Database</td>
+<td>80</td>
+
+</tr>
+
+
+<tr>
+
+<td>3</td>
+<td>Artificial Intelligence</td>
+<td>60</td>
+
+</tr>
+
+
+</table>
+
+
+<a href="{{ url_for('back_to_dashboard') }}" class="back-btn">← Back</a>
+
+
+</div>
+
+
+</body>
+
+</html>
